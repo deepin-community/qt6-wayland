@@ -1,4 +1,4 @@
-# SymbolsHelper-Confirmed: 6.2.4 amd64
+# SymbolsHelper-Confirmed: 6.2.4 amd64 arm64
 libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
 * Build-Depends-Package: qt6-wayland-dev
  _Z20qLcWaylandCompositorv@Base 6.2.2
@@ -3274,7 +3274,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  (optional=templinst)_ZNSt8_Rb_treeIPN15QtWaylandServer16qt_windowmanager8ResourceESt4pairIKS3_7QStringESt10_Select1stIS7_ESt4lessIS3_ESaIS7_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS7_ERS5_@Base 6.2.2
  (optional=templinst|arch=ia64)_ZNSt8_Rb_treeIPN15QtWaylandServer16qt_windowmanager8ResourceESt4pairIKS3_7QStringESt10_Select1stIS7_ESt4lessIS3_ESaIS7_EE5eraseERS5_@Base 6.2.2
  (optional=templinst)_ZNSt8_Rb_treeISt4pairIjiES0_IKS1_jESt10_Select1stIS3_ESt4lessIS1_ESaIS3_EE24_M_get_insert_unique_posERS2_@Base 6.2.2
- (optional=templinst|arch=amd64 ia64 sh4)_ZNSt8_Rb_treeISt4pairIjiES0_IKS1_jESt10_Select1stIS3_ESt4lessIS1_ESaIS3_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS3_ERS2_@Base 6.2.2
+ (optional=templinst)_ZNSt8_Rb_treeISt4pairIjiES0_IKS1_jESt10_Select1stIS3_ESt4lessIS1_ESaIS3_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS3_ERS2_@Base 6.2.2
  _ZTI12QWaylandDrag@Base 6.2.2
  _ZTI12QWaylandSeat@Base 6.2.2
  _ZTI12QWaylandView@Base 6.2.2

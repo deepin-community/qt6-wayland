@@ -1,4 +1,4 @@
-# SymbolsHelper-Confirmed: 6.2.4 amd64
+# SymbolsHelper-Confirmed: 6.2.4 amd64 arm64
 libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
 * Build-Depends-Package: qt6-wayland-dev
  _ZN15QtWaylandClient11QWaylandShm10formatFromE13wl_shm_format@Base 6.2.2
@@ -1961,7 +1961,7 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  (optional=templinst)_ZNSt6vectorIN15QtWaylandClient15QWaylandDisplay18WaylandCursorThemeESaIS2_EE17_M_realloc_insertIJS2_EEEvN9__gnu_cxx17__normal_iteratorIPS2_S4_EEDpOT_@Base 6.2.2
  (optional=templinst)_ZNSt7__cxx114listIPN15QtWaylandClient17QWaylandShmBufferESaIS3_EE6removeERKS3_@Base 6.2.2
  (optional=templinst)_ZNSt8_Rb_treeI7QStringSt4pairIKS0_8QVariantESt10_Select1stIS4_ESt4lessIS0_ESaIS4_EE24_M_get_insert_unique_posERS2_@Base 6.2.2
- (optional=templinst|arch=amd64)_ZNSt8_Rb_treeI7QStringSt4pairIKS0_8QVariantESt10_Select1stIS4_ESt4lessIS0_ESaIS4_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS4_ERS2_@Base 6.2.2
+ (optional=templinst)_ZNSt8_Rb_treeI7QStringSt4pairIKS0_8QVariantESt10_Select1stIS4_ESt4lessIS0_ESaIS4_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS4_ERS2_@Base 6.2.2
  _ZTI23QWaylandClientExtension@Base 6.2.2
  _ZTI30QWaylandClientExtensionPrivate@Base 6.2.2
  _ZTIN15QtWaylandClient11QWaylandShmE@Base 6.2.2
