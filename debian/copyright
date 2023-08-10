@@ -158,11 +158,6 @@ Copyright: 2014      Stephen "Lyude" Chandler Paul
            2015-2016 Red Hat, Inc.
 License: Expat
 
-Files: tests/auto/client/shared_old/mockinput.h
-Copyright: 2016 The Qt Company Ltd.
-           2016 Klarälvdalens Datakonsult AB (KDAB)
-License: GPL-3 with Qt-1.0 exception
-
 Files: src/client/inputdeviceintegration/qwaylandinputdeviceintegration*
        src/client/qwaylandshm*
 Copyright: 2016 LG Electronics, Inc.
@@ -195,10 +190,6 @@ Files: src/plugins/shellintegration/wl-shell/main.cpp
 Copyright: 2018 The Qt Company Ltd.
            2017 ITAGE Corporation
 License: LGPL-3 or GPL-2
-
-Files: tests/auto/client/shared_old/mockregion.*
-Copyright: 2020 Aleix Pol Gonzalez <aleixpol@kde.org>
-License: GPL-3 with Qt-1.0 exception
 
 Files: tests/auto/client/shared/mockcompositor.*
        tests/auto/client/shared/iviapplication.*

@@ -56,6 +56,8 @@
 #include "qwaylandsurfacegrabber.h"
 #include "qwaylandtextinput.h"
 #include "qwaylandtextinputmanager.h"
+#include "qwaylandtextinputmanagerv4.h"
+#include "qwaylandtextinputv4.h"
 #include "qwaylandtouch.h"
 #include "qwaylandview.h"
 #include "qwaylandviewporter.h"

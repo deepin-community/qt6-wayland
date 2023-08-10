@@ -6,6 +6,7 @@
 
 qt_internal_add_module(WaylandClient
     PLUGIN_TYPES wayland-graphics-integration-client wayland-inputdevice-integration wayland-decoration-client wayland-shell-integration
+    GENERATE_CPP_EXPORTS
     SOURCES
         ../shared/qwaylandinputmethodeventbuilder.cpp ../shared/qwaylandinputmethodeventbuilder_p.h
         ../shared/qwaylandmimehelper.cpp ../shared/qwaylandmimehelper_p.h
@@ -29,6 +30,9 @@ qt_internal_add_module(WaylandClient
         qwaylanddisplay.cpp qwaylanddisplay_p.h
         qwaylandextendedsurface.cpp qwaylandextendedsurface_p.h
         qwaylandinputcontext.cpp qwaylandinputcontext_p.h
+        qwaylandtextinputv1.cpp qwaylandtextinputv1_p.h
+        qwaylandtextinputv2.cpp qwaylandtextinputv2_p.h
+        qwaylandtextinputinterface.cpp qwaylandtextinputinterface_p.h
         qwaylandinputdevice.cpp qwaylandinputdevice_p.h
         qwaylandinputmethodcontext.cpp qwaylandinputmethodcontext_p.h
         qwaylandintegration.cpp qwaylandintegration_p.h
@@ -45,7 +49,8 @@ qt_internal_add_module(WaylandClient
         qwaylandtouch.cpp qwaylandtouch_p.h
         qwaylandwindow.cpp qwaylandwindow_p.h
         qwaylandwindowmanagerintegration.cpp qwaylandwindowmanagerintegration_p.h
-        shellintegration/qwaylandshellintegration_p.h
+        shellintegration/qwaylandclientshellapi_p.h
+        shellintegration/qwaylandshellintegration_p.h shellintegration/qwaylandshellintegration.cpp
         shellintegration/qwaylandshellintegrationfactory.cpp shellintegration/qwaylandshellintegrationfactory_p.h
         shellintegration/qwaylandshellintegrationplugin.cpp shellintegration/qwaylandshellintegrationplugin_p.h
     INCLUDE_DIRECTORIES
@@ -57,6 +62,7 @@ qt_internal_add_module(WaylandClient
     LIBRARIES
         Qt::CorePrivate
         Qt::GuiPrivate
+        Qt::WaylandGlobalPrivate
     PUBLIC_LIBRARIES
         Qt::Core
         Qt::Gui
@@ -64,13 +70,16 @@ qt_internal_add_module(WaylandClient
     PRIVATE_MODULE_INTERFACE
         Qt::CorePrivate
         Qt::GuiPrivate
+        Qt::WaylandGlobalPrivate
 )
 
 qt6_generate_wayland_protocol_client_sources(WaylandClient
     FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/pointer-gestures-unstable-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/tablet-unstable-v2.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input-unstable-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input-unstable-v2.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input-unstable-v4-wip.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/wayland.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/wp-primary-selection-unstable-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/xdg-output-unstable-v1.xml
@@ -103,6 +112,13 @@ qt6_generate_wayland_protocol_client_sources(WaylandClient
 qt_internal_extend_target(WaylandClient CONDITION QT_FEATURE_tabletevent
     SOURCES
         qwaylandtabletv2.cpp qwaylandtabletv2_p.h
+)
+
+qt_internal_extend_target(WaylandClient CONDITION QT_FEATURE_wayland_text_input_v4_wip
+    SOURCES
+        qwaylandtextinputv4.cpp qwaylandtextinputv4_p.h
+    DEFINES
+        QT_WAYLAND_TEXT_INPUT_V4_WIP=1
 )
 
 qt_internal_extend_target(WaylandClient CONDITION QT_FEATURE_clipboard
@@ -141,6 +157,5 @@ qt_internal_extend_target(WaylandClient CONDITION QT_FEATURE_draganddrop
         qwaylanddnd.cpp qwaylanddnd_p.h
 )
 
-# special case begin
 qt_record_extra_qt_main_tools_package_dependency(WaylandClient WaylandScannerTools "${PROJECT_VERSION}")
-# special case end
+qt_record_extra_qt_package_dependency(WaylandClient WaylandGlobalPrivate "${PROJECT_VERSION}")

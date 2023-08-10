@@ -1,32 +1,6 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
-** Copyright (C) 2020 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtWaylandCompositor module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+// Copyright (C) 2020 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include "qtwaylandcompositorglobal_p.h"
 #include "qwaylandcompositor.h"
@@ -88,6 +62,9 @@ QT_BEGIN_NAMESPACE
 Q_LOGGING_CATEGORY(qLcWaylandCompositor, "qt.waylandcompositor")
 Q_LOGGING_CATEGORY(qLcWaylandCompositorHardwareIntegration, "qt.waylandcompositor.hardwareintegration")
 Q_LOGGING_CATEGORY(qLcWaylandCompositorInputMethods, "qt.waylandcompositor.inputmethods")
+#if QT_WAYLAND_TEXT_INPUT_V4_WIP
+Q_LOGGING_CATEGORY(qLcWaylandCompositorTextInput, "qt.waylandcompositor.textinput")
+#endif // QT_WAYLAND_TEXT_INPUT_V4_WIP
 
 namespace QtWayland {
 
@@ -226,6 +203,11 @@ void QWaylandCompositorPrivate::init()
     QAbstractEventDispatcher *dispatcher = QGuiApplicationPrivate::eventDispatcher;
     QObject::connect(dispatcher, SIGNAL(aboutToBlock()), q, SLOT(processWaylandEvents()));
 
+    QObject::connect(static_cast<QGuiApplication *>(QGuiApplication::instance()),
+                     &QGuiApplication::applicationStateChanged,
+                     q,
+                     &QWaylandCompositor::applicationStateChanged);
+
     initializeHardwareIntegration();
     initializeSeats();
 
@@ -307,7 +289,7 @@ void QWaylandCompositorPrivate::addPolishObject(QObject *object)
 void QWaylandCompositorPrivate::connectToExternalSockets()
 {
     // Clear out any backlog of user-supplied external socket descriptors
-    for (int fd : qAsConst(externally_added_socket_fds)) {
+    for (int fd : std::as_const(externally_added_socket_fds)) {
         if (wl_display_add_socket_fd(display, fd) != 0)
             qWarning() << "Failed to integrate user-supplied socket fd into the Wayland event loop";
     }
@@ -391,14 +373,14 @@ void QWaylandCompositorPrivate::initializeHardwareIntegration()
     loadClientBufferIntegration();
     loadServerBufferIntegration();
 
-    for (auto *integration : qAsConst(client_buffer_integrations))
+    for (auto *integration : std::as_const(client_buffer_integrations))
         integration->initializeHardware(display);
 #endif
 }
 
 void QWaylandCompositorPrivate::initializeSeats()
 {
-    for (QWaylandSeat *seat : qAsConst(seats))
+    for (QWaylandSeat *seat : std::as_const(seats))
         seat->initialize();
 }
 
@@ -428,7 +410,7 @@ void QWaylandCompositorPrivate::loadClientBufferIntegration()
 
     QString hwIntegrationName;
 
-    for (auto targetKey : qAsConst(targetKeys)) {
+    for (auto targetKey : std::as_const(targetKeys)) {
         auto *integration = QtWayland::ClientBufferIntegrationFactory::create(targetKey, QStringList());
         if (integration) {
             integration->setCompositor(q);
@@ -1096,6 +1078,21 @@ QVector<QWaylandCompositor::ShmFormat> QWaylandCompositor::additionalShmFormats(
 {
     Q_D(const QWaylandCompositor);
     return d->shmFormats;
+}
+
+void QWaylandCompositor::applicationStateChanged(Qt::ApplicationState state)
+{
+#if QT_CONFIG(xkbcommon)
+    if (state == Qt::ApplicationInactive) {
+        auto *seat = defaultSeat();
+        if (seat != nullptr) {
+            QWaylandKeyboardPrivate *keyb = QWaylandKeyboardPrivate::get(seat->keyboard());
+            keyb->resetKeyboardState();
+        }
+    }
+#else
+    Q_UNUSED(state);
+#endif
 }
 
 QT_END_NAMESPACE

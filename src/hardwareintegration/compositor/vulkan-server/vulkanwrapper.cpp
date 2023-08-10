@@ -1,31 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2019 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtWaylandCompositor module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2019 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 // NOTE: Some of the code below is adapted from the public domain code at https://vulkan-tutorial.com/
 
@@ -34,6 +8,7 @@
 #include "vulkanwrapper.h"
 
 #include <QImage>
+#include <QVarLengthArray>
 #include <QOpenGLContext>
 #include <QtGui/qopengl.h>
 #include <QtOpenGL/private/qvkconvenience_p.h>
@@ -225,7 +200,7 @@ VulkanImageWrapper *VulkanWrapperPrivate::createImage(VkFormat format, VkImageTi
         return nullptr;
     }
 
-    QScopedPointer<VulkanImageWrapper> imageWrapper(new VulkanImageWrapper);
+    std::unique_ptr imageWrapper = std::make_unique<VulkanImageWrapper>();
     imageWrapper->textureImage = image;
     imageWrapper->imgMemSize = memSize;
     imageWrapper->imgSize = size;
@@ -263,7 +238,7 @@ VulkanImageWrapper *VulkanWrapperPrivate::createImage(VkFormat format, VkImageTi
     res = vkGetMemoryFdKHR(m_device, &memoryFdInfo, &imageWrapper->imgFd);
     if (extraDebug) qDebug() << "vkGetMemoryFdKHR res" << res << "fd" << imageWrapper->imgFd;
 
-    return imageWrapper.take();
+    return imageWrapper.release();
 }
 
 
@@ -528,8 +503,8 @@ VulkanImageWrapper *VulkanWrapperPrivate::createTextureImageFromData(const uchar
 
     if (extraDebug) qDebug() << "creating image...";
 
-    QScopedPointer<VulkanImageWrapper> imageWrapper(createImage(vkFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, size, bufferSize));
-    if (imageWrapper.isNull())
+    std::unique_ptr<VulkanImageWrapper> imageWrapper(createImage(vkFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, size, bufferSize));
+    if (!imageWrapper)
         return nullptr;
 
     if (extraDebug) qDebug() << "transition...";
@@ -548,7 +523,7 @@ VulkanImageWrapper *VulkanWrapperPrivate::createTextureImageFromData(const uchar
     vkDestroyBuffer(m_device, stagingBuffer, nullptr);
     vkFreeMemory(m_device, stagingBufferMemory, nullptr);
 
-    return imageWrapper.take();
+    return imageWrapper.release();
 }
 
 void VulkanWrapperPrivate::freeTextureImage(VulkanImageWrapper *imageWrapper)

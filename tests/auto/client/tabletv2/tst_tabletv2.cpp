@@ -1,30 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2019 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the test suite of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2019 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 #include "mockcompositor.h"
 
@@ -216,7 +191,7 @@ public:
     QList<TabletPadV2 *> m_padsWaitingForDestroy;
 
 protected:
-    void zwp_tablet_seat_v2_bind_resource(Resource *resource)
+    void zwp_tablet_seat_v2_bind_resource(Resource *resource) override
     {
         for (auto *tablet : m_tablets)
             sendTabletAdded(resource, tablet);
@@ -726,12 +701,12 @@ void tst_tabletv2::pointerType()
 void tst_tabletv2::hardwareSerial()
 {
     ProximityFilter filter;
-    const qint64 uid = 0xbaba15dead15f00d;
+    const QPointingDeviceUniqueId uid = QPointingDeviceUniqueId::fromNumericId(0xbaba15dead15f00d);
 
     QCOMPOSITOR_TRY_VERIFY(tabletSeat());
     exec([&] {
         tabletSeat()->addTablet();
-        tabletSeat()->addTool(ToolType::type_pen, uid);
+        tabletSeat()->addTool(ToolType::type_pen, uid.numericId());
     });
 
     TabletWindow window;
@@ -751,11 +726,11 @@ void tst_tabletv2::hardwareSerial()
 
     QTRY_COMPARE(filter.numEvents(), 1);
     QTabletEvent *event = filter.popEvent();
-    QCOMPARE(event->uniqueId(), uid);
+    QCOMPARE(event->pointingDevice()->uniqueId(), uid);
 
     QTRY_VERIFY(window.numEvents());
     event = window.popEvent();
-    QCOMPARE(event->uniqueId(), uid);
+    QCOMPARE(event->pointingDevice()->uniqueId(), uid);
 
     exec([&] {
         tabletTool()->sendProximityOut();
@@ -764,7 +739,7 @@ void tst_tabletv2::hardwareSerial()
 
     QTRY_VERIFY(filter.numEvents());
     event = filter.popEvent();
-    QCOMPARE(event->uniqueId(), uid);
+    QCOMPARE(event->pointingDevice()->uniqueId(), uid);
 }
 
 // As defined in linux/input-event-codes.h

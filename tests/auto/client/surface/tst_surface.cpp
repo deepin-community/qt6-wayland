@@ -1,30 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2018 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the test suite of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2018 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 #include "mockcompositor.h"
 #include <QtGui/QRasterWindow>
@@ -80,7 +55,7 @@ void tst_surface::waitForFrameCallbackRaster()
     exec([=] { xdgToplevel()->sendCompleteConfigure(); });
 
     // We should get the first buffer without waiting for a frame callback
-    QTRY_COMPARE(bufferSpy.count(), 1);
+    QTRY_COMPARE(bufferSpy.size(), 1);
     bufferSpy.removeFirst();
 
     // Make sure we follow frame callbacks for some frames
@@ -91,7 +66,7 @@ void tst_surface::waitForFrameCallbackRaster()
             QVERIFY(!xdgToplevel()->surface()->m_waitingFrameCallbacks.empty());
             xdgToplevel()->surface()->sendFrameCallbacks();
         });
-        QTRY_COMPARE(bufferSpy.count(), 1);
+        QTRY_COMPARE(bufferSpy.size(), 1);
         bufferSpy.removeFirst();
     }
 }
@@ -121,14 +96,14 @@ void tst_surface::waitForFrameCallbackGl()
     exec([=] { xdgToplevel()->sendCompleteConfigure(); });
 
     // We should get the first buffer without waiting for a frame callback
-    QTRY_COMPARE(bufferSpy.count(), 1);
+    QTRY_COMPARE(bufferSpy.size(), 1);
     bufferSpy.removeFirst();
 
     // Make sure we follow frame callbacks for some frames
     for (int i = 0; i < 5; ++i) {
         xdgPingAndWaitForPong(); // Make sure things have happened on the client
         if (!qEnvironmentVariableIntValue("QT_WAYLAND_DISABLE_WINDOWDECORATION") && i == 0) {
-            QCOMPARE(bufferSpy.count(), 1);
+            QCOMPARE(bufferSpy.size(), 1);
             bufferSpy.removeFirst();
         }
         exec([&] {
@@ -136,7 +111,7 @@ void tst_surface::waitForFrameCallbackGl()
             QVERIFY(!xdgToplevel()->surface()->m_waitingFrameCallbacks.empty());
             xdgToplevel()->surface()->sendFrameCallbacks();
         });
-        QTRY_COMPARE(bufferSpy.count(), 1);
+        QTRY_COMPARE(bufferSpy.size(), 1);
         bufferSpy.removeFirst();
     }
 }
@@ -193,15 +168,15 @@ void tst_surface::createSubsurface()
     // Move subsurface. The parent should redraw and commit
     subWindow.setGeometry(100, 100, 64, 64);
     // the toplevel should commit to indicate the subsurface moved
-    QCOMPOSITOR_TRY_COMPARE(mainSurfaceCommitSpy.count(), 1);
+    QCOMPOSITOR_TRY_COMPARE(mainSurfaceCommitSpy.size(), 1);
     mainSurfaceCommitSpy.clear();
     childSurfaceCommitSpy.clear();
 
     // Move and resize the subSurface. The parent should redraw and commit
     // The child should also redraw
     subWindow.setGeometry(50, 50, 80, 80);
-    QCOMPOSITOR_TRY_COMPARE(mainSurfaceCommitSpy.count(), 1);
-    QCOMPOSITOR_TRY_COMPARE(childSurfaceCommitSpy.count(), 1);
+    QCOMPOSITOR_TRY_COMPARE(mainSurfaceCommitSpy.size(), 1);
+    QCOMPOSITOR_TRY_COMPARE(childSurfaceCommitSpy.size(), 1);
 
 }
 

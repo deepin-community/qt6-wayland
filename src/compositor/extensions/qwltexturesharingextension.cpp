@@ -1,31 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2019 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtWaylandCompositor module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2019 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include "qwltexturesharingextension_p.h"
 
@@ -170,7 +144,7 @@ QQuickImageResponse *QWaylandSharedTextureProvider::requestImageResponse(const Q
 
 void QWaylandSharedTextureProvider::setExtensionReady(QWaylandTextureSharingExtension *extension)
 {
-    for (auto *response : qAsConst(m_pendingResponses))
+    for (auto *response : std::as_const(m_pendingResponses))
         response->doRequest(extension);
     m_pendingResponses.clear();
     m_pendingResponses.squeeze();
@@ -225,7 +199,7 @@ void QWaylandTextureSharingExtension::initialize()
 
     auto suffixes = QTextureFileReader::supportedFileFormats();
     suffixes.append(QImageReader::supportedImageFormats());
-    for (auto ext : qAsConst(suffixes))
+    for (auto ext : std::as_const(suffixes))
         m_image_suffixes << QLatin1Char('.') + QString::fromLatin1(ext);
 
     //qDebug() << "m_image_suffixes" << m_image_suffixes << "m_image_dirs" << m_image_dirs;
@@ -250,13 +224,13 @@ QString QWaylandTextureSharingExtension::getExistingFilePath(const QString &key)
     if (key.contains(QLatin1String("../")))
         return QString();
 
-    for (auto dir : qAsConst(m_image_dirs)) {
+    for (auto dir : std::as_const(m_image_dirs)) {
         QString path = dir + key;
         if (QFileInfo::exists(path))
             return path;
     }
 
-    for (auto dir : qAsConst(m_image_dirs)) {
+    for (auto dir : std::as_const(m_image_dirs)) {
         for (auto ext : m_image_suffixes) {
             QString fp = dir + key + ext;
             //qDebug() << "trying" << fp;
@@ -425,11 +399,13 @@ void QWaylandTextureSharingExtension::cleanupBuffers()
 
 void QWaylandTextureSharingExtension::dumpBufferInfo()
 {
-    qDebug() << "shared buffers:" << m_server_buffers.count();
+    qDebug() << "shared buffers:" << m_server_buffers.size();
     for (auto it = m_server_buffers.cbegin(); it != m_server_buffers.cend(); ++it)
         qDebug() << "    " << it.key() << ":" << it.value().buffer << "in use" << it.value().buffer->bufferInUse() << "usedLocally" << it.value().usedLocally ;
 }
 
 QT_END_NAMESPACE
+
+#include "moc_qwltexturesharingextension_p.cpp"
 
 #include "qwltexturesharingextension.moc"

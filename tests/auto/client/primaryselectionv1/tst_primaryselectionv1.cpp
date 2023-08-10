@@ -1,30 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2018 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the test suite of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2018 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 #include "mockcompositor.h"
 
@@ -172,7 +147,7 @@ public:
     {}
     bool isClean() override
     {
-        for (auto *device : qAsConst(m_devices)) {
+        for (auto *device : std::as_const(m_devices)) {
             // The client should not leak selection offers, i.e. if this fails, there is a missing
             // zwp_primary_selection_offer_v1.destroy request
             if (!device->m_sentSelectionOffers.empty())
@@ -268,9 +243,6 @@ private slots:
 void tst_primaryselectionv1::initTestCase()
 {
     QCOMPOSITOR_TRY_VERIFY(pointer());
-    QCOMPOSITOR_TRY_VERIFY(!pointer()->resourceMap().empty());
-    QCOMPOSITOR_TRY_COMPARE(pointer()->resourceMap().first()->version(), 5);
-
     QCOMPOSITOR_TRY_VERIFY(keyboard());
 }
 
@@ -437,7 +409,7 @@ void tst_primaryselectionv1::destroysSelectionOnLeave()
         keyboard()->sendLeave(surface);
     });
 
-    QTRY_COMPARE(selectionChangedSpy.count(), 1);
+    QTRY_COMPARE(selectionChangedSpy.size(), 1);
     QVERIFY(!QGuiApplication::clipboard()->mimeData(QClipboard::Selection)->hasText());
 }
 
