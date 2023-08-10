@@ -1,37 +1,14 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtWaylandCompositor module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2017 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include "qwaylandquickitem.h"
 #include "qwaylandquickitem_p.h"
 #include "qwaylandquicksurface.h"
 #include "qwaylandinputmethodcontrol.h"
 #include "qwaylandtextinput.h"
+#if QT_WAYLAND_TEXT_INPUT_V4_WIP
+#include "qwaylandtextinputv4.h"
+#endif // QT_WAYLAND_TEXT_INPUT_V4_WIP
 #include "qwaylandqttextinputmethod.h"
 #include "qwaylandquickoutput.h"
 #include <QtWaylandCompositor/qwaylandcompositor.h>
@@ -369,7 +346,7 @@ void QWaylandBufferMaterial::setBufferRef(QWaylandQuickItem *surfaceItem, const 
         if (auto texture = ref.toOpenGLTexture(plane)) {
             QQuickWindow::CreateTextureOptions opt;
             QWaylandQuickSurface *waylandSurface = qobject_cast<QWaylandQuickSurface *>(surfaceItem->surface());
-            if (waylandSurface != nullptr && waylandSurface->useTextureAlpha())
+            if (waylandSurface != nullptr && waylandSurface->useTextureAlpha() && !waylandSurface->isOpaque())
                 opt |= QQuickWindow::TextureHasAlphaChannel;
             QSGTexture *scenegraphTexture;
             if (ref.bufferFormatEgl() == QWaylandBufferRef::BufferFormatEgl_EXTERNAL_OES) {
@@ -419,7 +396,7 @@ public:
 #if QT_CONFIG(opengl)
                 QQuickWindow::CreateTextureOptions opt;
                 QWaylandQuickSurface *surface = qobject_cast<QWaylandQuickSurface *>(surfaceItem->surface());
-                if (surface && surface->useTextureAlpha()) {
+                if (surface && surface->useTextureAlpha()  && !surface->isOpaque()) {
                     opt |= QQuickWindow::TextureHasAlphaChannel;
                 }
 
@@ -875,6 +852,10 @@ void QWaylandQuickItem::handleSubsurfaceAdded(QWaylandSurface *childSurface)
     } else {
         bool success = QMetaObject::invokeMethod(d->subsurfaceHandler, "handleSubsurfaceAdded", Q_ARG(QWaylandSurface *, childSurface));
         if (!success)
+            success = QMetaObject::invokeMethod(d->subsurfaceHandler, "handleSubsurfaceAdded",
+                                                Q_ARG(QVariant, QVariant::fromValue(childSurface)));
+
+        if (!success)
             qWarning("QWaylandQuickItem: subsurfaceHandler does not implement handleSubsurfaceAdded()");
     }
 }
@@ -926,8 +907,9 @@ void QWaylandQuickItem::handlePlaceBelow(QWaylandSurface *referenceSurface)
   \code
   ShellSurfaceItem {
       subsurfaceHandler: QtObject {
-      function handleSubsurfaceAdded(child) {
-        //create custom surface item, and connect the subsurfacePositionChanged signal
+          function handleSubsurfaceAdded(child) {
+            // create custom surface item, and connect the subsurfacePositionChanged signal
+          }
       }
   }
   \endcode
@@ -1107,7 +1089,7 @@ void QWaylandQuickItem::takeFocus(QWaylandSeat *device)
 {
     forceActiveFocus();
 
-    if (!surface())
+    if (!surface() || !surface()->client())
         return;
 
     QWaylandSeat *target = device;
@@ -1116,13 +1098,24 @@ void QWaylandQuickItem::takeFocus(QWaylandSeat *device)
     }
     target->setKeyboardFocus(surface());
 
-    {
+    qCDebug(qLcWaylandCompositorInputMethods) << Q_FUNC_INFO << " surface:" << surface()
+        << ", client:" << surface()->client()
+        << ", textinputprotocol:" << (int)(surface()->client()->textInputProtocols());
+    if (surface()->client()->textInputProtocols().testFlag(QWaylandClient::TextInputProtocol::TextInputV2)) {
         QWaylandTextInput *textInput = QWaylandTextInput::findIn(target);
         if (textInput)
             textInput->setFocus(surface());
     }
 
-    {
+#if QT_WAYLAND_TEXT_INPUT_V4_WIP
+    if (surface()->client()->textInputProtocols().testFlag(QWaylandClient::TextInputProtocol::TextInputV4)) {
+        QWaylandTextInputV4 *textInputV4 = QWaylandTextInputV4::findIn(target);
+        if (textInputV4)
+            textInputV4->setFocus(surface());
+    }
+#endif // QT_WAYLAND_TEXT_INPUT_V4_WIP
+
+    if (surface()->client()->textInputProtocols().testFlag(QWaylandClient::TextInputProtocol::QtTextInputMethodV1)) {
         QWaylandQtTextInputMethod *textInputMethod = QWaylandQtTextInputMethod::findIn(target);
         if (textInputMethod)
             textInputMethod->setFocus(surface());
@@ -1588,20 +1581,34 @@ void QWaylandQuickItem::setInputEventsEnabled(bool enabled)
 
 void QWaylandQuickItem::lower()
 {
-    QQuickItem *parent = parentItem();
+    Q_D(QWaylandQuickItem);
+    d->lower();
+}
+
+void QWaylandQuickItemPrivate::lower()
+{
+    Q_Q(QWaylandQuickItem);
+    QQuickItem *parent = q->parentItem();
     Q_ASSERT(parent);
-    QQuickItem *bottom = parent->childItems().first();
-    if (this != bottom)
-        stackBefore(bottom);
+    QQuickItem *bottom = parent->childItems().constFirst();
+    if (q != bottom)
+        q->stackBefore(bottom);
 }
 
 void QWaylandQuickItem::raise()
 {
-    QQuickItem *parent = parentItem();
+    Q_D(QWaylandQuickItem);
+    d->raise();
+}
+
+void QWaylandQuickItemPrivate::raise()
+{
+    Q_Q(QWaylandQuickItem);
+    QQuickItem *parent = q->parentItem();
     Q_ASSERT(parent);
-    QQuickItem *top = parent->childItems().last();
-    if (this != top)
-        stackAfter(top);
+    QQuickItem *top = parent->childItems().constLast();
+    if (q != top)
+        q->stackAfter(top);
 }
 
 void QWaylandQuickItem::sendMouseMoveEvent(const QPointF &position, QWaylandSeat *seat)
@@ -1731,3 +1738,5 @@ void QWaylandQuickItemPrivate::placeBelowParent()
 }
 
 QT_END_NAMESPACE
+
+#include "moc_qwaylandquickitem.cpp"

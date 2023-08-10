@@ -1,41 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the plugins of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:LGPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 3 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL3 included in the
-** packaging of this file. Please review the following information to
-** ensure the GNU Lesser General Public License version 3 requirements
-** will be met: https://www.gnu.org/licenses/lgpl-3.0.html.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 2.0 or (at your option) the GNU General
-** Public license version 3 or any later version approved by the KDE Free
-** Qt Foundation. The licenses are as published by the Free Software
-** Foundation and appearing in the file LICENSE.GPL2 and LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-2.0.html and
-** https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2016 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
 
 #include "qwaylandinputdevice_p.h"
 
@@ -59,6 +23,12 @@
 #include "qwaylandcursor_p.h"
 #include "qwaylanddisplay_p.h"
 #include "qwaylandshmbackingstore_p.h"
+#include "qwaylandtextinputv1_p.h"
+#include "qwaylandtextinputv2_p.h"
+#if QT_WAYLAND_TEXT_INPUT_V4_WIP
+#include "qwaylandtextinputv4_p.h"
+#endif // QT_WAYLAND_TEXT_INPUT_V4_WIP
+#include "qwaylandtextinputinterface_p.h"
 #include "qwaylandinputcontext_p.h"
 #include "qwaylandinputmethodcontext_p.h"
 
@@ -267,7 +237,7 @@ QString QWaylandInputDevice::Pointer::cursorThemeName() const
 
 int QWaylandInputDevice::Pointer::cursorSize() const
 {
-    constexpr int defaultCursorSize = 32;
+    constexpr int defaultCursorSize = 24;
     static const int xCursorSize = qEnvironmentVariableIntValue("XCURSOR_SIZE");
     return xCursorSize > 0 ? xCursorSize : defaultCursorSize;
 }
@@ -405,7 +375,7 @@ QWaylandInputDevice::Touch::~Touch()
 }
 
 QWaylandInputDevice::QWaylandInputDevice(QWaylandDisplay *display, int version, uint32_t id)
-    : QtWayland::wl_seat(display->wl_registry(), id, qMin(version, 5))
+    : QtWayland::wl_seat(display->wl_registry(), id, qMin(version, 7))
     , mQDisplay(display)
     , mDisplay(display->wl_display())
 {
@@ -421,8 +391,19 @@ QWaylandInputDevice::QWaylandInputDevice(QWaylandDisplay *display, int version, 
         setPrimarySelectionDevice(psm->createDevice(this));
 #endif
 
-    if (mQDisplay->textInputManager())
-        mTextInput.reset(new QWaylandTextInput(mQDisplay, mQDisplay->textInputManager()->get_text_input(wl_seat())));
+    if (mQDisplay->textInputManagerv1()) {
+        auto textInput = new QWaylandTextInputv1(mQDisplay, mQDisplay->textInputManagerv1()->create_text_input());
+        textInput->setSeat(wl_seat());
+        mTextInput.reset(textInput);
+    }
+
+    if (mQDisplay->textInputManagerv2())
+        mTextInput.reset(new QWaylandTextInputv2(mQDisplay, mQDisplay->textInputManagerv2()->get_text_input(wl_seat())));
+
+#if QT_WAYLAND_TEXT_INPUT_V4_WIP
+    if (mQDisplay->textInputManagerv4())
+        mTextInput.reset(new QWaylandTextInputv4(mQDisplay, mQDisplay->textInputManagerv4()->get_text_input(wl_seat())));
+#endif // QT_WAYLAND_TEXT_INPUT_V4_WIP
 
     if (mQDisplay->textInputMethodManager())
         mTextInputMethod.reset(new QWaylandTextInputMethod(mQDisplay, mQDisplay->textInputMethodManager()->get_text_input_method(wl_seat())));
@@ -433,66 +414,57 @@ QWaylandInputDevice::QWaylandInputDevice(QWaylandDisplay *display, int version, 
 #endif
 }
 
-QWaylandInputDevice::~QWaylandInputDevice()
-{
-    delete mPointer;
-    delete mKeyboard;
-    delete mTouch;
-}
+// Can't be in header because dtors for scoped pointers aren't known there.
+QWaylandInputDevice::~QWaylandInputDevice() = default;
 
 void QWaylandInputDevice::seat_capabilities(uint32_t caps)
 {
     mCaps = caps;
 
     if (caps & WL_SEAT_CAPABILITY_KEYBOARD && !mKeyboard) {
-        mKeyboard = createKeyboard(this);
+        mKeyboard.reset(createKeyboard(this));
         mKeyboard->init(get_keyboard());
     } else if (!(caps & WL_SEAT_CAPABILITY_KEYBOARD) && mKeyboard) {
-        delete mKeyboard;
-        mKeyboard = nullptr;
+        mKeyboard.reset();
     }
 
     if (caps & WL_SEAT_CAPABILITY_POINTER && !mPointer) {
-        mPointer = createPointer(this);
+        mPointer.reset(createPointer(this));
         mPointer->init(get_pointer());
 
         auto *pointerGestures = mQDisplay->pointerGestures();
         if (pointerGestures) {
             // NOTE: The name of the device and its system ID are not exposed on Wayland.
-            mTouchPadDevice = new QPointingDevice(QLatin1String("touchpad"), 0,
-                                                  QInputDevice::DeviceType::TouchPad,
-                                                  QPointingDevice::PointerType::Finger,
-                                                  QInputDevice::Capability::Position,
-                                                  MaxTouchPoints, 0);
+            mTouchPadDevice = new QPointingDevice(
+                        QLatin1String("touchpad"), 0, QInputDevice::DeviceType::TouchPad,
+                        QPointingDevice::PointerType::Finger, QInputDevice::Capability::Position,
+                        MaxTouchPoints, 0, QString(), QPointingDeviceUniqueId(), this);
             QWindowSystemInterface::registerInputDevice(mTouchPadDevice);
-            mPointerGesturePinch = pointerGestures->createPointerGesturePinch(this);
+            mPointerGesturePinch.reset(pointerGestures->createPointerGesturePinch(this));
             mPointerGesturePinch->init(pointerGestures->get_pinch_gesture(get_pointer()));
-            mPointerGestureSwipe = pointerGestures->createPointerGestureSwipe(this);
+            mPointerGestureSwipe.reset(pointerGestures->createPointerGestureSwipe(this));
             mPointerGestureSwipe->init(pointerGestures->get_swipe_gesture(get_pointer()));
         }
     } else if (!(caps & WL_SEAT_CAPABILITY_POINTER) && mPointer) {
-        delete mPointer;
-        mPointer = nullptr;
-        delete mPointerGesturePinch;
-        mPointerGesturePinch = nullptr;
-        delete mPointerGestureSwipe;
-        mPointerGestureSwipe = nullptr;
+        mPointer.reset();
+        mPointerGesturePinch.reset();
+        mPointerGestureSwipe.reset();
     }
 
     if (caps & WL_SEAT_CAPABILITY_TOUCH && !mTouch) {
-        mTouch = createTouch(this);
+        mTouch.reset(createTouch(this));
         mTouch->init(get_touch());
 
         if (!mTouchDevice) {
             // TODO number of touchpoints, actual name and ID
-            mTouchDevice = new QPointingDevice(QLatin1String("some touchscreen"), 0,
-                                               QInputDevice::DeviceType::TouchScreen, QPointingDevice::PointerType::Finger,
-                                               QInputDevice::Capability::Position, MaxTouchPoints, 0);
+            mTouchDevice = new QPointingDevice(
+                        QLatin1String("some touchscreen"), 0, QInputDevice::DeviceType::TouchScreen,
+                        QPointingDevice::PointerType::Finger, QInputDevice::Capability::Position,
+                        MaxTouchPoints, 0,QString(), QPointingDeviceUniqueId(), this);
             QWindowSystemInterface::registerInputDevice(mTouchDevice);
         }
     } else if (!(caps & WL_SEAT_CAPABILITY_TOUCH) && mTouch) {
-        delete mTouch;
-        mTouch = nullptr;
+        mTouch.reset();
     }
 }
 
@@ -513,27 +485,27 @@ QWaylandInputDevice::Touch *QWaylandInputDevice::createTouch(QWaylandInputDevice
 
 QWaylandInputDevice::Keyboard *QWaylandInputDevice::keyboard() const
 {
-    return mKeyboard;
+    return mKeyboard.data();
 }
 
 QWaylandInputDevice::Pointer *QWaylandInputDevice::pointer() const
 {
-    return mPointer;
+    return mPointer.data();
 }
 
 QWaylandPointerGestureSwipe *QWaylandInputDevice::pointerGestureSwipe() const
 {
-    return mPointerGestureSwipe;
+    return mPointerGestureSwipe.data();
 }
 
 QWaylandPointerGesturePinch *QWaylandInputDevice::pointerGesturePinch() const
 {
-    return mPointerGesturePinch;
+    return mPointerGesturePinch.data();
 }
 
 QWaylandInputDevice::Touch *QWaylandInputDevice::touch() const
 {
-    return mTouch;
+    return mTouch.data();
 }
 
 void QWaylandInputDevice::handleEndDrag()
@@ -568,7 +540,7 @@ QWaylandPrimarySelectionDeviceV1 *QWaylandInputDevice::primarySelectionDevice() 
 }
 #endif
 
-void QWaylandInputDevice::setTextInput(QWaylandTextInput *textInput)
+void QWaylandInputDevice::setTextInput(QWaylandTextInputInterface *textInput)
 {
     mTextInput.reset(textInput);
 }
@@ -578,7 +550,7 @@ void QWaylandInputDevice::setTextInputMethod(QWaylandTextInputMethod *textInputM
     mTextInputMethod.reset(textInputMethod);
 }
 
-QWaylandTextInput *QWaylandInputDevice::textInput() const
+QWaylandTextInputInterface *QWaylandInputDevice::textInput() const
 {
     return mTextInput.data();
 }
@@ -709,7 +681,7 @@ void QWaylandInputDevice::Pointer::pointer_enter(uint32_t serial, struct wl_surf
     connect(mFocus.data(), &QObject::destroyed, this, &Pointer::handleFocusDestroyed);
 
     mSurfacePos = QPointF(wl_fixed_to_double(sx), wl_fixed_to_double(sy));
-    mGlobalPos = window->window()->mapToGlobal(mSurfacePos.toPoint());
+    mGlobalPos = window->mapToGlobal(mSurfacePos.toPoint());
 
     mParent->mSerial = serial;
     mEnterSerial = serial;
@@ -735,6 +707,11 @@ public:
 
 void QWaylandInputDevice::Pointer::pointer_leave(uint32_t time, struct wl_surface *surface)
 {
+    invalidateFocus();
+    mButtons = Qt::NoButton;
+
+    mParent->mTime = time;
+
     // The event may arrive after destroying the window, indicated by
     // a null surface.
     if (!surface)
@@ -746,11 +723,6 @@ void QWaylandInputDevice::Pointer::pointer_leave(uint32_t time, struct wl_surfac
 
     if (!QWaylandWindow::mouseGrab())
         setFrameEvent(new LeaveEvent(window, mSurfacePos, mGlobalPos));
-
-    invalidateFocus();
-    mButtons = Qt::NoButton;
-
-    mParent->mTime = time;
 }
 
 class MotionEvent : public QWaylandPointerEvent
@@ -775,7 +747,7 @@ void QWaylandInputDevice::Pointer::pointer_motion(uint32_t time, wl_fixed_t surf
 
     QPointF pos(wl_fixed_to_double(surface_x), wl_fixed_to_double(surface_y));
     QPointF delta = pos - pos.toPoint();
-    QPointF global = window->window()->mapToGlobal(pos.toPoint());
+    QPointF global = window->mapToGlobal(pos.toPoint());
     global += delta;
 
     mSurfacePos = pos;
@@ -787,7 +759,7 @@ void QWaylandInputDevice::Pointer::pointer_motion(uint32_t time, wl_fixed_t surf
         // We can't know the true position since we're getting events for another surface,
         // so we just set it outside of the window boundaries.
         pos = QPointF(-1, -1);
-        global = grab->window()->mapToGlobal(pos.toPoint());
+        global = grab->mapToGlobal(pos.toPoint());
         window = grab;
     }
     setFrameEvent(new MotionEvent(window, time, pos, global, mButtons, mParent->modifiers()));
@@ -867,7 +839,7 @@ void QWaylandInputDevice::Pointer::pointer_button(uint32_t serial, uint32_t time
     QPointF global = mGlobalPos;
     if (grab && grab != focusWindow()) {
         pos = QPointF(-1, -1);
-        global = grab->window()->mapToGlobal(pos.toPoint());
+        global = grab->mapToGlobal(pos.toPoint());
 
         window = grab;
     }
@@ -958,6 +930,8 @@ void QWaylandInputDevice::Pointer::pointer_axis_source(uint32_t source)
     case axis_source_continuous:
         qCDebug(lcQpaWaylandInput) << "Axis source continuous";
         break;
+    case axis_source_wheel_tilt:
+        qCDebug(lcQpaWaylandInput) << "Axis source wheel tilt";
     }
     mFrameData.axisSource = axis_source(source);
 }
@@ -1178,7 +1152,7 @@ void QWaylandInputDevice::Keyboard::keyboard_keymap(uint32_t format, int32_t fd,
         return;
     }
 
-    char *map_str = static_cast<char *>(mmap(nullptr, size, PROT_READ, MAP_SHARED, fd, 0));
+    char *map_str = static_cast<char *>(mmap(nullptr, size, PROT_READ, MAP_PRIVATE, fd, 0));
     if (map_str == MAP_FAILED) {
         close(fd);
         return;
@@ -1350,14 +1324,6 @@ void QWaylandInputDevice::Keyboard::handleFocusDestroyed()
 void QWaylandInputDevice::Keyboard::handleFocusLost()
 {
     mFocus = nullptr;
-#if QT_CONFIG(clipboard)
-    if (auto *dataDevice = mParent->dataDevice())
-        dataDevice->invalidateSelectionOffer();
-#endif
-#if QT_CONFIG(wayland_client_primary_selection)
-    if (auto *device = mParent->primarySelectionDevice())
-        device->invalidateSelectionOffer();
-#endif
     mParent->mQDisplay->handleKeyboardFocusChanged(mParent);
     mRepeatTimer.stop();
 }
@@ -1485,7 +1451,7 @@ void QWaylandInputDevice::handleTouchPoint(int id, QEventPoint::State state, con
         // TODO: This doesn't account for high dpi scaling for the delta, but at least it matches
         // what we have for mouse input.
         QPointF delta = localPosition - localPosition.toPoint();
-        QPointF globalPosition = win->window()->mapToGlobal(localPosition.toPoint()) + delta;
+        QPointF globalPosition = win->mapToGlobal(localPosition.toPoint()) + delta;
         tp.area.moveCenter(globalPosition);
     }
 
@@ -1498,7 +1464,7 @@ void QWaylandInputDevice::handleTouchPoint(int id, QEventPoint::State state, con
 
 bool QWaylandInputDevice::Touch::allTouchPointsReleased()
 {
-    for (const auto &tp : qAsConst(mPendingTouchPoints)) {
+    for (const auto &tp : std::as_const(mPendingTouchPoints)) {
         if (tp.state != QEventPoint::Released)
             return false;
     }
@@ -1552,3 +1518,5 @@ void QWaylandInputDevice::Touch::touch_frame()
 }
 
 QT_END_NAMESPACE
+
+#include "moc_qwaylandinputdevice_p.cpp"

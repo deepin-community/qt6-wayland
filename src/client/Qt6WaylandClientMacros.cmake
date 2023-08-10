@@ -1,5 +1,5 @@
 function(qt6_generate_wayland_protocol_client_sources target)
-    cmake_parse_arguments(arg "" "WAYLAND_INCLUDE_DIR" "FILES" ${ARGN})
+    cmake_parse_arguments(arg "NO_INCLUDE_CORE_ONLY" "__QT_INTERNAL_WAYLAND_INCLUDE_DIR" "FILES" ${ARGN})
     if(DEFINED arg_UNPARSED_ARGUMENTS)
         message(FATAL_ERROR "Unknown arguments were passed to qt6_generate_wayland_protocol_client_sources: (${arg_UNPARSED_ARGUMENTS}).")
     endif()
@@ -14,6 +14,11 @@ function(qt6_generate_wayland_protocol_client_sources target)
         message(FATAL_ERROR "qtwaylandscanner executable not found. Most likely there is an issue with your Qt installation.")
     endif()
 
+    string(TOUPPER "${target}" module_define_infix)
+    string(REPLACE "-" "_" module_define_infix "${module_define_infix}")
+    string(REPLACE "." "_" module_define_infix "${module_define_infix}")
+    set(build_macro "QT_BUILD_${module_define_infix}_LIB")
+
     foreach(protocol_file IN LISTS arg_FILES)
         get_filename_component(protocol_name "${protocol_file}" NAME_WLE)
 
@@ -23,20 +28,23 @@ function(qt6_generate_wayland_protocol_client_sources target)
         set(qtwaylandscanner_header_output "${target_binary_dir}/qwayland-${protocol_name}.h")
         set(qtwaylandscanner_code_output "${target_binary_dir}/qwayland-${protocol_name}.cpp")
 
+        if (NOT arg_NO_INCLUDE_CORE_ONLY)
+            set(waylandscanner_extra_args "--include-core-only")
+        endif()
         add_custom_command(
             OUTPUT "${waylandscanner_header_output}"
             #TODO: Maybe put the files in ${CMAKE_CURRENT_BINARY_DIR/wayland_generated instead?
-            COMMAND Wayland::Scanner --strict --include-core-only client-header < "${protocol_file}" > "${waylandscanner_header_output}"
+            COMMAND Wayland::Scanner --strict ${waylandscanner_extra_args} client-header < "${protocol_file}" > "${waylandscanner_header_output}"
         )
 
         add_custom_command(
             OUTPUT "${waylandscanner_code_output}"
-            COMMAND Wayland::Scanner --strict --include-core-only public-code < "${protocol_file}" > "${waylandscanner_code_output}"
+            COMMAND Wayland::Scanner --strict ${waylandscanner_extra_args} public-code < "${protocol_file}" > "${waylandscanner_code_output}"
         )
 
         set(wayland_include_dir "")
-        if(arg_WAYLAND_INCLUDE_DIR)
-            set(wayland_include_dir "${arg_WAYLAND_INCLUDE_DIR}")
+        if(arg___QT_INTERNAL_WAYLAND_INCLUDE_DIR)
+            set(wayland_include_dir "${arg___QT_INTERNAL_WAYLAND_INCLUDE_DIR}")
         else()
             get_target_property(qt_module ${target} _qt_module_interface_name)
             get_target_property(is_for_module "${target}" _qt_module_has_headers)
@@ -49,25 +57,27 @@ function(qt6_generate_wayland_protocol_client_sources target)
 
         add_custom_command(
             OUTPUT "${qtwaylandscanner_header_output}"
-            COMMAND Qt6::qtwaylandscanner client-header "${protocol_file}" "${wayland_include_dir}" > "${qtwaylandscanner_header_output}"
+            COMMAND Qt6::qtwaylandscanner client-header
+                "${protocol_file}"
+                --build-macro=${build_macro}
+                --header-path="${wayland_include_dir}"
+                > "${qtwaylandscanner_header_output}"
             DEPENDS ${protocol_file} Qt6::qtwaylandscanner
         )
 
-        # TODO: We need this hack in order to get the xcomposite plugins to build...
-        # unfortunately, it's not going to work outside QtWayland because we're using waylandclient-private includes
         set(qtwaylandscanner_code_include "")
-        set (targets_that_need_include
-            "QWaylandXCompositeEglClientBufferPlugin"
-            "QWaylandXCompositeGlxClientBufferPlugin"
-            "QWaylandXCompositeEglPlatformIntegrationPlugin"
-            "QWaylandXCompositeGlxPlatformIntegrationPlugin")
-        if ("${target}" IN_LIST targets_that_need_include OR is_for_module)
+        if (is_for_module)
             set(qtwaylandscanner_code_include "<QtWaylandClient/private/wayland-wayland-client-protocol.h>")
         endif()
 
         add_custom_command(
             OUTPUT "${qtwaylandscanner_code_output}"
-            COMMAND Qt6::qtwaylandscanner client-code "${protocol_file}" --header-path='${wayland_include_dir}' --add-include='${qtwaylandscanner_code_include}' > "${qtwaylandscanner_code_output}"
+            COMMAND Qt6::qtwaylandscanner client-code
+                "${protocol_file}"
+                --build-macro=${build_macro}
+                --header-path='${wayland_include_dir}'
+                --add-include='${qtwaylandscanner_code_include}'
+                > "${qtwaylandscanner_code_output}"
             DEPENDS ${protocol_file} Qt6::qtwaylandscanner
         )
 

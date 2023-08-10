@@ -1,4 +1,4 @@
-# SymbolsHelper-Confirmed: 6.2.4 amd64 arm64
+# SymbolsHelper-Confirmed: 6.4.0 amd64
 libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
 * Build-Depends-Package: qt6-wayland-dev
  _ZN15QtWaylandClient11QWaylandShm10formatFromE13wl_shm_format@Base 6.2.2
@@ -9,9 +9,10 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient11QWaylandShmD0Ev@Base 6.2.2
  _ZN15QtWaylandClient11QWaylandShmD1Ev@Base 6.2.2
  _ZN15QtWaylandClient11QWaylandShmD2Ev@Base 6.2.2
- _ZN15QtWaylandClient12QWaylandDrag10finishDragERK23QPlatformDropQtResponse@Base 6.2.2
- _ZN15QtWaylandClient12QWaylandDrag11setResponseERK23QPlatformDragQtResponse@Base 6.2.2
- _ZN15QtWaylandClient12QWaylandDrag12updateTargetERK7QString@Base 6.2.2
+ _ZN15QtWaylandClient12QWaylandDrag10finishDragEv@Base 6.3.0
+ _ZN15QtWaylandClient12QWaylandDrag11setResponseERK23QPlatformDropQtResponse@Base 6.3.0
+ _ZN15QtWaylandClient12QWaylandDrag11setResponseEb@Base 6.3.0
+ _ZN15QtWaylandClient12QWaylandDrag15setDropResponseERK23QPlatformDropQtResponse@Base 6.3.0
  _ZN15QtWaylandClient12QWaylandDrag4dropERK6QPoint6QFlagsIN2Qt11MouseButtonEES4_INS5_16KeyboardModifierEE@Base 6.2.2
  _ZN15QtWaylandClient12QWaylandDrag4moveERK6QPoint6QFlagsIN2Qt11MouseButtonEES4_INS5_16KeyboardModifierEE@Base 6.2.2
  _ZN15QtWaylandClient12QWaylandDrag6cancelEv@Base 6.2.2
@@ -56,13 +57,13 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient14QWaylandScreenD0Ev@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandScreenD1Ev@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandScreenD2Ev@Base 6.2.2
+ _ZN15QtWaylandClient14QWaylandWindow10beginFrameEv@Base 6.3.0
  _ZN15QtWaylandClient14QWaylandWindow10ensureSizeEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow10initWindowEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow10mMouseGrabE@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow10safeCommitEPNS_14QWaylandBufferERK7QRegion@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow10setVisibleEb@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow10timerEventEP11QTimerEvent@Base 6.2.2
- _ZN15QtWaylandClient14QWaylandWindow11closePopupsEPS0_@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow11handleMouseEPNS_19QWaylandInputDeviceERKNS_20QWaylandPointerEventE@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow11qt_metacallEN11QMetaObject4CallEiPPv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow11qt_metacastEPKc@Base 6.2.2
@@ -73,6 +74,7 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient14QWaylandWindow12handleUpdateEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow12sendPropertyERK7QStringRK8QVariant@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow12setCanResizeEb@Base 6.2.2
+ _ZN15QtWaylandClient14QWaylandWindow13addChildPopupEPS0_@Base 6.4.0
  _ZN15QtWaylandClient14QWaylandWindow13fromWlSurfaceEP10wl_surface@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow13requestUpdateEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow13setOpaqueAreaERK7QRegion@Base 6.2.2
@@ -86,8 +88,11 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient14QWaylandWindow15sendExposeEventERK5QRect@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow15startSystemMoveEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow16callbackListenerE@Base 6.2.2
+ _ZN15QtWaylandClient14QWaylandWindow16closeChildPopupsEv@Base 6.4.0
  _ZN15QtWaylandClient14QWaylandWindow16createDecorationEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow16doApplyConfigureEv@Base 6.2.2
+ _ZN15QtWaylandClient14QWaylandWindow16removeChildPopupEPS0_@Base 6.4.0
+ _ZN15QtWaylandClient14QWaylandWindow16setCustomMarginsERK8QMargins@Base 6.4.0
  _ZN15QtWaylandClient14QWaylandWindow16staticMetaObjectE@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow16waitForFrameSyncEi@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow16wlSurfaceCreatedEv@Base 6.2.2
@@ -107,10 +112,16 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient14QWaylandWindow20handleScreensChangedEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow21doHandleFrameCallbackEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow21requestActivateWindowEv@Base 6.2.2
+ _ZN15QtWaylandClient14QWaylandWindow21setXdgActivationTokenERK7QString@Base 6.3.0
+ _ZN15QtWaylandClient14QWaylandWindow22fixedToplevelPositionsE@Base 6.4.0
  _ZN15QtWaylandClient14QWaylandWindow24resizeFromApplyConfigureERK5QSizeRK6QPoint@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow24sendRecursiveExposeEventEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow25handleWindowStatesChangedE6QFlagsIN2Qt11WindowStateEE@Base 6.2.2
+ _ZN15QtWaylandClient14QWaylandWindow25requestXdgActivationTokenEj@Base 6.3.0
+ _ZN15QtWaylandClient14QWaylandWindow25xdgActivationTokenCreatedERK7QString@Base 6.3.0
  _ZN15QtWaylandClient14QWaylandWindow26applyConfigureWhenPossibleEv@Base 6.2.2
+ _ZN15QtWaylandClient14QWaylandWindow28repositionFromApplyConfigureERK6QPoint@Base 6.3.0
+ _ZN15QtWaylandClient14QWaylandWindow29setGeometryFromApplyConfigureERK6QPointRK5QSize@Base 6.3.0
  _ZN15QtWaylandClient14QWaylandWindow30handleContentOrientationChangeEN2Qt17ScreenOrientationE@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow30handleMouseEventWithDecorationEPNS_19QWaylandInputDeviceERKNS_20QWaylandPointerEventE@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow39handleToplevelWindowTilingStatesChangedE6QFlagsINS0_25ToplevelWindowTilingStateEE@Base 6.2.2
@@ -122,6 +133,7 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient14QWaylandWindow6commitEv@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow6damageERK5QRect@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow7setMaskERK7QRegion@Base 6.2.2
+ _ZN15QtWaylandClient14QWaylandWindow8endFrameEv@Base 6.3.0
  _ZN15QtWaylandClient14QWaylandWindow8propertyERK7QString@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow8propertyERK7QStringRK8QVariant@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindow9setParentEPK15QPlatformWindow@Base 6.2.2
@@ -132,26 +144,25 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient14QWaylandWindowD1Ev@Base 6.2.2
  _ZN15QtWaylandClient14QWaylandWindowD2Ev@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay10initializeEv@Base 6.2.2
+ _ZN15QtWaylandClient15QWaylandDisplay11globalAddedERKNS0_14RegistryGlobalE@Base 6.4.0
  _ZN15QtWaylandClient15QWaylandDisplay11qt_metacallEN11QMetaObject4CallEiPPv@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay11qt_metacastEPKc@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay12createRegionERK7QRegion@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay12ensureScreenEv@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay13createSurfaceEPv@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay13flushRequestsEv@Base 6.2.2
+ _ZN15QtWaylandClient15QWaylandDisplay13globalRemovedERKNS0_14RegistryGlobalE@Base 6.4.0
  _ZN15QtWaylandClient15QWaylandDisplay13waylandCursorEv@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay14forceRoundTripEv@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay14removeListenerEPFvPvP11wl_registryjRK7QStringjES1_@Base 6.2.2
+ _ZN15QtWaylandClient15QWaylandDisplay15initEventThreadEv@Base 6.3.0
  _ZN15QtWaylandClient15QWaylandDisplay15loadCursorThemeERK7QStringi@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay15registry_globalEjRK7QStringj@Base 6.2.2
- _ZN15QtWaylandClient15QWaylandDisplay16createEventQueueEv@Base 6.2.2
- _ZN15QtWaylandClient15QWaylandDisplay16createFrameQueueEv@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay16createSubSurfaceEPNS_14QWaylandWindowES2_@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay16staticMetaObjectE@Base 6.2.2
- _ZN15QtWaylandClient15QWaylandDisplay17destroyFrameQueueERKNS0_10FrameQueueE@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay17handleWaylandSyncEv@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay17isWindowActivatedEPKNS_14QWaylandWindowE@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay18blockingReadEventsEv@Base 6.2.2
- _ZN15QtWaylandClient15QWaylandDisplay18dispatchQueueWhileEP14wl_event_queueSt8functionIFbvEEi@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay18requestWaylandSyncEv@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay18setLastInputDeviceEPNS_19QWaylandInputDeviceEjPNS_14QWaylandWindowE@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay19addRegistryListenerEPFvPvP11wl_registryjRK7QStringjES1_@Base 6.2.2
@@ -159,6 +170,7 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient15QWaylandDisplay20syncCallbackListenerE@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay21handleWindowActivatedEPNS_14QWaylandWindowE@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay21handleWindowDestroyedEPNS_14QWaylandWindowE@Base 6.2.2
+ _ZN15QtWaylandClient15QWaylandDisplay22checkTextInputProtocolEv@Base 6.3.0
  _ZN15QtWaylandClient15QWaylandDisplay22registry_global_removeEj@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay23handleScreenInitializedEPNS_14QWaylandScreenE@Base 6.2.2
  _ZN15QtWaylandClient15QWaylandDisplay23handleWindowDeactivatedEPNS_14QWaylandWindowE@Base 6.2.2
@@ -183,6 +195,8 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient17QWaylandClipboardD2Ev@Base 6.2.2
  _ZN15QtWaylandClient17QWaylandDataOffer14startReceivingERK7QStringi@Base 6.2.2
  _ZN15QtWaylandClient17QWaylandDataOffer16data_offer_offerERK7QString@Base 6.2.2
+ _ZN15QtWaylandClient17QWaylandDataOffer17data_offer_actionEj@Base 6.3.0
+ _ZN15QtWaylandClient17QWaylandDataOffer25data_offer_source_actionsEj@Base 6.3.0
  _ZN15QtWaylandClient17QWaylandDataOffer8mimeDataEv@Base 6.2.2
  _ZN15QtWaylandClient17QWaylandDataOfferC1EPNS_15QWaylandDisplayEP13wl_data_offer@Base 6.2.2
  _ZN15QtWaylandClient17QWaylandDataOfferC2EPNS_15QWaylandDisplayEP13wl_data_offer@Base 6.2.2
@@ -200,13 +214,18 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient17QWaylandShmWindowD0Ev@Base 6.2.2
  _ZN15QtWaylandClient17QWaylandShmWindowD1Ev@Base 6.2.2
  _ZN15QtWaylandClient17QWaylandShmWindowD2Ev@Base 6.2.2
+ _ZN15QtWaylandClient18QWaylandDataSource10dndDroppedEbN2Qt10DropActionE@Base 6.3.0
  _ZN15QtWaylandClient18QWaylandDataSource11qt_metacallEN11QMetaObject4CallEiPPv@Base 6.2.2
  _ZN15QtWaylandClient18QWaylandDataSource11qt_metacastEPKc@Base 6.2.2
- _ZN15QtWaylandClient18QWaylandDataSource13targetChangedERK7QString@Base 6.2.2
  _ZN15QtWaylandClient18QWaylandDataSource16data_source_sendERK7QStringi@Base 6.2.2
  _ZN15QtWaylandClient18QWaylandDataSource16staticMetaObjectE@Base 6.2.2
+ _ZN15QtWaylandClient18QWaylandDataSource18data_source_actionEj@Base 6.3.0
  _ZN15QtWaylandClient18QWaylandDataSource18data_source_targetERK7QString@Base 6.2.2
+ _ZN15QtWaylandClient18QWaylandDataSource18dndResponseUpdatedEbN2Qt10DropActionE@Base 6.3.0
  _ZN15QtWaylandClient18QWaylandDataSource21data_source_cancelledEv@Base 6.2.2
+ _ZN15QtWaylandClient18QWaylandDataSource24data_source_dnd_finishedEv@Base 6.3.0
+ _ZN15QtWaylandClient18QWaylandDataSource30data_source_dnd_drop_performedEv@Base 6.3.0
+ _ZN15QtWaylandClient18QWaylandDataSource8finishedEv@Base 6.3.0
  _ZN15QtWaylandClient18QWaylandDataSource9cancelledEv@Base 6.2.2
  _ZN15QtWaylandClient18QWaylandDataSourceC1EPNS_25QWaylandDataDeviceManagerEP9QMimeData@Base 6.2.2
  _ZN15QtWaylandClient18QWaylandDataSourceC2EPNS_25QWaylandDataDeviceManagerEP9QMimeData@Base 6.2.2
@@ -230,7 +249,7 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient19QWaylandInputDevice11createTouchEPS0_@Base 6.2.2
  _ZN15QtWaylandClient19QWaylandInputDevice11qt_metacallEN11QMetaObject4CallEiPPv@Base 6.2.2
  _ZN15QtWaylandClient19QWaylandInputDevice11qt_metacastEPKc@Base 6.2.2
- _ZN15QtWaylandClient19QWaylandInputDevice12setTextInputEPNS_17QWaylandTextInputE@Base 6.2.2
+ _ZN15QtWaylandClient19QWaylandInputDevice12setTextInputEPNS_26QWaylandTextInputInterfaceE@Base 6.3.0
  _ZN15QtWaylandClient19QWaylandInputDevice13createPointerEPS0_@Base 6.2.2
  _ZN15QtWaylandClient19QWaylandInputDevice13handleEndDragEv@Base 6.2.2
  _ZN15QtWaylandClient19QWaylandInputDevice13setDataDeviceEPNS_18QWaylandDataDeviceE@Base 6.2.2
@@ -334,8 +353,18 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient20QWaylandShellSurface11qt_metacallEN11QMetaObject4CallEiPPv@Base 6.2.2
  _ZN15QtWaylandClient20QWaylandShellSurface11qt_metacastEPKc@Base 6.2.2
  _ZN15QtWaylandClient20QWaylandShellSurface12sendPropertyERK7QStringRK8QVariant@Base 6.2.2
+ _ZN15QtWaylandClient20QWaylandShellSurface14platformWindowEv@Base 6.3.0
  _ZN15QtWaylandClient20QWaylandShellSurface14setWindowFlagsE6QFlagsIN2Qt10WindowTypeEE@Base 6.2.2
  _ZN15QtWaylandClient20QWaylandShellSurface16staticMetaObjectE@Base 6.2.2
+ _ZN15QtWaylandClient20QWaylandShellSurface21setXdgActivationTokenERK7QString@Base 6.3.0
+ _ZN15QtWaylandClient20QWaylandShellSurface23handleActivationChangedEb@Base 6.3.0
+ _ZN15QtWaylandClient20QWaylandShellSurface24resizeFromApplyConfigureERK5QSizeRK6QPoint@Base 6.3.0
+ _ZN15QtWaylandClient20QWaylandShellSurface25requestXdgActivationTokenEj@Base 6.3.0
+ _ZN15QtWaylandClient20QWaylandShellSurface26applyConfigureWhenPossibleEv@Base 6.3.0
+ _ZN15QtWaylandClient20QWaylandShellSurface28repositionFromApplyConfigureERK6QPoint@Base 6.3.0
+ _ZN15QtWaylandClient20QWaylandShellSurface29setGeometryFromApplyConfigureERK6QPointRK5QSize@Base 6.3.0
+ _ZN15QtWaylandClient20QWaylandShellSurface9getSerialEPNS_19QWaylandInputDeviceE@Base 6.3.0
+ _ZN15QtWaylandClient20QWaylandShellSurface9wlSurfaceEv@Base 6.3.0
  _ZN15QtWaylandClient20QWaylandShellSurfaceC1EPNS_14QWaylandWindowE@Base 6.2.2
  _ZN15QtWaylandClient20QWaylandShellSurfaceC2EPNS_14QWaylandWindowE@Base 6.2.2
  _ZN15QtWaylandClient20QWaylandTabletSeatV211qt_metacallEN11QMetaObject4CallEiPPv@Base 6.2.2
@@ -392,12 +421,14 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient23QWaylandExtendedSurfaceD0Ev@Base 6.2.2
  _ZN15QtWaylandClient23QWaylandExtendedSurfaceD1Ev@Base 6.2.2
  _ZN15QtWaylandClient23QWaylandExtendedSurfaceD2Ev@Base 6.2.2
+ _ZN15QtWaylandClient23QWaylandNativeInterface16setWindowMarginsEP7QWindowRK8QMargins@Base 6.4.0
  _ZN15QtWaylandClient23QWaylandNativeInterface17setWindowPropertyEP15QPlatformWindowRK7QStringRK8QVariant@Base 6.2.2
  _ZN15QtWaylandClient23QWaylandNativeInterface23nativeResourceForScreenERK10QByteArrayP7QScreen@Base 6.2.2
  _ZN15QtWaylandClient23QWaylandNativeInterface23nativeResourceForWindowERK10QByteArrayP7QWindow@Base 6.2.2
  _ZN15QtWaylandClient23QWaylandNativeInterface24nativeResourceForContextERK10QByteArrayP14QOpenGLContext@Base 6.2.2
  _ZN15QtWaylandClient23QWaylandNativeInterface25emitWindowPropertyChangedEP15QPlatformWindowRK7QString@Base 6.2.2
  _ZN15QtWaylandClient23QWaylandNativeInterface28nativeResourceForIntegrationERK10QByteArray@Base 6.2.2
+ _ZN15QtWaylandClient23QWaylandNativeInterface31nativeResourceFunctionForWindowERK10QByteArray@Base 6.4.0
  _ZN15QtWaylandClient23QWaylandNativeInterfaceC1EPNS_19QWaylandIntegrationE@Base 6.2.2
  _ZN15QtWaylandClient23QWaylandNativeInterfaceC2EPNS_19QWaylandIntegrationE@Base 6.2.2
  _ZN15QtWaylandClient23QWaylandPointerGestures25createPointerGesturePinchEPNS_19QWaylandInputDeviceE@Base 6.2.2
@@ -429,9 +460,10 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN15QtWaylandClient24QWaylandDecorationPluginD0Ev@Base 6.2.2
  _ZN15QtWaylandClient24QWaylandDecorationPluginD1Ev@Base 6.2.2
  _ZN15QtWaylandClient24QWaylandDecorationPluginD2Ev@Base 6.2.2
+ _ZN15QtWaylandClient24QWaylandShellIntegration18wlSurfaceForWindowEPNS_14QWaylandWindowE@Base 6.3.0
  _ZN15QtWaylandClient25QWaylandDataDeviceManager13getDataDeviceEPNS_19QWaylandInputDeviceE@Base 6.2.2
- _ZN15QtWaylandClient25QWaylandDataDeviceManagerC1EPNS_15QWaylandDisplayEj@Base 6.2.2
- _ZN15QtWaylandClient25QWaylandDataDeviceManagerC2EPNS_15QWaylandDisplayEj@Base 6.2.2
+ _ZN15QtWaylandClient25QWaylandDataDeviceManagerC1EPNS_15QWaylandDisplayEij@Base 6.3.0
+ _ZN15QtWaylandClient25QWaylandDataDeviceManagerC2EPNS_15QWaylandDisplayEij@Base 6.3.0
  _ZN15QtWaylandClient25QWaylandDataDeviceManagerD0Ev@Base 6.2.2
  _ZN15QtWaylandClient25QWaylandDataDeviceManagerD1Ev@Base 6.2.2
  _ZN15QtWaylandClient25QWaylandDataDeviceManagerD2Ev@Base 6.2.2
@@ -565,7 +597,8 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN23QWaylandClientExtensionD0Ev@Base 6.2.2
  _ZN23QWaylandClientExtensionD1Ev@Base 6.2.2
  _ZN23QWaylandClientExtensionD2Ev@Base 6.2.2
- _ZN30QWaylandClientExtensionPrivate20handleRegistryGlobalEPvP11wl_registryjRK7QStringj@Base 6.2.2
+ _ZN30QWaylandClientExtensionPrivate11globalAddedERKN15QtWaylandClient15QWaylandDisplay14RegistryGlobalE@Base 6.4.0
+ _ZN30QWaylandClientExtensionPrivate13globalRemovedERKN15QtWaylandClient15QWaylandDisplay14RegistryGlobalE@Base 6.4.0
  _ZN30QWaylandClientExtensionPrivateC1Ev@Base 6.2.2
  _ZN30QWaylandClientExtensionPrivateC2Ev@Base 6.2.2
  _ZN9QtWayland10wl_pointer10fromObjectEP10wl_pointer@Base 6.2.2
@@ -1015,6 +1048,58 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland17zwp_tablet_pad_v2D0Ev@Base 6.2.2
  _ZN9QtWayland17zwp_tablet_pad_v2D1Ev@Base 6.2.2
  _ZN9QtWayland17zwp_tablet_pad_v2D2Ev@Base 6.2.2
+ _ZN9QtWayland17zwp_text_input_v110deactivateEP7wl_seat@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v110fromObjectEP17zwp_text_input_v1@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v112commit_stateEj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v112handle_enterEPvP17zwp_text_input_v1P10wl_surface@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v112handle_leaveEPvP17zwp_text_input_v1@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v113handle_keysymEPvP17zwp_text_input_v1jjjjj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v113init_listenerEv@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v113invoke_actionEjj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v115handle_languageEPvP17zwp_text_input_v1jPKc@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v116hide_input_panelEv@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v116set_content_typeEjj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v116show_input_panelEv@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v120handle_commit_stringEPvP17zwp_text_input_v1jPKc@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v120handle_modifiers_mapEPvP17zwp_text_input_v1P8wl_array@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v120set_cursor_rectangleEiiii@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v120set_surrounding_textERK7QStringjj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v121handle_preedit_cursorEPvP17zwp_text_input_v1i@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v121handle_preedit_stringEPvP17zwp_text_input_v1jPKcS5_@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v121handle_text_directionEPvP17zwp_text_input_v1jj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v122handle_cursor_positionEPvP17zwp_text_input_v1ii@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v122handle_preedit_stylingEPvP17zwp_text_input_v1jjj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v122set_preferred_languageERK7QString@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v123zwp_text_input_v1_enterEP10wl_surface@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v123zwp_text_input_v1_leaveEv@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v124handle_input_panel_stateEPvP17zwp_text_input_v1j@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v124zwp_text_input_v1_keysymEjjjjj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v126zwp_text_input_v1_languageEjRK7QString@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v128m_zwp_text_input_v1_listenerE@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v130handle_delete_surrounding_textEPvP17zwp_text_input_v1ij@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v131zwp_text_input_v1_commit_stringEjRK7QString@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v131zwp_text_input_v1_modifiers_mapEP8wl_array@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v132zwp_text_input_v1_preedit_cursorEi@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v132zwp_text_input_v1_preedit_stringEjRK7QStringS3_@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v132zwp_text_input_v1_text_directionEjj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v133zwp_text_input_v1_cursor_positionEii@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v133zwp_text_input_v1_preedit_stylingEjjj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v135zwp_text_input_v1_input_panel_stateEj@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v141zwp_text_input_v1_delete_surrounding_textEij@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v14initEP11wl_registryji@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v14initEP17zwp_text_input_v1@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v15resetEv@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v18activateEP7wl_seatP10wl_surface@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v19interfaceEv@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v1C1EP11wl_registryji@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v1C1EP17zwp_text_input_v1@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v1C1Ev@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v1C2EP11wl_registryji@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v1C2EP17zwp_text_input_v1@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v1C2Ev@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v1D0Ev@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v1D1Ev@Base 6.4.0
+ _ZN9QtWayland17zwp_text_input_v1D2Ev@Base 6.4.0
  _ZN9QtWayland17zwp_text_input_v210fromObjectEP17zwp_text_input_v2@Base 6.2.2
  _ZN9QtWayland17zwp_text_input_v212handle_enterEPvP17zwp_text_input_v2jP10wl_surface@Base 6.2.2
  _ZN9QtWayland17zwp_text_input_v212handle_leaveEPvP17zwp_text_input_v2jP10wl_surface@Base 6.2.2
@@ -1070,6 +1155,43 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland17zwp_text_input_v2D0Ev@Base 6.2.2
  _ZN9QtWayland17zwp_text_input_v2D1Ev@Base 6.2.2
  _ZN9QtWayland17zwp_text_input_v2D2Ev@Base 6.2.2
+ _ZN9QtWayland17zwp_text_input_v410fromObjectEP17zwp_text_input_v4@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v411handle_doneEPvP17zwp_text_input_v4j@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v412handle_enterEPvP17zwp_text_input_v4P10wl_surface@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v412handle_leaveEPvP17zwp_text_input_v4P10wl_surface@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v413init_listenerEv@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v416set_content_typeEjj@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v420handle_commit_stringEPvP17zwp_text_input_v4PKc@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v420set_cursor_rectangleEiiii@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v420set_surrounding_textERK7QStringii@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v421handle_preedit_stringEPvP17zwp_text_input_v4PKcii@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v421set_text_change_causeEj@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v422zwp_text_input_v4_doneEj@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v423zwp_text_input_v4_enterEP10wl_surface@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v423zwp_text_input_v4_leaveEP10wl_surface@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v426handle_preedit_commit_modeEPvP17zwp_text_input_v4j@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v428m_zwp_text_input_v4_listenerE@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v430handle_delete_surrounding_textEPvP17zwp_text_input_v4jj@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v431zwp_text_input_v4_commit_stringERK7QString@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v432zwp_text_input_v4_preedit_stringERK7QStringii@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v437zwp_text_input_v4_preedit_commit_modeEj@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v441zwp_text_input_v4_delete_surrounding_textEjj@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v44initEP11wl_registryji@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v44initEP17zwp_text_input_v4@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v46commitEv@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v46enableEv@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v47destroyEv@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v47disableEv@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v49interfaceEv@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v4C1EP11wl_registryji@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v4C1EP17zwp_text_input_v4@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v4C1Ev@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v4C2EP11wl_registryji@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v4C2EP17zwp_text_input_v4@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v4C2Ev@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v4D0Ev@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v4D1Ev@Base 6.3.0
+ _ZN9QtWayland17zwp_text_input_v4D2Ev@Base 6.3.0
  _ZN9QtWayland18qt_touch_extension10fromObjectEP18qt_touch_extension@Base 6.2.2
  _ZN9QtWayland18qt_touch_extension12handle_touchEPvP18qt_touch_extensionjjjiiiiiijiijP8wl_array@Base 6.2.2
  _ZN9QtWayland18qt_touch_extension13init_listenerEv@Base 6.2.2
@@ -1418,6 +1540,20 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland23zwp_tablet_pad_strip_v2D0Ev@Base 6.2.2
  _ZN9QtWayland23zwp_tablet_pad_strip_v2D1Ev@Base 6.2.2
  _ZN9QtWayland23zwp_tablet_pad_strip_v2D2Ev@Base 6.2.2
+ _ZN9QtWayland25zwp_text_input_manager_v110fromObjectEP25zwp_text_input_manager_v1@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v117create_text_inputEv@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v14initEP11wl_registryji@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v14initEP25zwp_text_input_manager_v1@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v19interfaceEv@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v1C1EP11wl_registryji@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v1C1EP25zwp_text_input_manager_v1@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v1C1Ev@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v1C2EP11wl_registryji@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v1C2EP25zwp_text_input_manager_v1@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v1C2Ev@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v1D0Ev@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v1D1Ev@Base 6.4.0
+ _ZN9QtWayland25zwp_text_input_manager_v1D2Ev@Base 6.4.0
  _ZN9QtWayland25zwp_text_input_manager_v210fromObjectEP25zwp_text_input_manager_v2@Base 6.2.2
  _ZN9QtWayland25zwp_text_input_manager_v214get_text_inputEP7wl_seat@Base 6.2.2
  _ZN9QtWayland25zwp_text_input_manager_v24initEP11wl_registryji@Base 6.2.2
@@ -1433,6 +1569,21 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland25zwp_text_input_manager_v2D0Ev@Base 6.2.2
  _ZN9QtWayland25zwp_text_input_manager_v2D1Ev@Base 6.2.2
  _ZN9QtWayland25zwp_text_input_manager_v2D2Ev@Base 6.2.2
+ _ZN9QtWayland25zwp_text_input_manager_v410fromObjectEP25zwp_text_input_manager_v4@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v414get_text_inputEP7wl_seat@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v44initEP11wl_registryji@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v44initEP25zwp_text_input_manager_v4@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v47destroyEv@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v49interfaceEv@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v4C1EP11wl_registryji@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v4C1EP25zwp_text_input_manager_v4@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v4C1Ev@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v4C2EP11wl_registryji@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v4C2EP25zwp_text_input_manager_v4@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v4C2Ev@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v4D0Ev@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v4D1Ev@Base 6.3.0
+ _ZN9QtWayland25zwp_text_input_manager_v4D2Ev@Base 6.3.0
  _ZN9QtWayland28zwp_pointer_gesture_pinch_v110fromObjectEP28zwp_pointer_gesture_pinch_v1@Base 6.2.2
  _ZN9QtWayland28zwp_pointer_gesture_pinch_v110handle_endEPvP28zwp_pointer_gesture_pinch_v1jji@Base 6.2.2
  _ZN9QtWayland28zwp_pointer_gesture_pinch_v112handle_beginEPvP28zwp_pointer_gesture_pinch_v1jjP10wl_surfacej@Base 6.2.2
@@ -1714,6 +1865,7 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland9wl_regionD2Ev@Base 6.2.2
  _ZNK15QtWaylandClient11QWaylandShm15formatSupportedE13wl_shm_format@Base 6.2.2
  _ZNK15QtWaylandClient11QWaylandShm15formatSupportedEN6QImage6FormatE@Base 6.2.2
+ _ZNK15QtWaylandClient12QWaylandDrag14ownsDragObjectEv@Base 6.3.0
  _ZNK15QtWaylandClient14QWaylandCursor3posEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandScreen10logicalDpiEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandScreen11orientationEv@Base 6.2.2
@@ -1737,12 +1889,14 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK15QtWaylandClient14QWaylandWindow12frameMarginsEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow12shellSurfaceEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow12windowStatesEv@Base 6.2.2
+ _ZNK15QtWaylandClient14QWaylandWindow13customMarginsEv@Base 6.4.0
  _ZNK15QtWaylandClient14QWaylandWindow13waylandScreenEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow15defaultGeometryEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow15transientParentEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow16devicePixelRatioEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow16mapFromWlSurfaceERK7QPointF@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow16subSurfaceWindowEv@Base 6.2.2
+ _ZNK15QtWaylandClient14QWaylandWindow17clientSideMarginsEv@Base 6.3.0
  _ZNK15QtWaylandClient14QWaylandWindow21windowContentGeometryEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow22shouldCreateSubSurfaceEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow24shouldCreateShellSurfaceEv@Base 6.2.2
@@ -1753,21 +1907,23 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK15QtWaylandClient14QWaylandWindow8isActiveEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow8isOpaqueEv@Base 6.2.2
  _ZNK15QtWaylandClient14QWaylandWindow9isExposedEv@Base 6.2.2
- _ZNK15QtWaylandClient15QWaylandDisplay10checkErrorEv@Base 6.2.2
  _ZNK15QtWaylandClient15QWaylandDisplay10metaObjectEv@Base 6.2.2
  _ZNK15QtWaylandClient15QWaylandDisplay15lastInputWindowEv@Base 6.2.2
  _ZNK15QtWaylandClient15QWaylandDisplay15screenForOutputEP9wl_output@Base 6.2.2
  _ZNK15QtWaylandClient15QWaylandDisplay16shellIntegrationEv@Base 6.2.2
  _ZNK15QtWaylandClient15QWaylandDisplay17hasRegistryGlobalE11QStringView@Base 6.2.2
  _ZNK15QtWaylandClient15QWaylandDisplay18defaultInputDeviceEv@Base 6.2.2
+ _ZNK15QtWaylandClient15QWaylandDisplay19isKeyboardAvailableEv@Base 6.3.0
  _ZNK15QtWaylandClient15QWaylandDisplay23clientBufferIntegrationEv@Base 6.2.2
  _ZNK15QtWaylandClient15QWaylandDisplay23findExistingCursorThemeERK7QStringi@Base 6.2.2
  _ZNK15QtWaylandClient15QWaylandDisplay24supportsWindowDecorationEv@Base 6.2.2
  _ZNK15QtWaylandClient15QWaylandDisplay24windowManagerIntegrationEv@Base 6.2.2
+ _ZNK15QtWaylandClient15QWaylandDisplay33isClientSideInputContextRequestedEv@Base 6.4.0
  _ZNK15QtWaylandClient16QWaylandTabletV210metaObjectEv@Base 6.2.2
  _ZNK15QtWaylandClient17QWaylandClipboard12supportsModeEN10QClipboard4ModeE@Base 6.2.2
  _ZNK15QtWaylandClient17QWaylandClipboard8ownsModeEN10QClipboard4ModeE@Base 6.2.2
  _ZNK15QtWaylandClient17QWaylandDataOffer11firstFormatEv@Base 6.2.2
+ _ZNK15QtWaylandClient17QWaylandDataOffer16supportedActionsEv@Base 6.3.0
  _ZNK15QtWaylandClient17QWaylandShmWindow10windowTypeEv@Base 6.2.2
  _ZNK15QtWaylandClient18QWaylandDataSource10metaObjectEv@Base 6.2.2
  _ZNK15QtWaylandClient18QWaylandDataSource8mimeDataEv@Base 6.2.2
@@ -1814,6 +1970,7 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK15QtWaylandClient19QWaylandIntegration20createPlatformScreenEPNS_15QWaylandDisplayEij@Base 6.2.2
  _ZNK15QtWaylandClient19QWaylandIntegration20createPlatformWindowEP7QWindow@Base 6.2.2
  _ZNK15QtWaylandClient19QWaylandIntegration21createEventDispatcherEv@Base 6.2.2
+ _ZNK15QtWaylandClient19QWaylandIntegration22queryKeyboardModifiersEv@Base 6.3.0
  _ZNK15QtWaylandClient19QWaylandIntegration23clientBufferIntegrationEv@Base 6.2.2
  _ZNK15QtWaylandClient19QWaylandIntegration23serverBufferIntegrationEv@Base 6.2.2
  _ZNK15QtWaylandClient19QWaylandIntegration26createPlatformBackingStoreEP7QWindow@Base 6.2.2
@@ -1896,8 +2053,12 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK9QtWayland16wl_subcompositor7versionEv@Base 6.2.2
  _ZNK9QtWayland17zwp_tablet_pad_v213isInitializedEv@Base 6.2.2
  _ZNK9QtWayland17zwp_tablet_pad_v27versionEv@Base 6.2.2
+ _ZNK9QtWayland17zwp_text_input_v113isInitializedEv@Base 6.4.0
+ _ZNK9QtWayland17zwp_text_input_v17versionEv@Base 6.4.0
  _ZNK9QtWayland17zwp_text_input_v213isInitializedEv@Base 6.2.2
  _ZNK9QtWayland17zwp_text_input_v27versionEv@Base 6.2.2
+ _ZNK9QtWayland17zwp_text_input_v413isInitializedEv@Base 6.3.0
+ _ZNK9QtWayland17zwp_text_input_v47versionEv@Base 6.3.0
  _ZNK9QtWayland18qt_touch_extension13isInitializedEv@Base 6.2.2
  _ZNK9QtWayland18qt_touch_extension7versionEv@Base 6.2.2
  _ZNK9QtWayland18zwp_tablet_seat_v213isInitializedEv@Base 6.2.2
@@ -1926,8 +2087,12 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK9QtWayland23zwp_tablet_pad_group_v27versionEv@Base 6.2.2
  _ZNK9QtWayland23zwp_tablet_pad_strip_v213isInitializedEv@Base 6.2.2
  _ZNK9QtWayland23zwp_tablet_pad_strip_v27versionEv@Base 6.2.2
+ _ZNK9QtWayland25zwp_text_input_manager_v113isInitializedEv@Base 6.4.0
+ _ZNK9QtWayland25zwp_text_input_manager_v17versionEv@Base 6.4.0
  _ZNK9QtWayland25zwp_text_input_manager_v213isInitializedEv@Base 6.2.2
  _ZNK9QtWayland25zwp_text_input_manager_v27versionEv@Base 6.2.2
+ _ZNK9QtWayland25zwp_text_input_manager_v413isInitializedEv@Base 6.3.0
+ _ZNK9QtWayland25zwp_text_input_manager_v47versionEv@Base 6.3.0
  _ZNK9QtWayland28zwp_pointer_gesture_pinch_v113isInitializedEv@Base 6.2.2
  _ZNK9QtWayland28zwp_pointer_gesture_pinch_v17versionEv@Base 6.2.2
  _ZNK9QtWayland28zwp_pointer_gesture_swipe_v113isInitializedEv@Base 6.2.2
@@ -1956,14 +2121,7 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK9QtWayland9wl_output7versionEv@Base 6.2.2
  _ZNK9QtWayland9wl_region13isInitializedEv@Base 6.2.2
  _ZNK9QtWayland9wl_region7versionEv@Base 6.2.2
- (optional=templinst)_ZNKSt8_Rb_treeI7QStringSt4pairIKS0_8QVariantESt10_Select1stIS4_ESt4lessIS0_ESaIS4_EE4findERS2_@Base 6.2.2
- (optional=templinst)_ZNSt6vectorIN15QtWaylandClient15QWaylandDisplay18WaylandCursorThemeESaIS2_EE13_M_insert_auxIS2_EEvN9__gnu_cxx17__normal_iteratorIPS2_S4_EEOT_@Base 6.2.2
- (optional=templinst)_ZNSt6vectorIN15QtWaylandClient15QWaylandDisplay18WaylandCursorThemeESaIS2_EE17_M_realloc_insertIJS2_EEEvN9__gnu_cxx17__normal_iteratorIPS2_S4_EEDpOT_@Base 6.2.2
- (optional=templinst)_ZNSt7__cxx114listIPN15QtWaylandClient17QWaylandShmBufferESaIS3_EE6removeERKS3_@Base 6.2.2
- (optional=templinst)_ZNSt8_Rb_treeI7QStringSt4pairIKS0_8QVariantESt10_Select1stIS4_ESt4lessIS0_ESaIS4_EE24_M_get_insert_unique_posERS2_@Base 6.2.2
- (optional=templinst)_ZNSt8_Rb_treeI7QStringSt4pairIKS0_8QVariantESt10_Select1stIS4_ESt4lessIS0_ESaIS4_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS4_ERS2_@Base 6.2.2
  _ZTI23QWaylandClientExtension@Base 6.2.2
- _ZTI30QWaylandClientExtensionPrivate@Base 6.2.2
  _ZTIN15QtWaylandClient11QWaylandShmE@Base 6.2.2
  _ZTIN15QtWaylandClient12QWaylandDragE@Base 6.2.2
  _ZTIN15QtWaylandClient14QWaylandBufferE@Base 6.2.2
@@ -1992,13 +2150,10 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTIN15QtWaylandClient22QWaylandTouchExtensionE@Base 6.2.2
  _ZTIN15QtWaylandClient23QWaylandExtendedSurfaceE@Base 6.2.2
  _ZTIN15QtWaylandClient23QWaylandNativeInterfaceE@Base 6.2.2
- _ZTIN15QtWaylandClient23QWaylandPointerGesturesE@Base 6.2.2
  _ZTIN15QtWaylandClient23QWaylandShmBackingStoreE@Base 6.2.2
- _ZTIN15QtWaylandClient23QWaylandTabletManagerV2E@Base 6.2.2
  _ZTIN15QtWaylandClient24QWaylandDecorationPluginE@Base 6.2.2
  _ZTIN15QtWaylandClient25QWaylandDataDeviceManagerE@Base 6.2.2
  _ZTIN15QtWaylandClient26QWaylandAbstractDecorationE@Base 6.2.2
- _ZTIN15QtWaylandClient26QWaylandXdgOutputManagerV1E@Base 6.2.2
  _ZTIN15QtWaylandClient27QWaylandHardwareIntegrationE@Base 6.2.2
  _ZTIN15QtWaylandClient27QWaylandPointerGesturePinchE@Base 6.2.2
  _ZTIN15QtWaylandClient27QWaylandPointerGestureSwipeE@Base 6.2.2
@@ -2029,7 +2184,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTIN9QtWayland16wl_shell_surfaceE@Base 6.2.2
  _ZTIN9QtWayland16wl_subcompositorE@Base 6.2.2
  _ZTIN9QtWayland17zwp_tablet_pad_v2E@Base 6.2.2
+ _ZTIN9QtWayland17zwp_text_input_v1E@Base 6.4.0
  _ZTIN9QtWayland17zwp_text_input_v2E@Base 6.2.2
+ _ZTIN9QtWayland17zwp_text_input_v4E@Base 6.3.0
  _ZTIN9QtWayland18qt_touch_extensionE@Base 6.2.2
  _ZTIN9QtWayland18zwp_tablet_seat_v2E@Base 6.2.2
  _ZTIN9QtWayland18zwp_tablet_tool_v2E@Base 6.2.2
@@ -2044,7 +2201,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTIN9QtWayland23zwp_pointer_gestures_v1E@Base 6.2.2
  _ZTIN9QtWayland23zwp_tablet_pad_group_v2E@Base 6.2.2
  _ZTIN9QtWayland23zwp_tablet_pad_strip_v2E@Base 6.2.2
+ _ZTIN9QtWayland25zwp_text_input_manager_v1E@Base 6.4.0
  _ZTIN9QtWayland25zwp_text_input_manager_v2E@Base 6.2.2
+ _ZTIN9QtWayland25zwp_text_input_manager_v4E@Base 6.3.0
  _ZTIN9QtWayland28zwp_pointer_gesture_pinch_v1E@Base 6.2.2
  _ZTIN9QtWayland28zwp_pointer_gesture_swipe_v1E@Base 6.2.2
  _ZTIN9QtWayland30zwp_primary_selection_offer_v1E@Base 6.2.2
@@ -2126,7 +2285,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTSN9QtWayland16wl_shell_surfaceE@Base 6.2.2
  _ZTSN9QtWayland16wl_subcompositorE@Base 6.2.2
  _ZTSN9QtWayland17zwp_tablet_pad_v2E@Base 6.2.2
+ _ZTSN9QtWayland17zwp_text_input_v1E@Base 6.4.0
  _ZTSN9QtWayland17zwp_text_input_v2E@Base 6.2.2
+ _ZTSN9QtWayland17zwp_text_input_v4E@Base 6.3.0
  _ZTSN9QtWayland18qt_touch_extensionE@Base 6.2.2
  _ZTSN9QtWayland18zwp_tablet_seat_v2E@Base 6.2.2
  _ZTSN9QtWayland18zwp_tablet_tool_v2E@Base 6.2.2
@@ -2141,7 +2302,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTSN9QtWayland23zwp_pointer_gestures_v1E@Base 6.2.2
  _ZTSN9QtWayland23zwp_tablet_pad_group_v2E@Base 6.2.2
  _ZTSN9QtWayland23zwp_tablet_pad_strip_v2E@Base 6.2.2
+ _ZTSN9QtWayland25zwp_text_input_manager_v1E@Base 6.4.0
  _ZTSN9QtWayland25zwp_text_input_manager_v2E@Base 6.2.2
+ _ZTSN9QtWayland25zwp_text_input_manager_v4E@Base 6.3.0
  _ZTSN9QtWayland28zwp_pointer_gesture_pinch_v1E@Base 6.2.2
  _ZTSN9QtWayland28zwp_pointer_gesture_swipe_v1E@Base 6.2.2
  _ZTSN9QtWayland30zwp_primary_selection_offer_v1E@Base 6.2.2
@@ -2157,7 +2320,6 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTSN9QtWayland9wl_outputE@Base 6.2.2
  _ZTSN9QtWayland9wl_regionE@Base 6.2.2
  _ZTV23QWaylandClientExtension@Base 6.2.2
- _ZTV30QWaylandClientExtensionPrivate@Base 6.2.2
  _ZTVN15QtWaylandClient11QWaylandShmE@Base 6.2.2
  _ZTVN15QtWaylandClient12QWaylandDragE@Base 6.2.2
  _ZTVN15QtWaylandClient14QWaylandBufferE@Base 6.2.2
@@ -2186,13 +2348,10 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTVN15QtWaylandClient22QWaylandTouchExtensionE@Base 6.2.2
  _ZTVN15QtWaylandClient23QWaylandExtendedSurfaceE@Base 6.2.2
  _ZTVN15QtWaylandClient23QWaylandNativeInterfaceE@Base 6.2.2
- _ZTVN15QtWaylandClient23QWaylandPointerGesturesE@Base 6.2.2
  _ZTVN15QtWaylandClient23QWaylandShmBackingStoreE@Base 6.2.2
- _ZTVN15QtWaylandClient23QWaylandTabletManagerV2E@Base 6.2.2
  _ZTVN15QtWaylandClient24QWaylandDecorationPluginE@Base 6.2.2
  _ZTVN15QtWaylandClient25QWaylandDataDeviceManagerE@Base 6.2.2
  _ZTVN15QtWaylandClient26QWaylandAbstractDecorationE@Base 6.2.2
- _ZTVN15QtWaylandClient26QWaylandXdgOutputManagerV1E@Base 6.2.2
  _ZTVN15QtWaylandClient27QWaylandHardwareIntegrationE@Base 6.2.2
  _ZTVN15QtWaylandClient27QWaylandPointerGesturePinchE@Base 6.2.2
  _ZTVN15QtWaylandClient27QWaylandPointerGestureSwipeE@Base 6.2.2
@@ -2223,7 +2382,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTVN9QtWayland16wl_shell_surfaceE@Base 6.2.2
  _ZTVN9QtWayland16wl_subcompositorE@Base 6.2.2
  _ZTVN9QtWayland17zwp_tablet_pad_v2E@Base 6.2.2
+ _ZTVN9QtWayland17zwp_text_input_v1E@Base 6.4.0
  _ZTVN9QtWayland17zwp_text_input_v2E@Base 6.2.2
+ _ZTVN9QtWayland17zwp_text_input_v4E@Base 6.3.0
  _ZTVN9QtWayland18qt_touch_extensionE@Base 6.2.2
  _ZTVN9QtWayland18zwp_tablet_seat_v2E@Base 6.2.2
  _ZTVN9QtWayland18zwp_tablet_tool_v2E@Base 6.2.2
@@ -2238,7 +2399,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTVN9QtWayland23zwp_pointer_gestures_v1E@Base 6.2.2
  _ZTVN9QtWayland23zwp_tablet_pad_group_v2E@Base 6.2.2
  _ZTVN9QtWayland23zwp_tablet_pad_strip_v2E@Base 6.2.2
+ _ZTVN9QtWayland25zwp_text_input_manager_v1E@Base 6.4.0
  _ZTVN9QtWayland25zwp_text_input_manager_v2E@Base 6.2.2
+ _ZTVN9QtWayland25zwp_text_input_manager_v4E@Base 6.3.0
  _ZTVN9QtWayland28zwp_pointer_gesture_pinch_v1E@Base 6.2.2
  _ZTVN9QtWayland28zwp_pointer_gesture_swipe_v1E@Base 6.2.2
  _ZTVN9QtWayland30zwp_primary_selection_offer_v1E@Base 6.2.2
@@ -2253,23 +2416,13 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTVN9QtWayland9wl_bufferE@Base 6.2.2
  _ZTVN9QtWayland9wl_outputE@Base 6.2.2
  _ZTVN9QtWayland9wl_regionE@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeI7QStringE10getCopyCtrEvENUlPKNS_18QMetaTypeInterfaceEPvPKvE_4_FUNES5_S6_S8_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeI7QStringE10getMoveCtrEvENUlPKNS_18QMetaTypeInterfaceEPvS6_E_4_FUNES5_S6_S6_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeI7QStringE13getDefaultCtrEvENUlPKNS_18QMetaTypeInterfaceEPvE_4_FUNES5_S6_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeI7QStringE7getDtorEvENUlPKNS_18QMetaTypeInterfaceEPvE_4_FUNES5_S6_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeIbE10getCopyCtrEvENUlPKNS_18QMetaTypeInterfaceEPvPKvE_4_FUNES4_S5_S7_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeIbE10getMoveCtrEvENUlPKNS_18QMetaTypeInterfaceEPvS5_E_4_FUNES4_S5_S5_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeIbE13getDefaultCtrEvENUlPKNS_18QMetaTypeInterfaceEPvE_4_FUNES4_S5_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeIiE10getCopyCtrEvENUlPKNS_18QMetaTypeInterfaceEPvPKvE_4_FUNES4_S5_S7_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeIiE10getMoveCtrEvENUlPKNS_18QMetaTypeInterfaceEPvS5_E_4_FUNES4_S5_S5_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeIiE13getDefaultCtrEvENUlPKNS_18QMetaTypeInterfaceEPvE_4_FUNES4_S5_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeIjE10getCopyCtrEvENUlPKNS_18QMetaTypeInterfaceEPvPKvE_4_FUNES4_S5_S7_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeIjE10getMoveCtrEvENUlPKNS_18QMetaTypeInterfaceEPvS5_E_4_FUNES4_S5_S5_@Base 6.2.2
- (optional=templinst)_ZZN9QtPrivate16QMetaTypeForTypeIjE13getDefaultCtrEvENUlPKNS_18QMetaTypeInterfaceEPvE_4_FUNES4_S5_@Base 6.2.2
  (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataOffer::mimeData()@Base" 6.2.2
  (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataOffer::startReceiving(QString const&, int)@Base" 6.2.2
  (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataOffer::~QWaylandDataOffer()@Base" 6.2.2
+ (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataSource::data_source_action(unsigned int)@Base" 6.3.0
  (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataSource::data_source_cancelled()@Base" 6.2.2
+ (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataSource::data_source_dnd_drop_performed()@Base" 6.3.0
+ (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataSource::data_source_dnd_finished()@Base" 6.3.0
  (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataSource::data_source_send(QString const&, int)@Base" 6.2.2
  (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataSource::data_source_target(QString const&)@Base" 6.2.2
  (c++)"non-virtual thunk to QtWaylandClient::QWaylandDataSource::~QWaylandDataSource()@Base" 6.2.2
@@ -2406,7 +2559,11 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  zwp_tablet_seat_v2_interface@Base 6.2.2
  zwp_tablet_tool_v2_interface@Base 6.2.2
  zwp_tablet_v2_interface@Base 6.2.2
+ zwp_text_input_manager_v1_interface@Base 6.4.0
  zwp_text_input_manager_v2_interface@Base 6.2.2
+ zwp_text_input_manager_v4_interface@Base 6.3.0
+ zwp_text_input_v1_interface@Base 6.4.0
  zwp_text_input_v2_interface@Base 6.2.2
+ zwp_text_input_v4_interface@Base 6.3.0
  zxdg_output_manager_v1_interface@Base 6.2.2
  zxdg_output_v1_interface@Base 6.2.2

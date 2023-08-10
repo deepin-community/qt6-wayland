@@ -1,32 +1,6 @@
-/****************************************************************************
-**
-** Copyright (C) 2017-2015 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
-** Copyright (C) 2017 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtWaylandCompositor module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2017-2015 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+// Copyright (C) 2017 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include "qwaylandsurface.h"
 #include "qwaylandsurface_p.h"
@@ -127,9 +101,9 @@ QWaylandSurfacePrivate::~QWaylandSurfacePrivate()
 
     bufferRef = QWaylandBufferRef();
 
-    for (QtWayland::FrameCallback *c : qAsConst(pendingFrameCallbacks))
+    for (QtWayland::FrameCallback *c : std::as_const(pendingFrameCallbacks))
         c->destroy();
-    for (QtWayland::FrameCallback *c : qAsConst(frameCallbacks))
+    for (QtWayland::FrameCallback *c : std::as_const(frameCallbacks))
         c->destroy();
 }
 
@@ -257,6 +231,7 @@ void QWaylandSurfacePrivate::surface_commit(Resource *)
     QSize surfaceSize = bufferSize / bufferScale;
     sourceGeometry = !pending.sourceGeometry.isValid() ? QRect(QPoint(), surfaceSize) : pending.sourceGeometry;
     destinationSize = pending.destinationSize.isEmpty() ? sourceGeometry.size().toSize() : pending.destinationSize;
+    QRect destinationRect(QPoint(), destinationSize);
     if (!pending.damageInBufferCoordinates || pending.bufferScale == 1) {
         // pending.damage is already in surface coordinates
         damage = pending.damage.intersected(QRect(QPoint(), destinationSize));
@@ -272,13 +247,19 @@ void QWaylandSurfacePrivate::surface_commit(Resource *)
         };
         damage = {};
         for (const QRect &r : pending.damage) {
-            damage |= xform(r, bufferScale).intersected(QRect{{}, destinationSize});
+            damage |= xform(r, bufferScale).intersected(destinationRect);
         }
     }
     hasContent = bufferRef.hasContent();
     frameCallbacks << pendingFrameCallbacks;
-    inputRegion = pending.inputRegion.intersected(QRect(QPoint(), destinationSize));
-    opaqueRegion = pending.opaqueRegion.intersected(QRect(QPoint(), destinationSize));
+    inputRegion = pending.inputRegion.intersected(destinationRect);
+    opaqueRegion = pending.opaqueRegion.intersected(destinationRect);
+    bool becameOpaque = opaqueRegion.boundingRect().contains(destinationRect);
+    if (becameOpaque != isOpaque) {
+        isOpaque = becameOpaque;
+        emit q->isOpaqueChanged();
+    }
+
     QPoint offsetForNextFrame = pending.offset;
 
     if (viewport)
@@ -295,7 +276,7 @@ void QWaylandSurfacePrivate::surface_commit(Resource *)
     // Notify buffers and views
     if (auto *buffer = bufferRef.buffer())
         buffer->setCommitted(damage);
-    for (auto *view : qAsConst(views))
+    for (auto *view : std::as_const(views))
         view->bufferCommitted(bufferRef, damage);
 
     // Now all double-buffered state has been applied so it's safe to emit general signals
@@ -360,6 +341,52 @@ QtWayland::ClientBuffer *QWaylandSurfacePrivate::getBuffer(struct ::wl_resource 
     QtWayland::BufferManager *bufMan = QWaylandCompositorPrivate::get(compositor)->bufferManager();
     return bufMan->getBuffer(buffer);
 }
+
+/*!
+ * \class QWaylandSurfaceRole
+ * \inmodule QtWaylandCompositor
+ * \since 5.8
+ * \brief The QWaylandSurfaceRole class represents the role of the surface in context of wl_surface.
+ *
+ * QWaylandSurfaceRole is used to represent the role of a QWaylandSurface. According to the protocol
+ * specification, the role of a surface is permanent once set, and if the same surface is later
+ * reused for a different role, this constitutes a protocol error. Setting the surface to the same
+ * role multiple times is not an error.
+ *
+ * As an example, the QWaylandXdgShell can assign either "popup" or "toplevel" roles to surfaces.
+ * If \c get_toplevel is requested on a surface which has previously received a \c get_popup
+ * request, then the compositor will issue a protocol error.
+ *
+ * Roles are compared by pointer value, so any two objects of QWaylandSurfaceRole will be considered
+ * different roles, regardless of what their \l{name()}{names} are. A typical way of assigning a
+ * role is to have a static QWaylandSurfaceRole object to represent it.
+ *
+ * \code
+ * class MyShellSurfaceSubType
+ * {
+ *     static QWaylandSurfaceRole s_role;
+ *     // ...
+ * };
+ *
+ * // ...
+ *
+ * surface->setRole(&MyShellSurfaceSubType::s_role, resource->handle, MY_ERROR_CODE);
+ * \endcode
+ */
+
+/*!
+ * \fn QWaylandSurfaceRole::QWaylandSurfaceRole(const QByteArray &name)
+ *
+ * Creates a QWaylandSurfaceRole and assigns it \a name. The name is used in error messages
+ * involving this QWaylandSurfaceRole.
+ */
+
+/*!
+ * \fn const QByteArray QWaylandSurfaceRole::name()
+ *
+ * Returns the name of the QWaylandSurfaceRole. The name is used in error messages involving this
+ * QWaylandSurfaceRole, for example if an attempt is made to change the role of a surface.
+ */
 
 /*!
  * \qmltype WaylandSurface
@@ -678,7 +705,7 @@ QWaylandCompositor *QWaylandSurface::compositor() const
 void QWaylandSurface::frameStarted()
 {
     Q_D(QWaylandSurface);
-    for (QtWayland::FrameCallback *c : qAsConst(d->frameCallbacks))
+    for (QtWayland::FrameCallback *c : std::as_const(d->frameCallbacks))
         c->canSend = true;
 }
 
@@ -811,6 +838,27 @@ bool QWaylandSurface::inhibitsIdle() const
     return !d->idleInhibitors.isEmpty();
 }
 
+/*!
+ *  \qmlproperty bool QtWaylandCompositor::WaylandSurface::isOpaque
+ *  \since 6.4
+ *
+ *  This property holds whether the surface is fully opaque, as reported by the
+ *  client through the set_opaque_region request.
+ */
+
+/*!
+ *  \property QWaylandSurface::isOpaque
+ *  \since 6.4
+ *
+ *  This property holds whether the surface is fully opaque, as reported by the
+ *  client through the set_opaque_region request.
+ */
+bool QWaylandSurface::isOpaque() const
+{
+    Q_D(const QWaylandSurface);
+    return d->isOpaque;
+}
+
 #if QT_CONFIG(im)
 QWaylandInputMethodControl *QWaylandSurface::inputMethodControl() const
 {
@@ -912,10 +960,19 @@ struct wl_resource *QWaylandSurface::resource() const
 }
 
 /*!
- * Sets a \a role on the surface. A role defines how a surface will be mapped on screen; without a role
- * a surface is supposed to be hidden. Only one role can be set on a surface, at all times. Although
- * setting the same role many times is allowed, attempting to change the role of a surface will trigger
- * a protocol error to the \a errorResource and send an \a errorCode to the client.
+ * Sets a \a role on the surface. A role defines how a surface will be mapped on screen; without a
+ * role a surface is supposed to be hidden. Once a role is assigned to a surface, this becomes its
+ * permanent role. Any subsequent call to \c setRole() with a different role will trigger a
+ * protocol error to the \a errorResource and send an \a errorCode to the client. Enforcing this
+ * requirement is the main purpose of the surface role.
+ *
+ * The \a role is compared by pointer value. Any two objects of QWaylandSurfaceRole will be
+ * considered different roles, regardless of their names.
+ *
+ * The surface role is set internally by protocol implementations when a surface is adopted for a
+ * specific purpose, for example in a \l{Shell Extensions - Qt Wayland Compositor}{shell extension}.
+ * Unless you are developing extensions which use surfaces in this way, you should not call this
+ * function.
  *
  * Returns true if a role can be assigned; false otherwise.
  */
@@ -1076,3 +1133,5 @@ void QWaylandSurfacePrivate::Subsurface::subsurface_set_desync(wl_subsurface::Re
  */
 
 QT_END_NAMESPACE
+
+#include "moc_qwaylandsurface.cpp"

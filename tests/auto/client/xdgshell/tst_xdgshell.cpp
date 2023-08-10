@@ -1,36 +1,12 @@
-/****************************************************************************
-**
-** Copyright (C) 2018 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the test suite of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2018 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 #include "mockcompositor.h"
 #include <QtOpenGL/QOpenGLWindow>
 #include <QtGui/QRasterWindow>
 #include <QtGui/qpa/qplatformnativeinterface.h>
 #include <QtWaylandClient/private/wayland-wayland-client-protocol.h>
+#include <QtWaylandClient/private/qwaylandwindow_p.h>
 
 using namespace MockCompositor;
 
@@ -45,6 +21,7 @@ private slots:
     void configureStates();
     void popup();
     void tooltipOnPopup();
+    void tooltipAndSiblingPopup();
     void switchPopups();
     void hidePopupParent();
     void pongs();
@@ -56,7 +33,6 @@ private slots:
 
 void tst_xdgshell::showMinimized()
 {
-    QSKIP("TODO: This currently fails, needs a fix");
     // On xdg-shell there's really no way for the compositor to tell the window if it's minimized
     // There are wl_surface.enter events and so on, but there's really no way to differentiate
     // between a window preview and an unminimized window.
@@ -102,7 +78,7 @@ void tst_xdgshell::basicConfigure()
     QTRY_VERIFY(window.isExposed());
 
     // The client is now going to ack the configure
-    QTRY_COMPARE(configureSpy.count(), 1);
+    QTRY_COMPARE(configureSpy.size(), 1);
     QCOMPARE(configureSpy.takeFirst().at(0).toUInt(), serial);
 
     // And attach a buffer
@@ -128,7 +104,7 @@ void tst_xdgshell::configureSize()
         xdgToplevel()->sendCompleteConfigure(configureSize);
     });
 
-    QTRY_COMPARE(configureSpy.count(), 1);
+    QTRY_COMPARE(configureSpy.size(), 1);
 
     exec([=] {
         Buffer *buffer = xdgToplevel()->surface()->m_committed.buffer;
@@ -139,6 +115,7 @@ void tst_xdgshell::configureSize()
 
 void tst_xdgshell::configureStates()
 {
+    QVERIFY(qputenv("QT_WAYLAND_FRAME_CALLBACK_TIMEOUT", "0"));
     QRasterWindow window;
     window.resize(64, 48);
     window.show();
@@ -155,9 +132,12 @@ void tst_xdgshell::configureStates()
     // Toplevel windows don't know their position on xdg-shell
 //    QCOMPARE(window.frameGeometry().topLeft(), QPoint()); // TODO: this doesn't currently work when window decorations are enabled
 
-//    QEXPECT_FAIL("", "configure has already been acked, we shouldn't have to wait for isActive", Continue);
-//    QVERIFY(window.isActive());
-    QTRY_VERIFY(window.isActive()); // Just make sure it eventually get's set correctly
+    // window.windowstate() is driven by keyboard focus, however for decorations we want to follow
+    // XDGShell this is internal to QtWayland so it is queried directly
+    auto waylandWindow = static_cast<QtWaylandClient::QWaylandWindow *>(window.handle());
+    Q_ASSERT(waylandWindow);
+    QTRY_VERIFY(waylandWindow->windowStates().testFlag(
+            Qt::WindowActive)); // Just make sure it eventually get's set correctly
 
     const QSize screenSize(640, 480);
     const uint maximizedSerial = exec([=] {
@@ -187,6 +167,7 @@ void tst_xdgshell::configureStates()
     QCOMPARE(window.windowStates(), Qt::WindowNoState);
     QCOMPARE(window.frameGeometry().size(), windowedSize);
 //    QCOMPARE(window.frameGeometry().topLeft(), QPoint()); // TODO: this doesn't currently work when window decorations are enabled
+    QVERIFY(qunsetenv("QT_WAYLAND_FRAME_CALLBACK_TIMEOUT"));
 }
 
 void tst_xdgshell::popup()
@@ -211,7 +192,7 @@ void tst_xdgshell::popup()
     QCOMPOSITOR_TRY_VERIFY(xdgToplevel());
     QSignalSpy toplevelConfigureSpy(exec([=] { return xdgSurface(); }), &XdgSurface::configureCommitted);
     exec([=] { xdgToplevel()->sendCompleteConfigure(); });
-    QTRY_COMPARE(toplevelConfigureSpy.count(), 1);
+    QTRY_COMPARE(toplevelConfigureSpy.size(), 1);
 
     uint clickSerial = exec([=] {
         auto *surface = xdgToplevel()->surface();
@@ -249,7 +230,7 @@ void tst_xdgshell::popup()
     QTRY_VERIFY(popup->isExposed());
 
     // The client is now going to ack the configure
-    QTRY_COMPARE(popupConfigureSpy.count(), 1);
+    QTRY_COMPARE(popupConfigureSpy.size(), 1);
     QCOMPARE(popupConfigureSpy.takeFirst().at(0).toUInt(), configureSerial);
 
     // And attach a buffer
@@ -337,6 +318,92 @@ void tst_xdgshell::tooltipOnPopup()
 
     // Close order is verified in XdgSurface::xdg_surface_destroy
 
+    QCOMPOSITOR_TRY_COMPARE(xdgPopup(1), nullptr);
+    QCOMPOSITOR_TRY_COMPARE(xdgPopup(0), nullptr);
+}
+
+void tst_xdgshell::tooltipAndSiblingPopup()
+{
+    class ToolTip : public QRasterWindow {
+    public:
+        explicit ToolTip(QWindow *parent) {
+            setTransientParent(parent);
+            setFlags(Qt::ToolTip);
+            resize(100, 100);
+            show();
+        }
+        void mousePressEvent(QMouseEvent *event) override {
+            QRasterWindow::mousePressEvent(event);
+            m_popup = new QRasterWindow;
+            m_popup->setTransientParent(transientParent());
+            m_popup->setFlags(Qt::Popup);
+            m_popup->resize(100, 100);
+            m_popup->show();
+        }
+
+        QRasterWindow *m_popup = nullptr;
+    };
+
+    class Window : public QRasterWindow {
+    public:
+        void mousePressEvent(QMouseEvent *event) override {
+            QRasterWindow::mousePressEvent(event);
+            m_tooltip = new ToolTip(this);
+        }
+        ToolTip *m_tooltip = nullptr;
+    };
+
+    Window window;
+    window.resize(200, 200);
+    window.show();
+
+    QCOMPOSITOR_TRY_VERIFY(xdgToplevel());
+    exec([=] { xdgToplevel()->sendCompleteConfigure(); });
+    QCOMPOSITOR_TRY_VERIFY(xdgToplevel()->m_xdgSurface->m_committedConfigureSerial);
+
+    exec([=] {
+        auto *surface = xdgToplevel()->surface();
+        auto *p = pointer();
+        auto *c = client();
+        p->sendEnter(surface, {100, 100});
+        p->sendFrame(c);
+        p->sendButton(client(), BTN_LEFT, Pointer::button_state_pressed);
+        p->sendButton(client(), BTN_LEFT, Pointer::button_state_released);
+        p->sendFrame(c);
+        p->sendLeave(surface);
+        p->sendFrame(c);
+    });
+
+    QCOMPOSITOR_TRY_VERIFY(xdgPopup());
+    exec([=] { xdgPopup()->sendCompleteConfigure(QRect(100, 100, 100, 100)); });
+    QCOMPOSITOR_TRY_VERIFY(xdgPopup()->m_xdgSurface->m_committedConfigureSerial);
+    QCOMPOSITOR_TRY_VERIFY(!xdgPopup()->m_grabbed);
+
+    exec([=] {
+        auto *surface = xdgPopup()->surface();
+        auto *p = pointer();
+        auto *c = client();
+        p->sendEnter(surface, {100, 100});
+        p->sendFrame(c);
+        p->sendButton(client(), BTN_LEFT, Pointer::button_state_pressed);
+        p->sendButton(client(), BTN_LEFT, Pointer::button_state_released);
+        p->sendFrame(c);
+    });
+
+    QCOMPOSITOR_TRY_VERIFY(xdgPopup(1));
+    exec([=] { xdgPopup(1)->sendCompleteConfigure(QRect(100, 100, 100, 100)); });
+    QCOMPOSITOR_TRY_VERIFY(xdgPopup(1)->m_xdgSurface->m_committedConfigureSerial);
+    QCOMPOSITOR_TRY_VERIFY(xdgPopup(1)->m_grabbed);
+
+    // Close the middle tooltip (it should not close the sibling popup)
+    window.m_tooltip->close();
+
+    QCOMPOSITOR_TRY_COMPARE(xdgPopup(1), nullptr);
+    // Verify the remaining xdg surface is a grab popup..
+    QCOMPOSITOR_TRY_VERIFY(xdgPopup(0));
+    QCOMPOSITOR_TRY_VERIFY(xdgPopup(0)->m_grabbed);
+
+    window.m_tooltip->m_popup->close();
     QCOMPOSITOR_TRY_COMPARE(xdgPopup(1), nullptr);
     QCOMPOSITOR_TRY_COMPARE(xdgPopup(0), nullptr);
 }
@@ -493,7 +560,7 @@ void tst_xdgshell::pongs()
         wl_resource *resource = base->resourceMap().first()->handle;
         base->send_ping(resource, serial);
     });
-    QTRY_COMPARE(pongSpy.count(), 1);
+    QTRY_COMPARE(pongSpy.size(), 1);
     QCOMPARE(pongSpy.first().at(0).toUInt(), serial);
 }
 
@@ -559,7 +626,7 @@ void tst_xdgshell::foreignSurface()
     // the pointer events above are handled.
     QSignalSpy spy(exec([=] { return surface(newSurfaceIndex); }), &Surface::commit);
     wl_surface_commit(foreignSurface);
-    QTRY_COMPARE(spy.count(), 1);
+    QTRY_COMPARE(spy.size(), 1);
 
     wl_surface_destroy(foreignSurface);
 }

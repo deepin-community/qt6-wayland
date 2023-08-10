@@ -1,31 +1,6 @@
-/****************************************************************************
-**
-** Copyright (C) 2021 David Edmundson <davidedmundson@kde.org>
-** Copyright (C) 2018 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the test suite of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2021 David Edmundson <davidedmundson@kde.org>
+// Copyright (C) 2018 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 #ifndef MOCKCOMPOSITOR_H
 #define MOCKCOMPOSITOR_H
@@ -55,11 +30,13 @@ namespace MockCompositor {
 class DefaultCompositor : public CoreCompositor
 {
 public:
-    explicit DefaultCompositor();
+    explicit DefaultCompositor(CompositorType t = CompositorType::Default);
     // Convenience functions
     Output *output(int i = 0) { return getAll<Output>().value(i, nullptr); }
-    Surface *surface(int i = 0) { return get<WlCompositor>()->m_surfaces.value(i, nullptr); }
+    Surface *surface(int i = 0);
     Subsurface *subSurface(int i = 0) { return get<SubCompositor>()->m_subsurfaces.value(i, nullptr); }
+    WlShellSurface *wlShellSurface(int i = 0) { return get<WlShell>()->m_wlShellSurfaces.value(i, nullptr); }
+    Surface *wlSurface(int i = 0);
     XdgSurface *xdgSurface(int i = 0) { return get<XdgWmBase>()->m_xdgSurfaces.value(i, nullptr); }
     XdgToplevel *xdgToplevel(int i = 0) { return get<XdgWmBase>()->toplevel(i); }
     XdgPopup *xdgPopup(int i = 0) { return get<XdgWmBase>()->popup(i); }
@@ -69,8 +46,12 @@ public:
     Keyboard *keyboard() { auto *seat = get<Seat>(); Q_ASSERT(seat); return seat->m_keyboard; }
     FullScreenShellV1 *fullScreenShellV1() {return get<FullScreenShellV1>();};
     IviSurface *iviSurface(int i = 0) { return get<IviApplication>()->m_iviSurfaces.value(i, nullptr); }
+
     uint sendXdgShellPing();
     void xdgPingAndWaitForPong();
+
+    void sendShellSurfaceConfigure(Surface *surface);
+
     // Things that can be changed run-time without confusing the client (i.e. don't require separate tests)
     struct Config {
         bool autoEnter = true;
@@ -78,6 +59,12 @@ public:
         bool autoConfigure = false;
     } m_config;
     void resetConfig() { exec([&] { m_config = Config{}; }); }
+};
+
+class WlShellCompositor : public DefaultCompositor
+{
+public:
+    explicit WlShellCompositor(CompositorType t = CompositorType::Legacy);
 };
 
 } // namespace MockCompositor
