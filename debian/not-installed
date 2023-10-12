@@ -1,9 +1,3 @@
-usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandClient/6.*
-usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/6.*
-usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandEglClientHwIntegration/6.*
-usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandEglCompositorHwIntegration/6.*
-usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandGlobal/6.*
-usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWlShellIntegration/6.*
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Gui/Qt6QWaylandEglPlatformIntegrationPluginAdditionalTargetInfo.cmake
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Gui/Qt6QWaylandEglPlatformIntegrationPluginConfig.cmake
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Gui/Qt6QWaylandEglPlatformIntegrationPluginConfigVersion.cmake

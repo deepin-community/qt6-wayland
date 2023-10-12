@@ -1,3 +1,19 @@
+qt6-wayland (6.4.2-5) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 26 Sep 2023 20:25:16 +0200
+
+qt6-wayland (6.4.2-4) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * Add package for the private headers (Closes: #1013222).
+  * Replace libfontconfig1-dev with libfontconfig-dev in the B-Ds as the
+    former is superseded by the latter.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 26 Sep 2023 19:12:41 +0200
+
 qt6-wayland (6.4.2-3) unstable; urgency=medium
 
   * Team upload to unstable.
