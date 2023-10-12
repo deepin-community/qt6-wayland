@@ -9,7 +9,7 @@ Build-Depends: cmake (>= 3.24~),
                debhelper-compat (= 13),
                libdrm-dev,
                libegl1-mesa-dev,
-               libfontconfig1-dev,
+               libfontconfig-dev,
                libgl-dev,
                libssl-dev,
                libvulkan-dev [linux-any],
@@ -157,6 +157,24 @@ Description: Qt 6 Wayland - development files
  .
  This package contains the development files for QtWayland client
  and compositor libraries.
+
+Package: qt6-wayland-private-dev
+Architecture: any
+Multi-Arch: same
+Section: libdevel
+Depends: qt6-wayland-dev (= ${binary:Version}), ${misc:Depends},
+Breaks: qt6-wayland-dev (<< 6.4.2-4),
+Replaces: qt6-wayland-dev (<< 6.4.2-4),
+Description: Qt 6 Wayland - private development files
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ QtWayland is a Qt 6 module that wraps the functionality of Wayland.
+ .
+ This package contains the private header development files for
+ QtWayland client and compositor libraries.
+ .
+ Use at your own risk.
 
 Package: qt6-wayland-dev-tools
 Architecture: any

@@ -245,14 +245,8 @@ usr/lib/${DEB_HOST_MULTIARCH}/metatypes/qt6waylandeglcompositorhwintegrationpriv
 usr/lib/${DEB_HOST_MULTIARCH}/metatypes/qt6wlshellintegrationprivate_none_metatypes.json
 usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6WaylandClient.pc
 usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6WaylandCompositor.pc
-usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_wayland_egl_client_hw_integration_private.pri
-usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_wayland_egl_compositor_hw_integration_private.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_waylandclient.pri
-usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_waylandclient_private.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_waylandcompositor.pri
-usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_waylandcompositor_private.pri
-usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_waylandglobal_private.pri
-usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_wl_shell_integration_private.pri
 usr/share/qt6/modules/WaylandClient.json
 usr/share/qt6/modules/WaylandCompositor.json
 usr/share/qt6/modules/WaylandEglClientHwIntegrationPrivate.json
