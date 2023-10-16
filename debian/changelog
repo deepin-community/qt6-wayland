@@ -1,3 +1,9 @@
+qt6-wayland (6.5.3~bpo6.4-0deepin1) UNRELEASED; urgency=medium
+
+  * Backport to qt 6.4.
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Mon, 16 Oct 2023 10:50:30 +0800
+
 qt6-wayland (6.4.2-5) unstable; urgency=medium
 
   [ Patrick Franz ]
