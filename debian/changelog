@@ -1,4 +1,4 @@
-qt6-wayland (6.5.3~bpo6.4-0deepin1) UNRELEASED; urgency=medium
+qt6-wayland (6.5.3-0deepin0~bpo6.4) UNRELEASED; urgency=medium
 
   * Backport to qt 6.4.
 
