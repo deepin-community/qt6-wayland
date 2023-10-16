@@ -1,1 +1,3 @@
 deepin-bpo-6.4.patch
+0001-Implement-QNativeInterface-Private-QWaylandScreen.patch -R
+0001-client-Implement-QNativeInterface-Private-QWaylandWi.patch

@@ -1,0 +1,30 @@
+From: David Redondo <qt@david-redondo.de>
+Date: Wed, 12 Oct 2022 09:01:07 +0200
+Subject: [PATCH] client: Implement QNativeInterface::Private::QWaylandWindow
+
+--- a/src/client/qwaylandwindow.cpp
++++ b/src/client/qwaylandwindow.cpp
+@@ -60,11 +60,6 @@
+     static WId id = 1;
+     mWindowId = id++;
+     initializeWlSurface();
+-
+-    connect(this, &QWaylandWindow::wlSurfaceCreated, this,
+-            &QNativeInterface::Private::QWaylandWindow::surfaceCreated);
+-    connect(this, &QWaylandWindow::wlSurfaceDestroyed, this,
+-            &QNativeInterface::Private::QWaylandWindow::surfaceDestroyed);
+ }
+ 
+ QWaylandWindow::~QWaylandWindow()
+--- a/src/client/qwaylandwindow_p.h
++++ b/src/client/qwaylandwindow_p.h
+@@ -59,8 +59,7 @@
+ class QWaylandFractionalScale;
+ class QWaylandViewport;
+ 
+-class Q_WAYLANDCLIENT_EXPORT QWaylandWindow : public QNativeInterface::Private::QWaylandWindow,
+-                                              public QPlatformWindow
++class Q_WAYLANDCLIENT_EXPORT QWaylandWindow : public QObject, public QPlatformWindow
+ {
+     Q_OBJECT
+ public:
