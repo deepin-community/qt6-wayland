@@ -4,6 +4,8 @@ include /usr/share/dpkg/architecture.mk
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all optimize=+lto
 
+extra_cmake_args += -DQT_NO_PACKAGE_VERSION_CHECK=TRUE
+
 # QT_HOST_PATH isn't passed in cross-builds
 ifneq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
 	extra_cmake_args += \
