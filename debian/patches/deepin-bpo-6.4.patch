@@ -79,3 +79,26 @@
  #### Keys ignored in scope 1:.:.:texture-sharing.pro:<TRUE>:
  # CXX_MODULE = "qml"
  # IMPORT_VERSION = "1.$$QT_MINOR_VERSION"
+--- a/src/client/qwaylandinputcontext.cpp
++++ b/src/client/qwaylandinputcontext.cpp
+@@ -286,7 +286,8 @@
+     case XKB_COMPOSE_NOTHING:
+         return false;
+     default:
+-        Q_UNREACHABLE_RETURN(false);
++	Q_UNREACHABLE();
++	return false;
+     }
+ }
+ 
+--- a/src/client/qwaylandwindowmanagerintegration_p.h
++++ b/src/client/qwaylandwindowmanagerintegration_p.h
+@@ -42,7 +42,7 @@
+ 
+     bool openUrl(const QUrl &url) override;
+     bool openDocument(const QUrl &url) override;
+-    QString portalWindowIdentifier(QWindow *window) override;
++    QString portalWindowIdentifier(QWindow *window);
+ 
+     bool showIsFullScreen() const;
+ 

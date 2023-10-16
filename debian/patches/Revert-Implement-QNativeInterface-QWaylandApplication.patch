@@ -14,7 +14,21 @@ Reviewed-by: David Edmundson <davidedmundson@kde.org>
 
 --- a/src/client/qwaylandnativeinterface_p.h
 +++ b/src/client/qwaylandnativeinterface_p.h
-@@ -32,8 +32,7 @@
+@@ -27,13 +27,21 @@
+ 
+ class QMargins;
+ 
++#if defined(Q_OS_UNIX)
++struct wl_display;
++struct wl_compositor;
++struct wl_seat;
++struct wl_keyboard;
++struct wl_pointer;
++struct wl_touch;
++#endif
++
+ namespace QtWaylandClient {
+ 
  class QWaylandIntegration;
  class QWaylandScreen;
  
@@ -24,7 +38,7 @@ Reviewed-by: David Edmundson <davidedmundson@kde.org>
  {
  public:
      QWaylandNativeInterface(QWaylandIntegration *integration);
-@@ -54,14 +53,14 @@
+@@ -54,14 +62,14 @@
      void emitWindowPropertyChanged(QPlatformWindow *window, const QString &name);
  
      // QWaylandApplication interface
