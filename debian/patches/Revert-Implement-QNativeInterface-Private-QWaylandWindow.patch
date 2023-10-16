@@ -1,0 +1,86 @@
+From: David Redondo <qt@david-redondo.de>
+Date: Wed, 12 Oct 2022 09:01:07 +0200
+Subject: [PATCH] client: Implement QNativeInterface::Private::QWaylandWindow
+
+Task-number: QTBUG-94729
+Change-Id: Ib79f3199a4518700aa032c5ca4760a2b53c401e5
+
+--- a/src/client/qwaylandwindow.cpp
++++ b/src/client/qwaylandwindow.cpp
+@@ -60,11 +60,6 @@
+     static WId id = 1;
+     mWindowId = id++;
+     initializeWlSurface();
+-
+-    connect(this, &QWaylandWindow::wlSurfaceCreated, this,
+-            &QNativeInterface::Private::QWaylandWindow::surfaceCreated);
+-    connect(this, &QWaylandWindow::wlSurfaceDestroyed, this,
+-            &QNativeInterface::Private::QWaylandWindow::surfaceDestroyed);
+ }
+ 
+ QWaylandWindow::~QWaylandWindow()
+--- a/src/client/qwaylandwindow_p.h
++++ b/src/client/qwaylandwindow_p.h
+@@ -35,6 +35,8 @@
+ #include <QtWaylandClient/qtwaylandclientglobal.h>
+ #include <QtWaylandClient/private/qwaylandshellsurface_p.h>
+ 
++#include <any>
++
+ struct wl_egl_window;
+ 
+ QT_BEGIN_NAMESPACE
+@@ -59,8 +61,7 @@
+ class QWaylandFractionalScale;
+ class QWaylandViewport;
+ 
+-class Q_WAYLANDCLIENT_EXPORT QWaylandWindow : public QNativeInterface::Private::QWaylandWindow,
+-                                              public QPlatformWindow
++class Q_WAYLANDCLIENT_EXPORT QWaylandWindow : public QObject, public QPlatformWindow
+ {
+     Q_OBJECT
+ public:
+@@ -119,7 +120,7 @@
+ 
+     QMargins frameMargins() const override;
+     QMargins clientSideMargins() const;
+-    void setCustomMargins(const QMargins &margins) override;
++    void setCustomMargins(const QMargins &margins);
+     QSize surfaceSize() const;
+     QMargins windowContentMargins() const;
+     QRect windowContentGeometry() const;
+@@ -127,7 +128,7 @@
+ 
+     QWaylandSurface *waylandSurface() const { return mSurface.data(); }
+     ::wl_surface *wlSurface();
+-    ::wl_surface *surface() const override
++    ::wl_surface *surface() const
+     {
+         return const_cast<QWaylandWindow *>(this)->wlSurface();
+     }
+@@ -135,7 +136,7 @@
+ 
+     QWaylandDisplay *display() const { return mDisplay; }
+     QWaylandShellSurface *shellSurface() const;
+-    std::any _surfaceRole() const override;
++    std::any _surfaceRole() const;
+     QWaylandSubSurface *subSurfaceWindow() const;
+     QWaylandScreen *waylandScreen() const;
+ 
+@@ -220,7 +221,7 @@
+     void deliverUpdateRequest() override;
+ 
+     void setXdgActivationToken(const QString &token);
+-    void requestXdgActivationToken(uint serial) override;
++    void requestXdgActivationToken(uint serial);
+ 
+     void beginFrame();
+     void endFrame();
+@@ -235,6 +236,7 @@
+ signals:
+     void wlSurfaceCreated();
+     void wlSurfaceDestroyed();
++    void xdgActivationTokenCreated(const QString &token);
+ 
+ protected:
+     virtual void doHandleFrameCallback();

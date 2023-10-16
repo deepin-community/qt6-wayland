@@ -1,0 +1,49 @@
+From f4a7aa6794cd17389d2d7bfa1abe8d96bd8f9476 Mon Sep 17 00:00:00 2001
+From: David Redondo <qt@david-redondo.de>
+Date: Thu, 28 Jul 2022 10:09:57 +0200
+Subject: [PATCH] Implement  QNativeInterface::QWaylandApplication
+
+Task-number: QTBUG-94729
+Change-Id: I84f080719c6364137368bdd1759947a6d6ef2e5b
+Reviewed-by: Qt CI Bot <qt_ci_bot@qt-project.org>
+Reviewed-by: David Edmundson <davidedmundson@kde.org>
+---
+ src/client/qwaylandnativeinterface.cpp | 55 ++++++++++++++++++++++++++
+ src/client/qwaylandnativeinterface_p.h | 20 ++++++++--
+ 2 files changed, 71 insertions(+), 4 deletions(-)
+
+--- a/src/client/qwaylandnativeinterface_p.h
++++ b/src/client/qwaylandnativeinterface_p.h
+@@ -32,8 +32,7 @@
+ class QWaylandIntegration;
+ class QWaylandScreen;
+ 
+-class Q_WAYLANDCLIENT_EXPORT QWaylandNativeInterface : public QPlatformNativeInterface,
+-                                                       public QNativeInterface::QWaylandApplication
++class Q_WAYLANDCLIENT_EXPORT QWaylandNativeInterface : public QPlatformNativeInterface
+ {
+ public:
+     QWaylandNativeInterface(QWaylandIntegration *integration);
+@@ -54,14 +53,14 @@
+     void emitWindowPropertyChanged(QPlatformWindow *window, const QString &name);
+ 
+     // QWaylandApplication interface
+-    wl_display *display() const override;
+-    wl_compositor *compositor() const override;
+-    wl_seat *seat() const override;
+-    wl_keyboard *keyboard() const override;
+-    wl_pointer *pointer() const override;
+-    wl_touch *touch() const override;
+-    uint lastInputSerial() const override;
+-    wl_seat *lastInputSeat() const override;
++    wl_display *display() const;
++    wl_compositor *compositor() const;
++    wl_seat *seat() const;
++    wl_keyboard *keyboard() const;
++    wl_pointer *pointer() const;
++    wl_touch *touch() const;
++    uint lastInputSerial() const;
++    wl_seat *lastInputSeat() const;
+ 
+ private:
+     static void setWindowMargins(QWindow *window, const QMargins &margins);

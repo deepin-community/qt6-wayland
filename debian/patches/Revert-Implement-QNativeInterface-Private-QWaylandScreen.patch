@@ -1,0 +1,34 @@
+From: David Redondo <qt@david-redondo.de>
+Date: Wed, 12 Oct 2022 09:01:07 +0200
+Subject: [PATCH] Implement QNativeInterface::Private::QWaylandScreen
+
+Change-Id: I2f5cc638f33fe0d884146342516efa7ce8474478
+Task-number: QTBUG-94729
+Reviewed-by: Tor Arne Vestbø <tor.arne.vestbo@qt.io>
+
+--- a/src/client/qwaylandscreen_p.h
++++ b/src/client/qwaylandscreen_p.h
+@@ -35,10 +35,7 @@
+     QWaylandXdgOutputManagerV1(QWaylandDisplay *display, uint id, uint version);
+ };
+ 
+-class Q_WAYLANDCLIENT_EXPORT QWaylandScreen : public QPlatformScreen,
+-                                              QtWayland::wl_output,
+-                                              QtWayland::zxdg_output_v1,
+-                                              public QNativeInterface::Private::QWaylandScreen
++class Q_WAYLANDCLIENT_EXPORT QWaylandScreen : public QPlatformScreen, QtWayland::wl_output, QtWayland::zxdg_output_v1
+ {
+ public:
+     QWaylandScreen(QWaylandDisplay *waylandDisplay, int version, uint32_t id);
+@@ -74,10 +71,7 @@
+ #endif
+ 
+     uint32_t outputId() const { return m_outputId; }
+-    ::wl_output *output() const override
+-    {
+-        return const_cast<::wl_output *>(QtWayland::wl_output::object());
+-    }
++    ::wl_output *output() { return QtWayland::wl_output::object(); }
+ 
+     static QWaylandScreen *waylandScreenFromWindow(QWindow *window);
+     static QWaylandScreen *fromWlOutput(::wl_output *output);
