@@ -1,0 +1,81 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -16,7 +16,6 @@
+ find_package(Qt6 ${PROJECT_VERSION} CONFIG REQUIRED COMPONENTS
+     BuildInternals
+ )
+-qt_internal_project_setup()
+ 
+ if(NOT MACOS AND NOT QNX AND (ANDROID OR NOT LINUX))
+     message(NOTICE "Skipping the build as the condition \"LINUX OR MACOS OR QNX\" is not met.")
+--- a/src/imports/compositor-extensions/iviapplication/CMakeLists.txt
++++ b/src/imports/compositor-extensions/iviapplication/CMakeLists.txt
+@@ -24,8 +24,6 @@
+         Qt::WaylandCompositor
+ )
+ 
+-qt_internal_add_autogen_sync_header_dependencies(WaylandCompositorIviapplication WaylandCompositor)
+-
+ #### Keys ignored in scope 1:.:.:iviapplication.pro:<TRUE>:
+ # CXX_MODULE = "qml"
+ # QML_IMPORT_VERSION = "$$QT_VERSION"
+--- a/src/imports/compositor-extensions/presentationtime/CMakeLists.txt
++++ b/src/imports/compositor-extensions/presentationtime/CMakeLists.txt
+@@ -20,6 +20,3 @@
+         Qt::Gui
+         Qt::WaylandCompositorPrivate
+ )
+-
+-qt_internal_add_autogen_sync_header_dependencies(WaylandCompositorPresentationTime
+-    WaylandCompositor)
+--- a/src/imports/compositor-extensions/qtshell/CMakeLists.txt
++++ b/src/imports/compositor-extensions/qtshell/CMakeLists.txt
+@@ -33,5 +33,3 @@
+     FILES
+         ${CMAKE_CURRENT_SOURCE_DIR}/../../../extensions/qt-shell-unstable-v1.xml
+ )
+-
+-qt_internal_add_autogen_sync_header_dependencies(WaylandCompositorQtShell WaylandCompositor)
+--- a/src/imports/compositor-extensions/wlshell/CMakeLists.txt
++++ b/src/imports/compositor-extensions/wlshell/CMakeLists.txt
+@@ -24,8 +24,6 @@
+         Qt::WaylandCompositor
+ )
+ 
+-qt_internal_add_autogen_sync_header_dependencies(WaylandCompositorWLShell WaylandCompositor)
+-
+ #### Keys ignored in scope 1:.:.:wlshell.pro:<TRUE>:
+ # CXX_MODULE = "qml"
+ # QML_IMPORT_VERSION = "$$QT_VERSION"
+--- a/src/imports/compositor-extensions/xdgshell/CMakeLists.txt
++++ b/src/imports/compositor-extensions/xdgshell/CMakeLists.txt
+@@ -24,8 +24,6 @@
+         Qt::WaylandCompositor
+ )
+ 
+-qt_internal_add_autogen_sync_header_dependencies(WaylandCompositorXdgShell WaylandCompositor)
+-
+ #### Keys ignored in scope 1:.:.:xdgshell.pro:<TRUE>:
+ # CXX_MODULE = "qml"
+ # QML_IMPORT_VERSION = "$$QT_VERSION"
+--- a/src/imports/texture-sharing-extension/CMakeLists.txt
++++ b/src/imports/texture-sharing-extension/CMakeLists.txt
+@@ -29,7 +29,6 @@
+         Qt::WaylandCompositorPrivate
+ )
+ 
+-qt_internal_add_autogen_sync_header_dependencies(WaylandTextureSharingExtension WaylandCompositor)
+ #### Keys ignored in scope 1:.:.:texture-sharing-extension.pro:<TRUE>:
+ # CXX_MODULE = "qml"
+ # IMPORT_VERSION = "1.$$QT_MINOR_VERSION"
+--- a/src/imports/texture-sharing/CMakeLists.txt
++++ b/src/imports/texture-sharing/CMakeLists.txt
+@@ -39,8 +39,6 @@
+         ${CMAKE_CURRENT_SOURCE_DIR}/../../extensions/qt-texture-sharing-unstable-v1.xml
+ )
+ 
+-qt_internal_add_autogen_sync_header_dependencies(WaylandTextureSharing WaylandCompositor)
+-
+ #### Keys ignored in scope 1:.:.:texture-sharing.pro:<TRUE>:
+ # CXX_MODULE = "qml"
+ # IMPORT_VERSION = "1.$$QT_MINOR_VERSION"
