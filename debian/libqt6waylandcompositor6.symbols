@@ -1,4 +1,4 @@
-# SymbolsHelper-Confirmed: 6.4.0 amd64
+# SymbolsHelper-Confirmed: 6.5.3 amd64
 libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
 * Build-Depends-Package: qt6-wayland-dev
  _Z20qLcWaylandCompositorv@Base 6.2.2
@@ -284,6 +284,8 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer10wl_pointer18pointer_set_cursorEPNS0_8ResourceEjP11wl_resourceii@Base 6.2.2
  _ZN15QtWaylandServer10wl_pointer18send_axis_discreteEP11wl_resourceji@Base 6.2.2
  _ZN15QtWaylandServer10wl_pointer18send_axis_discreteEji@Base 6.2.2
+ _ZN15QtWaylandServer10wl_pointer18send_axis_value120EP11wl_resourceji@Base 6.5.3
+ _ZN15QtWaylandServer10wl_pointer18send_axis_value120Eji@Base 6.5.3
  _ZN15QtWaylandServer10wl_pointer20display_destroy_funcEP11wl_listenerPv@Base 6.2.2
  _ZN15QtWaylandServer10wl_pointer21pointer_bind_resourceEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer10wl_pointer22m_wl_pointer_interfaceE@Base 6.2.2
@@ -320,11 +322,13 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer10wl_surface13handle_attachEP9wl_clientP11wl_resourceS4_ii@Base 6.2.2
  _ZN15QtWaylandServer10wl_surface13handle_commitEP9wl_clientP11wl_resource@Base 6.2.2
  _ZN15QtWaylandServer10wl_surface13handle_damageEP9wl_clientP11wl_resourceiiii@Base 6.2.2
+ _ZN15QtWaylandServer10wl_surface13handle_offsetEP9wl_clientP11wl_resourceii@Base 6.5.3
  _ZN15QtWaylandServer10wl_surface13surface_frameEPNS0_8ResourceEj@Base 6.2.2
  _ZN15QtWaylandServer10wl_surface14handle_destroyEP9wl_clientP11wl_resource@Base 6.2.2
  _ZN15QtWaylandServer10wl_surface14surface_attachEPNS0_8ResourceEP11wl_resourceii@Base 6.2.2
  _ZN15QtWaylandServer10wl_surface14surface_commitEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer10wl_surface14surface_damageEPNS0_8ResourceEiiii@Base 6.2.2
+ _ZN15QtWaylandServer10wl_surface14surface_offsetEPNS0_8ResourceEii@Base 6.5.3
  _ZN15QtWaylandServer10wl_surface15surface_destroyEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer10wl_surface16surface_allocateEv@Base 6.2.2
  _ZN15QtWaylandServer10wl_surface20display_destroy_funcEP11wl_listenerPv@Base 6.2.2
@@ -687,6 +691,8 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer12xdg_toplevel20handle_set_minimizedEP9wl_clientP11wl_resource@Base 6.2.2
  _ZN15QtWaylandServer12xdg_toplevel20xdg_toplevel_destroyEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer12xdg_toplevel21handle_set_fullscreenEP9wl_clientP11wl_resourceS4_@Base 6.2.2
+ _ZN15QtWaylandServer12xdg_toplevel21send_configure_boundsEP11wl_resourceii@Base 6.5.3
+ _ZN15QtWaylandServer12xdg_toplevel21send_configure_boundsEii@Base 6.5.3
  _ZN15QtWaylandServer12xdg_toplevel21xdg_toplevel_allocateEv@Base 6.2.2
  _ZN15QtWaylandServer12xdg_toplevel22handle_unset_maximizedEP9wl_clientP11wl_resource@Base 6.2.2
  _ZN15QtWaylandServer12xdg_toplevel22xdg_toplevel_set_titleEPNS0_8ResourceERK7QString@Base 6.2.2
@@ -966,8 +972,10 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer14xdg_positioner17handle_set_anchorEP9wl_clientP11wl_resourcej@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner17handle_set_offsetEP9wl_clientP11wl_resourceii@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner18handle_set_gravityEP9wl_clientP11wl_resourcej@Base 6.2.2
+ _ZN15QtWaylandServer14xdg_positioner19handle_set_reactiveEP9wl_clientP11wl_resource@Base 6.5.3
  _ZN15QtWaylandServer14xdg_positioner20display_destroy_funcEP11wl_listenerPv@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner22handle_set_anchor_rectEP9wl_clientP11wl_resourceiiii@Base 6.2.2
+ _ZN15QtWaylandServer14xdg_positioner22handle_set_parent_sizeEP9wl_clientP11wl_resourceii@Base 6.5.3
  _ZN15QtWaylandServer14xdg_positioner22xdg_positioner_destroyEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner23xdg_positioner_allocateEv@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner23xdg_positioner_set_sizeEPNS0_8ResourceEii@Base 6.2.2
@@ -975,10 +983,14 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer14xdg_positioner25xdg_positioner_set_offsetEPNS0_8ResourceEii@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner26m_xdg_positioner_interfaceE@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner26xdg_positioner_set_gravityEPNS0_8ResourceEj@Base 6.2.2
+ _ZN15QtWaylandServer14xdg_positioner27handle_set_parent_configureEP9wl_clientP11wl_resourcej@Base 6.5.3
+ _ZN15QtWaylandServer14xdg_positioner27xdg_positioner_set_reactiveEPNS0_8ResourceE@Base 6.5.3
  _ZN15QtWaylandServer14xdg_positioner28xdg_positioner_bind_resourceEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner30xdg_positioner_set_anchor_rectEPNS0_8ResourceEiiii@Base 6.2.2
+ _ZN15QtWaylandServer14xdg_positioner30xdg_positioner_set_parent_sizeEPNS0_8ResourceEii@Base 6.5.3
  _ZN15QtWaylandServer14xdg_positioner31xdg_positioner_destroy_resourceEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner32handle_set_constraint_adjustmentEP9wl_clientP11wl_resourcej@Base 6.2.2
+ _ZN15QtWaylandServer14xdg_positioner35xdg_positioner_set_parent_configureEPNS0_8ResourceEj@Base 6.5.3
  _ZN15QtWaylandServer14xdg_positioner3addEP9wl_clienti@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner3addEP9wl_clientji@Base 6.2.2
  _ZN15QtWaylandServer14xdg_positioner40xdg_positioner_set_constraint_adjustmentEPNS0_8ResourceEj@Base 6.2.2
@@ -2057,6 +2069,8 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer9wl_output14handle_releaseEP9wl_clientP11wl_resource@Base 6.2.2
  _ZN15QtWaylandServer9wl_output14output_releaseEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer9wl_output15output_allocateEv@Base 6.2.2
+ _ZN15QtWaylandServer9wl_output16send_descriptionEP11wl_resourceRK7QString@Base 6.5.3
+ _ZN15QtWaylandServer9wl_output16send_descriptionERK7QString@Base 6.5.3
  _ZN15QtWaylandServer9wl_output20display_destroy_funcEP11wl_listenerPv@Base 6.2.2
  _ZN15QtWaylandServer9wl_output20output_bind_resourceEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer9wl_output21m_wl_output_interfaceE@Base 6.2.2
@@ -2075,6 +2089,8 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer9wl_output9send_doneEv@Base 6.2.2
  _ZN15QtWaylandServer9wl_output9send_modeEP11wl_resourcejiii@Base 6.2.2
  _ZN15QtWaylandServer9wl_output9send_modeEjiii@Base 6.2.2
+ _ZN15QtWaylandServer9wl_output9send_nameEP11wl_resourceRK7QString@Base 6.5.3
+ _ZN15QtWaylandServer9wl_output9send_nameERK7QString@Base 6.5.3
  _ZN15QtWaylandServer9wl_outputC1EP10wl_displayi@Base 6.2.2
  _ZN15QtWaylandServer9wl_outputC1EP11wl_resource@Base 6.2.2
  _ZN15QtWaylandServer9wl_outputC1EP9wl_clientji@Base 6.2.2
@@ -2158,9 +2174,13 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer9xdg_popup14xdg_popup_grabEPNS0_8ResourceEP11wl_resourcej@Base 6.2.2
  _ZN15QtWaylandServer9xdg_popup15send_popup_doneEP11wl_resource@Base 6.2.2
  _ZN15QtWaylandServer9xdg_popup15send_popup_doneEv@Base 6.2.2
+ _ZN15QtWaylandServer9xdg_popup17handle_repositionEP9wl_clientP11wl_resourceS4_j@Base 6.5.3
+ _ZN15QtWaylandServer9xdg_popup17send_repositionedEP11wl_resourcej@Base 6.5.3
+ _ZN15QtWaylandServer9xdg_popup17send_repositionedEj@Base 6.5.3
  _ZN15QtWaylandServer9xdg_popup17xdg_popup_destroyEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer9xdg_popup18xdg_popup_allocateEv@Base 6.2.2
  _ZN15QtWaylandServer9xdg_popup20display_destroy_funcEP11wl_listenerPv@Base 6.2.2
+ _ZN15QtWaylandServer9xdg_popup20xdg_popup_repositionEPNS0_8ResourceEP11wl_resourcej@Base 6.5.3
  _ZN15QtWaylandServer9xdg_popup21m_xdg_popup_interfaceE@Base 6.2.2
  _ZN15QtWaylandServer9xdg_popup23xdg_popup_bind_resourceEPNS0_8ResourceE@Base 6.2.2
  _ZN15QtWaylandServer9xdg_popup26xdg_popup_destroy_resourceEPNS0_8ResourceE@Base 6.2.2
@@ -2767,6 +2787,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN24QWaylandTextInputManagerC2Ev@Base 6.2.2
  _ZN24QWaylandTextInputPrivate10sendLocaleEv@Base 6.2.2
  _ZN24QWaylandTextInputPrivate12sendKeyEventEP9QKeyEvent@Base 6.2.2
+ _ZN24QWaylandTextInputPrivate16sendModifiersMapERK10QByteArray@Base 6.5.3
  _ZN24QWaylandTextInputPrivate17sendTextDirectionEv@Base 6.2.2
  _ZN24QWaylandTextInputPrivate19sendInputPanelStateEv@Base 6.2.2
  _ZN24QWaylandTextInputPrivate20sendInputMethodEventEP17QInputMethodEvent@Base 6.2.2

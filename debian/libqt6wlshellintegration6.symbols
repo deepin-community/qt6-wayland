@@ -1,4 +1,4 @@
-# SymbolsHelper-Confirmed: 6.2.2 amd64
+# SymbolsHelper-Confirmed: 6.5.3 amd64
 libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
 * Build-Depends-Package: qt6-wayland-dev
  _ZN15QtWaylandClient22QWaylandWlShellSurface11qt_metacallEN11QMetaObject4CallEiPPv@Base 6.2.2
@@ -50,8 +50,10 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZN9QtWayland10wl_pointer18handle_axis_sourceEPvP10wl_pointerj@Base 6.2.2
  _ZN9QtWayland10wl_pointer19pointer_axis_sourceEj@Base 6.2.2
  _ZN9QtWayland10wl_pointer20handle_axis_discreteEPvP10wl_pointerji@Base 6.2.2
+ _ZN9QtWayland10wl_pointer20handle_axis_value120EPvP10wl_pointerji@Base 6.5.3
  _ZN9QtWayland10wl_pointer21m_wl_pointer_listenerE@Base 6.2.2
  _ZN9QtWayland10wl_pointer21pointer_axis_discreteEji@Base 6.2.2
+ _ZN9QtWayland10wl_pointer21pointer_axis_value120Eji@Base 6.5.3
  _ZN9QtWayland10wl_pointer4initEP10wl_pointer@Base 6.2.2
  _ZN9QtWayland10wl_pointer4initEP11wl_registryji@Base 6.2.2
  _ZN9QtWayland10wl_pointer7releaseEv@Base 6.2.2
@@ -83,6 +85,7 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZN9QtWayland10wl_surface6attachEP9wl_bufferii@Base 6.2.2
  _ZN9QtWayland10wl_surface6commitEv@Base 6.2.2
  _ZN9QtWayland10wl_surface6damageEiiii@Base 6.2.2
+ _ZN9QtWayland10wl_surface6offsetEii@Base 6.5.3
  _ZN9QtWayland10wl_surface7destroyEv@Base 6.2.2
  _ZN9QtWayland10wl_surface9interfaceEv@Base 6.2.2
  _ZN9QtWayland10wl_surfaceC1EP10wl_surface@Base 6.2.2
@@ -462,13 +465,17 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZN9QtWayland9wl_output10fromObjectEP9wl_output@Base 6.2.2
  _ZN9QtWayland9wl_output11handle_doneEPvP9wl_output@Base 6.2.2
  _ZN9QtWayland9wl_output11handle_modeEPvP9wl_outputjiii@Base 6.2.2
+ _ZN9QtWayland9wl_output11handle_nameEPvP9wl_outputPKc@Base 6.5.3
  _ZN9QtWayland9wl_output11output_doneEv@Base 6.2.2
  _ZN9QtWayland9wl_output11output_modeEjiii@Base 6.2.2
+ _ZN9QtWayland9wl_output11output_nameERK7QString@Base 6.5.3
  _ZN9QtWayland9wl_output12handle_scaleEPvP9wl_outputi@Base 6.2.2
  _ZN9QtWayland9wl_output12output_scaleEi@Base 6.2.2
  _ZN9QtWayland9wl_output13init_listenerEv@Base 6.2.2
  _ZN9QtWayland9wl_output15handle_geometryEPvP9wl_outputiiiiiPKcS5_i@Base 6.2.2
  _ZN9QtWayland9wl_output15output_geometryEiiiiiRK7QStringS3_i@Base 6.2.2
+ _ZN9QtWayland9wl_output18handle_descriptionEPvP9wl_outputPKc@Base 6.5.3
+ _ZN9QtWayland9wl_output18output_descriptionERK7QString@Base 6.5.3
  _ZN9QtWayland9wl_output20m_wl_output_listenerE@Base 6.2.2
  _ZN9QtWayland9wl_output4initEP11wl_registryji@Base 6.2.2
  _ZN9QtWayland9wl_output4initEP9wl_output@Base 6.2.2
