@@ -70,7 +70,16 @@
  # IMPORT_VERSION = "1.$$QT_MINOR_VERSION"
 --- a/src/imports/texture-sharing/CMakeLists.txt
 +++ b/src/imports/texture-sharing/CMakeLists.txt
-@@ -39,8 +39,6 @@
+@@ -30,8 +30,6 @@
+         Qt::QuickPrivate
+         Qt::WaylandClient
+         Qt::WaylandClientPrivate
+-    PRIVATE_HEADER_FILTERS
+-        "^qwayland-.*\.h|^wayland-.*-protocol\.h"
+ )
+ 
+ qt6_generate_wayland_protocol_client_sources(WaylandTextureSharing
+@@ -39,8 +37,6 @@
          ${CMAKE_CURRENT_SOURCE_DIR}/../../extensions/qt-texture-sharing-unstable-v1.xml
  )
  
@@ -127,3 +136,47 @@
  
      if (cursorThemeName.isEmpty())
          cursorThemeName = QStringLiteral("default");
+--- a/src/compositor/compositor_api/qwaylandcompositor.cpp
++++ b/src/compositor/compositor_api/qwaylandcompositor.cpp
+@@ -109,7 +109,7 @@
+         xkb_state *xkbState = keyb->xkbState();
+ 
+         const xkb_keysym_t sym = xkb_state_key_get_one_sym(xkbState, code);
+-        Qt::KeyboardModifiers modifiers = QXkbCommon::modifiers(xkbState, sym);
++        Qt::KeyboardModifiers modifiers = QXkbCommon::modifiers(xkbState);
+         int qtkey = QXkbCommon::keysymToQtKey(sym, modifiers, xkbState, code);
+         QString text = QXkbCommon::lookupString(xkbState, code);
+ 
+--- a/src/compositor/CMakeLists.txt
++++ b/src/compositor/CMakeLists.txt
+@@ -73,8 +73,6 @@
+         Qt::CorePrivate
+         Qt::GuiPrivate
+         Qt::WaylandGlobalPrivate
+-    PRIVATE_HEADER_FILTERS
+-        "^qwayland-.*\.h|^wayland-.*-protocol\.h"
+ )
+ 
+ set(compositor_no_pch_sources
+--- a/src/client/CMakeLists.txt
++++ b/src/client/CMakeLists.txt
+@@ -76,8 +76,6 @@
+         Qt::CorePrivate
+         Qt::GuiPrivate
+         Qt::WaylandGlobalPrivate
+-    PRIVATE_HEADER_FILTERS
+-        "^qwayland-.*\.h|^wayland-.*-protocol\.h"
+ )
+ 
+ qt6_generate_wayland_protocol_client_sources(WaylandClient
+--- a/src/plugins/shellintegration/wl-shell/CMakeLists.txt
++++ b/src/plugins/shellintegration/wl-shell/CMakeLists.txt
+@@ -17,8 +17,6 @@
+         Qt::GuiPrivate
+         Qt::WaylandClientPrivate
+         Wayland::Client
+-    PRIVATE_HEADER_FILTERS
+-        "^qwayland-.*\.h|^wayland-.*-protocol\.h"
+ )
+ 
+ qt6_generate_wayland_protocol_client_sources(WlShellIntegrationPrivate
