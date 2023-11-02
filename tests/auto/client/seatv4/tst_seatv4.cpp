@@ -3,7 +3,6 @@
 
 #include "mockcompositor.h"
 
-#include <QtOpenGL/QOpenGLWindow>
 #include <QtGui/QRasterWindow>
 #if QT_CONFIG(cursor)
 #include <wayland-cursor.h>
@@ -24,6 +23,7 @@ public:
     {
         exec([this] {
             m_config.autoConfigure = true;
+            m_config.autoFrameCallback = false; // for cursor animation test
 
             removeAll<Seat>();
 

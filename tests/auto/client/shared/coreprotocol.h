@@ -288,6 +288,9 @@ public:
     OutputData m_data;
     int m_version = 1; // TODO: remove on libwayland upgrade
 
+Q_SIGNALS:
+    void outputBound(Resource *resource);
+
 protected:
     void output_bind_resource(Resource *resource) override;
 };
@@ -296,7 +299,7 @@ class Seat : public Global, public QtWaylandServer::wl_seat
 {
     Q_OBJECT
 public:
-    explicit Seat(CoreCompositor *compositor, uint capabilities = Seat::capability_pointer | Seat::capability_keyboard | Seat::capability_touch, int version = 7);
+    explicit Seat(CoreCompositor *compositor, uint capabilities = Seat::capability_pointer | Seat::capability_keyboard | Seat::capability_touch, int version = 8);
     ~Seat() override;
     void send_capabilities(Resource *resource, uint capabilities) = delete; // Use wrapper instead
     void send_capabilities(uint capabilities) = delete; // Use wrapper instead
@@ -334,7 +337,7 @@ class Pointer : public QObject, public QtWaylandServer::wl_pointer
 public:
     explicit Pointer(Seat *seat) : m_seat(seat) {}
     Surface *cursorSurface();
-    CursorRole* m_cursorRole = nullptr; //TODO: cleanup
+    QPointer<CursorRole> m_cursorRole;
     void send_enter() = delete;
     uint sendEnter(Surface *surface, const QPointF &position);
     void send_leave() = delete;
@@ -346,6 +349,7 @@ public:
     void sendAxisSource(wl_client *client, axis_source source);
     void sendAxisStop(wl_client *client, axis axis);
     void sendFrame(wl_client *client);
+    void sendAxisValue120(wl_client *client, axis axis, int value120);
 
     Seat *m_seat = nullptr;
     QList<uint> m_enterSerials;
@@ -365,6 +369,7 @@ public:
     explicit CursorRole(Surface *surface) // TODO: needs some more args
         : m_surface(surface)
     {
+        connect(m_surface, &QObject::destroyed, this, &QObject::deleteLater);
     }
     static CursorRole *fromSurface(Surface *surface) { return qobject_cast<CursorRole *>(surface->m_role); }
     Surface *m_surface = nullptr;
@@ -379,6 +384,7 @@ public:
     uint sendUp(wl_client *client, int id);
     void sendMotion(wl_client *client, const QPointF &position, int id);
     void sendFrame(wl_client *client);
+    void sendCancel(wl_client *client);
 
     Seat *m_seat = nullptr;
 };

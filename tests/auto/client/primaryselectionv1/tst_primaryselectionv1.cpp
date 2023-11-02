@@ -5,7 +5,6 @@
 
 #include <qwayland-server-wp-primary-selection-unstable-v1.h>
 
-#include <QtOpenGL/QOpenGLWindow>
 #include <QtGui/QRasterWindow>
 #include <QtGui/QClipboard>
 #include <QtCore/private/qcore_unix_p.h>
@@ -262,7 +261,7 @@ void tst_primaryselectionv1::createsPrimaryDevice()
 
 void tst_primaryselectionv1::createsPrimaryDeviceForNewSeats()
 {
-    exec([=] { add<Seat>(); });
+    exec([&] { add<Seat>(); });
     QCOMPOSITOR_TRY_VERIFY(primarySelectionDevice(1));
 }
 

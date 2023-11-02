@@ -1,3 +1,6 @@
+# Copyright (C) 2022 The Qt Company Ltd.
+# SPDX-License-Identifier: BSD-3-Clause
+
 cmake_minimum_required(VERSION 3.16)
 project(custom-extension-compositor)
 
@@ -11,6 +14,7 @@ set(INSTALL_EXAMPLEDIR "${INSTALL_EXAMPLESDIR}/wayland/custom-extension/composit
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml WaylandCompositor)
 
+qt6_policy(SET QTP0001 NEW)
 qt_add_executable(custom-extension-compositor
     customextension.cpp customextension.h
     main.cpp
@@ -45,6 +49,11 @@ qt6_add_resources(custom-extension-compositor "compositor"
         "/"
     FILES
         ${compositor_resource_files}
+)
+
+qt6_add_qml_module(custom-extension-compositor
+  URI io.qt.examples.customextension
+  VERSION 1.0
 )
 
 install(TARGETS custom-extension-compositor

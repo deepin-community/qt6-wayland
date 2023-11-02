@@ -1,3 +1,6 @@
+# Copyright (C) 2022 The Qt Company Ltd.
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Generated from client.pro.
 
 #####################################################################
@@ -29,6 +32,7 @@ qt_internal_add_module(WaylandClient
         qwaylanddecorationplugin.cpp qwaylanddecorationplugin_p.h
         qwaylanddisplay.cpp qwaylanddisplay_p.h
         qwaylandextendedsurface.cpp qwaylandextendedsurface_p.h
+        qwaylandfractionalscale.cpp qwaylandfractionalscale_p.h
         qwaylandinputcontext.cpp qwaylandinputcontext_p.h
         qwaylandtextinputv1.cpp qwaylandtextinputv1_p.h
         qwaylandtextinputv2.cpp qwaylandtextinputv2_p.h
@@ -47,6 +51,7 @@ qt_internal_add_module(WaylandClient
         qwaylandsubsurface.cpp qwaylandsubsurface_p.h
         qwaylandsurface.cpp qwaylandsurface_p.h
         qwaylandtouch.cpp qwaylandtouch_p.h
+        qwaylandviewport.cpp qwaylandviewport_p.h
         qwaylandwindow.cpp qwaylandwindow_p.h
         qwaylandwindowmanagerintegration.cpp qwaylandwindowmanagerintegration_p.h
         shellintegration/qwaylandclientshellapi_p.h
@@ -71,10 +76,13 @@ qt_internal_add_module(WaylandClient
         Qt::CorePrivate
         Qt::GuiPrivate
         Qt::WaylandGlobalPrivate
+    PRIVATE_HEADER_FILTERS
+        "^qwayland-.*\.h|^wayland-.*-protocol\.h"
 )
 
 qt6_generate_wayland_protocol_client_sources(WaylandClient
     FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/cursor-shape-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/pointer-gestures-unstable-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/tablet-unstable-v2.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input-unstable-v1.xml
@@ -83,6 +91,10 @@ qt6_generate_wayland_protocol_client_sources(WaylandClient
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/wayland.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/wp-primary-selection-unstable-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/xdg-output-unstable-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/fractional-scale-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/viewporter.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/qt-toplevel-drag-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/xdg-shell.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../extensions/qt-key-unstable-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../extensions/qt-text-input-method-unstable-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../extensions/qt-windowmanager.xml

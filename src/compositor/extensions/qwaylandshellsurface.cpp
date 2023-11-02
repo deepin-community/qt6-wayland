@@ -26,7 +26,7 @@
  *
  * The same usage pattern applies as for QWaylandCompositorExtensionTemplate.
  *
- * \sa {Qt Wayland Compositor Examples - Custom Shell}
+ * \sa { Custom Shell}
  */
 
 /*!
@@ -81,7 +81,7 @@
 #endif
 
 /*!
- * \qmlproperty enum QtWaylandCompositor::ShellSurface::windowType
+ * \qmlproperty enum QtWayland.Compositor::ShellSurface::windowType
  *
  * This property holds the window type of the ShellSurface.
  */

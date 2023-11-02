@@ -41,7 +41,9 @@ public:
     QWaylandIntegration();
     ~QWaylandIntegration() override;
 
-    bool hasFailed() { return mFailed; }
+    static QWaylandIntegration *instance() { return sInstance; }
+
+    bool init();
 
     bool hasCapability(QPlatformIntegration::Capability cap) const override;
     QPlatformWindow *createPlatformWindow(QWindow *window) const override;
@@ -86,6 +88,8 @@ public:
     QPlatformVulkanInstance *createPlatformVulkanInstance(QVulkanInstance *instance) const override;
 #endif
 
+    void setApplicationBadge(qint64 number) override;
+
     virtual QWaylandInputDevice *createInputDevice(QWaylandDisplay *display, int version, uint32_t id) const;
     virtual QWaylandScreen *createPlatformScreen(QWaylandDisplay *waylandDisplay, int version, uint32_t id) const;
     virtual QWaylandCursor *createPlatformCursor(QWaylandDisplay *display) const;
@@ -103,6 +107,7 @@ protected:
     QScopedPointer<QWaylandDisplay> mDisplay;
 
 protected:
+    void reset();
     virtual QPlatformNativeInterface *createPlatformNativeInterface();
 
     QScopedPointer<QWaylandClientBufferIntegration> mClientBufferIntegration;
@@ -131,11 +136,12 @@ private:
 #if QT_CONFIG(accessibility)
     mutable QScopedPointer<QPlatformAccessibility> mAccessibility;
 #endif
-    bool mFailed = false;
     QMutex mClientBufferInitLock;
     bool mClientBufferIntegrationInitialized = false;
     bool mServerBufferIntegrationInitialized = false;
     bool mShellIntegrationInitialized = false;
+
+    static QWaylandIntegration *sInstance;
 
     friend class QWaylandDisplay;
 };
