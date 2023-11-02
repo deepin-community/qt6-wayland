@@ -9,6 +9,7 @@ WaylandOutput {
     id: output
     property alias surfaceArea: background
     sizeFollowsWindow: true
+
     window: Window {
         id: screen
 
@@ -20,7 +21,7 @@ WaylandOutput {
 
         Rectangle {
             id: sidebar
-            width: 150
+            width: 250
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -34,19 +35,20 @@ WaylandOutput {
                 Repeater {
                     model: comp.itemList
                     Rectangle {
-                        height: 36
+                        height: 54
                         width: sidebar.width - 5
                         color: "white"
                         radius: 5
                         Text {
-                            text: "window: " + modelData.shellSurface.title + "[" + modelData.shellSurface.className
-                                  + (modelData.isCustom ? "]\nfont size: " + modelData.fontSize :"]\n No extension")
+                            text: "window: " + modelData.shellSurface.toplevel.title + "\n["
+                                  + modelData.shellSurface.toplevel.appId
+                                  + (modelData.isCustom ? "]\nfont size: " + modelData.fontSize : "]\nNo extension")
                             color: modelData.isCustom ? "black" : "darkgray"
                         }
                         MouseArea {
                             enabled: modelData.isCustom
                             anchors.fill: parent
-                            onWheel: {
+                            onWheel: (wheel) => {
                                 if (wheel.angleDelta.y > 0)
                                     modelData.fontSize++
                                 else if (wheel.angleDelta.y < 0 && modelData.fontSize > 3)

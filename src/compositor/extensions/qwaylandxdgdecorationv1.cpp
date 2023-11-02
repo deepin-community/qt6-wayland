@@ -43,8 +43,7 @@ QT_BEGIN_NAMESPACE
     }
     \endqml
 
-    \sa QWaylandXdgToplevel::decorationMode,
-        {Qt Wayland Compositor Examples - Server Side Decoration Compositor}
+    \sa QWaylandXdgToplevel::decorationMode, {Server Side Decoration Compositor}
 */
 
 /*!
@@ -87,7 +86,7 @@ void QWaylandXdgDecorationManagerV1::initialize()
 }
 
 /*!
-    \qmlproperty string QtWaylandCompositor::XdgDecorationManagerV1::preferredMode
+    \qmlproperty string XdgDecorationManagerV1::preferredMode
 
     This property holds the decoration mode the compositor prefers.
 

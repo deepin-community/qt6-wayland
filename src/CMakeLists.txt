@@ -1,7 +1,24 @@
+# Copyright (C) 2022 The Qt Company Ltd.
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Generated from src.pro.
 # special case begin
 qt_find_package(WaylandScanner PROVIDED_TARGETS Wayland::Scanner)
-qt_find_package(Wayland 1.15 PROVIDED_TARGETS Wayland::Client Wayland::Server)
+
+set(wayland_libs
+    Wayland::Client
+    Wayland::Server
+    Wayland::Cursor
+    Wayland::Egl
+)
+
+foreach(lib IN LISTS wayland_libs)
+    if(TARGET ${lib})
+        qt_internal_disable_find_package_global_promotion(${lib})
+    endif()
+endforeach()
+
+qt_find_package(Wayland 1.15 PROVIDED_TARGETS ${wayland_libs})
 
 if (NOT WaylandScanner_FOUND OR NOT Wayland_FOUND)
     message(WARNING "QtWayland is missing required dependencies, nothing will be built. \
@@ -13,6 +30,15 @@ endif()
 
 # See global/README for a description of the following module.
 qt_internal_add_module(WaylandGlobalPrivate INTERNAL_MODULE HEADER_MODULE)
+
+# Work around 115101.
+# If nothing depends on the WaylandGlobalPrivate target it doesn't run custom commands that the
+# target depends on. WaylandGlobalPrivate_ensure_sync_headers makes sure that 'all' depends on
+# WaylandGlobalPrivate_sync_headers.
+# TODO: This needs to be removed once the fix for QTBUG-115101 is merged in qtbase.
+add_custom_target(WaylandGlobalPrivate_ensure_sync_headers ALL)
+add_dependencies(WaylandGlobalPrivate_ensure_sync_headers WaylandGlobalPrivate_sync_headers)
+
 add_subdirectory(qtwaylandscanner)
 
 # special case begin

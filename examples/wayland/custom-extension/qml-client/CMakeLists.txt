@@ -1,3 +1,6 @@
+# Copyright (C) 2022 The Qt Company Ltd.
+# SPDX-License-Identifier: BSD-3-Clause
+
 cmake_minimum_required(VERSION 3.16)
 project(custom-extension-qml-client)
 
@@ -11,6 +14,7 @@ set(INSTALL_EXAMPLEDIR "${INSTALL_EXAMPLESDIR}/wayland/custom-extension/qml-clie
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick WaylandClient)
 
+qt6_policy(SET QTP0001 NEW)
 qt_add_executable(custom-extension-qml-client
     ../client-common/customextension.cpp ../client-common/customextension.h
     main.cpp
@@ -45,6 +49,13 @@ qt6_add_resources(custom-extension-qml-client "qml"
         "/"
     FILES
         ${qml_resource_files}
+)
+
+target_include_directories(custom-extension-qml-client PUBLIC ../client-common/)
+
+qt6_add_qml_module(custom-extension-qml-client
+  URI io.qt.examples.customextension
+  VERSION 1.0
 )
 
 install(TARGETS custom-extension-qml-client

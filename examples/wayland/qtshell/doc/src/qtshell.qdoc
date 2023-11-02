@@ -2,14 +2,17 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GFDL-1.3-no-invariants-only
 
 /*!
- * \title Qt Wayland Compositor Examples - QtShell Compositor
+ * \title QtShell Compositor
  * \example qtshell
+ * \examplecategory {Embedded}
  * \brief QtShell Compositor shows how to use the QtShell shell extension.
  * \ingroup qtwaylandcompositor-examples
  *
  * QtShell Compositor is a desktop-style Wayland compositor example implementing a
  * complete Qt Wayland Compositor which uses the specialized
  * \l{Shell Extensions - Qt Wayland Compositor}{shell extension protocol} called \l{QtShell}.
+ *
+ * \image qtshell.jpg
  *
  * The compositor is implemented with Qt Quick and QML.
  *
@@ -23,7 +26,7 @@
  *
  * When a client connects to the QtShell interface, it creates a \l{QtShellSurface}. The compositor
  * is notified of this by the emission of the
- * \l{QtWaylandCompositor::QtShell::qtShellSurfaceCreated()}{qtShellSurfaceCreated} signal. The
+ * \l [QML] {QtShell::}{qtShellSurfaceCreated} signal. The
  * example then adds the shell surface to a ListModel for easy access later.
  *
  * \snippet qtshell/qml/CompositorScreen.qml handleShellSurface

@@ -1,3 +1,12 @@
+qt6-wayland (6.6.0-1) UNRELEASED; urgency=medium
+
+  [ Tianyu Chen ]
+  * New upstream release (6.6.0).
+    - Update .install files.
+    - Update symbols from buildlogs.
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Wed, 01 Nov 2023 16:52:30 +0800
+
 qt6-wayland (6.4.2-5) unstable; urgency=medium
 
   [ Patrick Franz ]

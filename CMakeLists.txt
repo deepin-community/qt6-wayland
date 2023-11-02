@@ -1,3 +1,6 @@
+# Copyright (C) 2022 The Qt Company Ltd.
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Generated from qtwayland.pro.
 
 cmake_minimum_required(VERSION 3.16)
@@ -13,6 +16,7 @@ project(QtWayland # special case
 find_package(Qt6 ${PROJECT_VERSION} CONFIG REQUIRED COMPONENTS
     BuildInternals
 )
+qt_internal_project_setup()
 
 if(NOT MACOS AND NOT QNX AND (ANDROID OR NOT LINUX))
     message(NOTICE "Skipping the build as the condition \"LINUX OR MACOS OR QNX\" is not met.")
