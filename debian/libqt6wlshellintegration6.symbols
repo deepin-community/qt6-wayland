@@ -1,38 +1,9 @@
 # SymbolsHelper-Confirmed: 6.6.0 amd64
 libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
-* Build-Depends-Package: qt6-wayland-dev
+| libqt6wlshellintegration6 #MINVER#, qt6-waylandclient-private-abi (= 6.6.0)
+* Build-Depends-Packages: qt6-wayland-dev, qt6-wayland-private-dev
  Qt_6@Qt_6 6.6.0
- Qt_6_PRIVATE_API@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface11qt_metacallEN11QMetaObject4CallEiPPv@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface11qt_metacastEPKc@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface11setTopLevelEv@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface12sendPropertyERK7QStringRK8QVariant@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface14applyConfigureEv@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface14setWindowFlagsE6QFlagsIN2Qt10WindowTypeEE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface16staticMetaObjectE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface18shell_surface_pingEj@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface19requestWindowStatesE6QFlagsIN2Qt11WindowStateEE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface20convertToResizeEdgesE6QFlagsIN2Qt4EdgeEE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface21updateTransientParentEP7QWindow@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface23shell_surface_configureEjii@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface24shell_surface_popup_doneEv@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface25setContentOrientationMaskE6QFlagsIN2Qt17ScreenOrientationEE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface4moveEPNS_19QWaylandInputDeviceE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface5lowerEv@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface5raiseEv@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface6resizeEPNS_19QWaylandInputDeviceE6QFlagsIN2Qt4EdgeEE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface8setAppIdERK7QString@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface8setPopupEPNS_14QWaylandWindowEPNS_19QWaylandInputDeviceEj@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurface8setTitleERK7QString@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurfaceC1EP16wl_shell_surfacePNS_14QWaylandWindowE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurfaceC2EP16wl_shell_surfacePNS_14QWaylandWindowE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurfaceD0Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurfaceD1Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient22QWaylandWlShellSurfaceD2Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient26QWaylandWlShellIntegration18createShellSurfaceEPNS_14QWaylandWindowE@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient26QWaylandWlShellIntegration23nativeResourceForWindowERK10QByteArrayP7QWindow@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient26QWaylandWlShellIntegrationC1Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN15QtWaylandClient26QWaylandWlShellIntegrationC2Ev@Qt_6_PRIVATE_API 6.6.0
+ (symver)Qt_6_PRIVATE_API 0
  _ZN9QtWayland10wl_pointer10fromObjectEP10wl_pointer@Qt_6 6.6.0
  _ZN9QtWayland10wl_pointer10set_cursorEjP10wl_surfaceii@Qt_6 6.6.0
  _ZN9QtWayland10wl_pointer11handle_axisEPvP10wl_pointerjji@Qt_6 6.6.0
@@ -515,8 +486,6 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZN9QtWayland9wl_regionD0Ev@Qt_6 6.6.0
  _ZN9QtWayland9wl_regionD1Ev@Qt_6 6.6.0
  _ZN9QtWayland9wl_regionD2Ev@Qt_6 6.6.0
- _ZNK15QtWaylandClient22QWaylandWlShellSurface10metaObjectEv@Qt_6_PRIVATE_API 6.6.0
- _ZNK15QtWaylandClient22QWaylandWlShellSurface16wantsDecorationsEv@Qt_6_PRIVATE_API 6.6.0
  _ZNK9QtWayland10wl_pointer13isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland10wl_pointer7versionEv@Qt_6 6.6.0
  _ZNK9QtWayland10wl_surface13isInitializedEv@Qt_6 6.6.0
@@ -560,10 +529,7 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZNK9QtWayland9wl_region13isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland9wl_region7versionEv@Qt_6 6.6.0
  (optional=templinst)_ZNSt3any17_Manager_internalIPK16wl_shell_surfaceE9_S_manageENS_3_OpEPKS_PNS_4_ArgE@Qt_6 6.6.0
- _ZTIN15QtWaylandClient22QWaylandWlShellSurfaceE@Qt_6_PRIVATE_API 6.6.0
  _ZTIN15QtWaylandClient24QWaylandShellIntegrationE@Qt_6 6.6.0
- _ZTIN15QtWaylandClient26QWaylandWlShellIntegrationE@Qt_6_PRIVATE_API 6.6.0
- _ZTIN15QtWaylandClient32QWaylandShellIntegrationTemplateINS_26QWaylandWlShellIntegrationEEE@Qt_6_PRIVATE_API 6.6.0
  _ZTIN9QtWayland10wl_pointerE@Qt_6 6.6.0
  _ZTIN9QtWayland10wl_surfaceE@Qt_6 6.6.0
  _ZTIN9QtWayland11wl_callbackE@Qt_6 6.6.0
@@ -585,10 +551,7 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZTIN9QtWayland9wl_bufferE@Qt_6 6.6.0
  _ZTIN9QtWayland9wl_outputE@Qt_6 6.6.0
  _ZTIN9QtWayland9wl_regionE@Qt_6 6.6.0
- _ZTSN15QtWaylandClient22QWaylandWlShellSurfaceE@Qt_6_PRIVATE_API 6.6.0
  _ZTSN15QtWaylandClient24QWaylandShellIntegrationE@Qt_6 6.6.0
- _ZTSN15QtWaylandClient26QWaylandWlShellIntegrationE@Qt_6_PRIVATE_API 6.6.0
- _ZTSN15QtWaylandClient32QWaylandShellIntegrationTemplateINS_26QWaylandWlShellIntegrationEEE@Qt_6_PRIVATE_API 6.6.0
  _ZTSN9QtWayland10wl_pointerE@Qt_6 6.6.0
  _ZTSN9QtWayland10wl_surfaceE@Qt_6 6.6.0
  _ZTSN9QtWayland11wl_callbackE@Qt_6 6.6.0
@@ -610,8 +573,6 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZTSN9QtWayland9wl_bufferE@Qt_6 6.6.0
  _ZTSN9QtWayland9wl_outputE@Qt_6 6.6.0
  _ZTSN9QtWayland9wl_regionE@Qt_6 6.6.0
- _ZTVN15QtWaylandClient22QWaylandWlShellSurfaceE@Qt_6_PRIVATE_API 6.6.0
- _ZTVN15QtWaylandClient26QWaylandWlShellIntegrationE@Qt_6_PRIVATE_API 6.6.0
  _ZTVN9QtWayland10wl_pointerE@Qt_6 6.6.0
  _ZTVN9QtWayland10wl_surfaceE@Qt_6 6.6.0
  _ZTVN9QtWayland11wl_callbackE@Qt_6 6.6.0
@@ -633,10 +594,6 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZTVN9QtWayland9wl_bufferE@Qt_6 6.6.0
  _ZTVN9QtWayland9wl_outputE@Qt_6 6.6.0
  _ZTVN9QtWayland9wl_regionE@Qt_6 6.6.0
- (c++)"non-virtual thunk to QtWaylandClient::QWaylandWlShellSurface::shell_surface_configure(unsigned int, int, int)@Qt_6_PRIVATE_API" 6.6.0
- (c++)"non-virtual thunk to QtWaylandClient::QWaylandWlShellSurface::shell_surface_ping(unsigned int)@Qt_6_PRIVATE_API" 6.6.0
- (c++)"non-virtual thunk to QtWaylandClient::QWaylandWlShellSurface::shell_surface_popup_done()@Qt_6_PRIVATE_API" 6.6.0
- (c++)"non-virtual thunk to QtWaylandClient::QWaylandWlShellSurface::~QWaylandWlShellSurface()@Qt_6_PRIVATE_API" 6.6.0
  wl_buffer_interface@Qt_6 6.6.0
  wl_callback_interface@Qt_6 6.6.0
  wl_compositor_interface@Qt_6 6.6.0

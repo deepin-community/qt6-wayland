@@ -1,33 +1,8 @@
 # SymbolsHelper-Confirmed: 6.6.0 amd64
 libQt6WaylandEglCompositorHwIntegration.so.6 libqt6waylandeglcompositorhwintegration6 #MINVER#
-* Build-Depends-Package: qt6-wayland-dev
+| libqt6waylandeglcompositorhwintegration6 #MINVER#, qt6-waylandclient-private-abi (= 6.6.0)
+* Build-Depends-Packages: qt6-wayland-dev, qt6-wayland-private-dev
  Qt_6@Qt_6 6.6.0
- Qt_6_PRIVATE_API@Qt_6_PRIVATE_API 6.6.0
- _ZN22WaylandEglClientBuffer11isProtectedEv@Qt_6_PRIVATE_API 6.6.0
- _ZN22WaylandEglClientBuffer12setCommittedER7QRegion@Qt_6_PRIVATE_API 6.6.0
- _ZN22WaylandEglClientBuffer15toOpenGlTextureEi@Qt_6_PRIVATE_API 6.6.0
- _ZN22WaylandEglClientBuffer16lockNativeBufferEv@Qt_6_PRIVATE_API 6.6.0
- _ZN22WaylandEglClientBufferC1EP33WaylandEglClientBufferIntegrationP11wl_resource@Qt_6_PRIVATE_API 6.6.0
- _ZN22WaylandEglClientBufferC2EP33WaylandEglClientBufferIntegrationP11wl_resource@Qt_6_PRIVATE_API 6.6.0
- _ZN22WaylandEglClientBufferD0Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN22WaylandEglClientBufferD1Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN22WaylandEglClientBufferD2Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN33WaylandEglClientBufferIntegration15createBufferForEP11wl_resource@Qt_6_PRIVATE_API 6.6.0
- _ZN33WaylandEglClientBufferIntegration18initializeHardwareEP10wl_display@Qt_6_PRIVATE_API 6.6.0
- _ZN33WaylandEglClientBufferIntegrationC1Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN33WaylandEglClientBufferIntegrationC2Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN33WaylandEglClientBufferIntegrationD0Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN33WaylandEglClientBufferIntegrationD1Ev@Qt_6_PRIVATE_API 6.6.0
- _ZN33WaylandEglClientBufferIntegrationD2Ev@Qt_6_PRIVATE_API 6.6.0
- _ZNK22WaylandEglClientBuffer15bufferFormatEglEv@Qt_6_PRIVATE_API 6.6.0
- _ZNK22WaylandEglClientBuffer18unlockNativeBufferEy@Qt_6_PRIVATE_API 6.6.0
- _ZNK22WaylandEglClientBuffer4sizeEv@Qt_6_PRIVATE_API 6.6.0
- _ZNK22WaylandEglClientBuffer6originEv@Qt_6_PRIVATE_API 6.6.0
- _ZTI22WaylandEglClientBuffer@Qt_6_PRIVATE_API 6.6.0
- _ZTI33WaylandEglClientBufferIntegration@Qt_6_PRIVATE_API 6.6.0
+ (symver)Qt_6_PRIVATE_API 0
  _ZTIN9QtWayland23ClientBufferIntegrationE@Qt_6 6.6.0
- _ZTS22WaylandEglClientBuffer@Qt_6_PRIVATE_API 6.6.0
- _ZTS33WaylandEglClientBufferIntegration@Qt_6_PRIVATE_API 6.6.0
  _ZTSN9QtWayland23ClientBufferIntegrationE@Qt_6 6.6.0
- _ZTV22WaylandEglClientBuffer@Qt_6_PRIVATE_API 6.6.0
- _ZTV33WaylandEglClientBufferIntegration@Qt_6_PRIVATE_API 6.6.0
