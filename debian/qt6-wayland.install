@@ -1,3 +1,5 @@
+usr/lib/${DEB_HOST_MULTIARCH}/libQt6WaylandEglClientHwIntegration.so.*
+usr/lib/${DEB_HOST_MULTIARCH}/libQt6WaylandEglCompositorHwIntegration.so.*
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/plugins/platforms/libqwayland-egl.so
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/plugins/platforms/libqwayland-generic.so
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/plugins/wayland-decoration-client/libbradient.so

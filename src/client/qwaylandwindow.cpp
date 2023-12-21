@@ -208,6 +208,8 @@ void QWaylandWindow::initWindow()
         mShellSurface->requestWindowStates(window()->windowStates());
     handleContentOrientationChange(window()->contentOrientation());
     mFlags = window()->flags();
+
+    mSurface->commit();
 }
 
 void QWaylandWindow::initializeWlSurface()
@@ -308,6 +310,9 @@ void QWaylandWindow::reset()
     mOpaqueArea = QRegion();
     mMask = QRegion();
 
+    if (mQueuedBuffer) {
+        mQueuedBuffer->setBusy(false);
+    }
     mQueuedBuffer = nullptr;
     mQueuedBufferDamage = QRegion();
 
@@ -589,8 +594,6 @@ void QWaylandWindow::setMask(const QRegion &mask)
         else
             setOpaqueArea(mMask);
     }
-
-    mSurface->commit();
 }
 
 void QWaylandWindow::setAlertState(bool enabled)
@@ -978,8 +981,6 @@ void QWaylandWindow::handleContentOrientationChange(Qt::ScreenOrientation orient
             Q_UNREACHABLE();
     }
     mSurface->set_buffer_transform(transform);
-    // set_buffer_transform is double buffered, we need to commit.
-    mSurface->commit();
 }
 
 void QWaylandWindow::setOrientationMask(Qt::ScreenOrientations mask)
@@ -1163,7 +1164,7 @@ void QWaylandWindow::handleMouse(QWaylandInputDevice *inputDevice, const QWaylan
             case QEvent::Wheel:
                 QWindowSystemInterface::handleWheelEvent(window(), e.timestamp, e.local, e.global,
                                                          e.pixelDelta, e.angleDelta, e.modifiers,
-                                                         e.phase, e.source, false);
+                                                         e.phase, e.source, e.inverted);
                 break;
         default:
             Q_UNREACHABLE();
@@ -1354,7 +1355,7 @@ void QWaylandWindow::handleMouseEventWithDecoration(QWaylandInputDevice *inputDe
                 QWindowSystemInterface::handleWheelEvent(window(), e.timestamp,
                                                          localTranslated, globalTranslated,
                                                          e.pixelDelta, e.angleDelta, e.modifiers,
-                                                         e.phase, e.source, false);
+                                                         e.phase, e.source, e.inverted);
                 break;
             }
             default:
