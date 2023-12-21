@@ -19,10 +19,10 @@ Build-Depends: cmake (>= 3.24~),
                ninja-build,
                pkg-config,
                pkg-kde-tools,
-               qt6-base-dev (>= 6.6.0+dfsg~),
-               qt6-base-private-dev (>= 6.6.0+dfsg~),
-               qt6-declarative-dev (>= 6.6.0+dfsg~),
-               qt6-declarative-private-dev (>= 6.6.0+dfsg~),
+               qt6-base-dev (>= 6.6.1+dfsg~),
+               qt6-base-private-dev (>= 6.6.1+dfsg~),
+               qt6-declarative-dev (>= 6.6.1+dfsg~),
+               qt6-declarative-private-dev (>= 6.6.1+dfsg~),
                qt6-wayland-dev:native <cross>,
                xauth <!nocheck>,
                xvfb <!nocheck>,
@@ -38,6 +38,7 @@ Rules-Requires-Root: no
 Package: libqt6waylandclient6
 Architecture: any
 Multi-Arch: same
+Provides: qt6-waylandclient-private-abi (= 6.6.1),
 Depends: ${misc:Depends}, ${shlibs:Depends},
 Description: Qt 6 Wayland Client library
  Qt is a cross-platform C++ application framework. Qt's primary feature
@@ -50,6 +51,7 @@ Description: Qt 6 Wayland Client library
 Package: libqt6waylandcompositor6
 Architecture: any
 Multi-Arch: same
+Provides: qt6-waylandcompositor-private-abi (= 6.6.1),
 Depends: ${misc:Depends}, ${shlibs:Depends},
 Description: Qt 6 Wayland Compositor library
  Qt is a cross-platform C++ application framework. Qt's primary feature
@@ -58,34 +60,6 @@ Description: Qt 6 Wayland Compositor library
  QtWayland is a Qt 6 module that wraps the functionality of Wayland.
  .
  This package contains the Qt 6 Wayland Compositor library.
-
-Package: libqt6waylandeglclienthwintegration6
-Architecture: any
-Multi-Arch: same
-Depends: libqt6waylandclient6 (= ${binary:Version}),
-         ${misc:Depends},
-         ${shlibs:Depends},
-Description: Qt 6 Wayland WaylandEglClientHwIntegration library
- Qt is a cross-platform C++ application framework. Qt's primary feature
- is its rich set of widgets that provide standard GUI functionality.
- .
- QtWayland is a Qt 6 module that wraps the functionality of Wayland.
- .
- This package contains the Qt 6 Wayland EglClientHwIntegration library.
-
-Package: libqt6waylandeglcompositorhwintegration6
-Architecture: any
-Multi-Arch: same
-Depends: libqt6waylandclient6 (= ${binary:Version}),
-         ${misc:Depends},
-         ${shlibs:Depends},
-Description: Qt 6 Wayland WaylandEglCompositorHwIntegration library
- Qt is a cross-platform C++ application framework. Qt's primary feature
- is its rich set of widgets that provide standard GUI functionality.
- .
- QtWayland is a Qt 6 module that wraps the functionality of Wayland.
- .
- This package contains the Qt 6 Wayland EglCompositorHwIntegration library.
 
 Package: libqt6wlshellintegration6
 Architecture: any
@@ -127,6 +101,8 @@ Package: qt6-wayland
 Architecture: any
 Multi-Arch: same
 Depends: ${misc:Depends}, ${shlibs:Depends},
+Breaks: libqt6waylandeglclienthwintegration6, libqt6waylandeglcompositorhwintegration6
+Replaces: libqt6waylandeglclienthwintegration6, libqt6waylandeglcompositorhwintegration6
 Description: Qt 6 Wayland platform plugin
  Qt is a cross-platform C++ application framework. Qt's primary feature
  is its rich set of widgets that provide standard GUI functionality.
@@ -143,8 +119,6 @@ Section: libdevel
 Multi-Arch: same
 Depends: libqt6waylandclient6 (= ${binary:Version}),
          libqt6waylandcompositor6 (= ${binary:Version}),
-         libqt6waylandeglclienthwintegration6 (= ${binary:Version}),
-         libqt6waylandeglcompositorhwintegration6 (= ${binary:Version}),
          libqt6wlshellintegration6 (= ${binary:Version}),
          libwayland-dev,
          qt6-wayland-dev-tools (= ${binary:Version}),
@@ -163,8 +137,8 @@ Architecture: any
 Multi-Arch: same
 Section: libdevel
 Depends: qt6-wayland-dev (= ${binary:Version}), ${misc:Depends},
-Breaks: qt6-wayland-dev (<< 6.6.0-1),
-Replaces: qt6-wayland-dev (<< 6.6.0-1),
+Breaks: qt6-wayland-dev (<< 6.4.2-4),
+Replaces: qt6-wayland-dev (<< 6.4.2-4),
 Description: Qt 6 Wayland - private development files
  Qt is a cross-platform C++ application framework. Qt's primary feature
  is its rich set of widgets that provide standard GUI functionality.

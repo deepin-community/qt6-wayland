@@ -155,23 +155,16 @@ QWaylandWindow *QWaylandInputDevice::Pointer::focusWindow() const
 
 class WlCallback : public QtWayland::wl_callback {
 public:
-    explicit WlCallback(::wl_callback *callback, std::function<void(uint32_t)> fn, bool autoDelete = false)
+    explicit WlCallback(::wl_callback *callback, std::function<void(uint32_t)> fn)
         : QtWayland::wl_callback(callback)
         , m_fn(fn)
-        , m_autoDelete(autoDelete)
     {}
     ~WlCallback() override { wl_callback_destroy(object()); }
-    bool done() const { return m_done; }
     void callback_done(uint32_t callback_data) override {
-        m_done = true;
         m_fn(callback_data);
-        if (m_autoDelete)
-            delete this;
     }
 private:
-    bool m_done = false;
     std::function<void(uint32_t)> m_fn;
-    bool m_autoDelete = false;
 };
 
 class CursorSurface : public QWaylandSurface
@@ -390,7 +383,7 @@ QWaylandInputDevice::Touch::~Touch()
 }
 
 QWaylandInputDevice::QWaylandInputDevice(QWaylandDisplay *display, int version, uint32_t id)
-    : QtWayland::wl_seat(display->wl_registry(), id, qMin(version, 8))
+    : QtWayland::wl_seat(display->wl_registry(), id, qMin(version, 9))
     , mQDisplay(display)
     , mDisplay(display->wl_display())
 {
@@ -886,9 +879,9 @@ class WheelEvent : public QWaylandPointerEvent
 public:
     WheelEvent(QWaylandWindow *surface, Qt::ScrollPhase phase, ulong timestamp, const QPointF &local,
                const QPointF &global, const QPoint &pixelDelta, const QPoint &angleDelta,
-               Qt::MouseEventSource source, Qt::KeyboardModifiers modifiers)
+               Qt::MouseEventSource source, Qt::KeyboardModifiers modifiers, bool inverted)
         : QWaylandPointerEvent(QEvent::Wheel, phase, surface, timestamp,
-                               local, global, pixelDelta, angleDelta, source, modifiers)
+                               local, global, pixelDelta, angleDelta, source, modifiers, inverted)
     {
     }
 };
@@ -982,8 +975,9 @@ void QWaylandInputDevice::Pointer::pointer_axis_stop(uint32_t time, uint32_t axi
     if (!target)
         target = focusWindow();
     Qt::KeyboardModifiers mods = mParent->modifiers();
+    const bool inverted = mFrameData.verticalAxisInverted || mFrameData.horizontalAxisInverted;
     WheelEvent wheelEvent(focusWindow(), Qt::ScrollEnd, mParent->mTime, mSurfacePos, mGlobalPos,
-                          QPoint(), QPoint(), Qt::MouseEventNotSynthesized, mods);
+                          QPoint(), QPoint(), Qt::MouseEventNotSynthesized, mods, inverted);
     target->handleMouse(mParent, wheelEvent);
     mScrollBeginSent = false;
     mScrollDeltaRemainder = QPointF();
@@ -1032,6 +1026,21 @@ void QWaylandInputDevice::Pointer::pointer_axis_value120(uint32_t axis, int32_t 
     }
 }
 
+void QWaylandInputDevice::Pointer::pointer_axis_relative_direction(uint32_t axis, uint32_t direction)
+{
+    const bool inverted = direction == axis_relative_direction_inverted;
+    switch (axis) {
+    case axis_vertical_scroll:
+        mFrameData.verticalAxisInverted = inverted;
+        break;
+    case axis_horizontal_scroll:
+        mFrameData.horizontalAxisInverted = inverted;
+        break;
+    default:
+        qCWarning(lcQpaWaylandInput) << "wl_pointer.axis_relative_direction: Unknown axis:" << axis;
+    }
+}
+
 void QWaylandInputDevice::Pointer::setFrameEvent(QWaylandPointerEvent *event)
 {
     qCDebug(lcQpaWaylandInput) << "Setting frame event " << event->type;
@@ -1053,6 +1062,8 @@ void QWaylandInputDevice::Pointer::FrameData::resetScrollData()
     delta120 = QPoint();
     delta = QPointF();
     axisSource = axis_source_wheel;
+    horizontalAxisInverted = false;
+    verticalAxisInverted = false;
 }
 
 bool QWaylandInputDevice::Pointer::FrameData::hasPixelDelta() const
@@ -1134,7 +1145,7 @@ void QWaylandInputDevice::Pointer::flushScrollEvent()
             target->handleMouse(mParent, WheelEvent(focusWindow(), Qt::ScrollBegin, mParent->mTime,
                                                     mSurfacePos, mGlobalPos, QPoint(), QPoint(),
                                                     Qt::MouseEventNotSynthesized,
-                                                    mParent->modifiers()));
+                                                    mParent->modifiers(), false));
             mScrollBeginSent = true;
             mScrollDeltaRemainder = QPointF();
         }
@@ -1143,11 +1154,15 @@ void QWaylandInputDevice::Pointer::flushScrollEvent()
         QPoint pixelDelta = mFrameData.pixelDeltaAndError(&mScrollDeltaRemainder);
         Qt::MouseEventSource source = mFrameData.wheelEventSource();
 
+
+        // The wayland protocol has separate horizontal and vertical axes, Qt has just the one inverted flag
+        // Pragmatically it should't come up
+        const bool inverted = mFrameData.verticalAxisInverted || mFrameData.horizontalAxisInverted;
+
         qCDebug(lcQpaWaylandInput) << "Flushing scroll event" << phase << pixelDelta << angleDelta;
         target->handleMouse(mParent, WheelEvent(focusWindow(), phase, mParent->mTime, mSurfacePos, mGlobalPos,
-                                                pixelDelta, angleDelta, source, mParent->modifiers()));
+                                                pixelDelta, angleDelta, source, mParent->modifiers(), inverted));
     }
-
     mFrameData.resetScrollData();
 }
 

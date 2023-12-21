@@ -1,11 +1,32 @@
-qt6-wayland (6.6.0-1) UNRELEASED; urgency=medium
+qt6-wayland (6.6.1-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.6.1).
+  * Bump Qt B-Ds to 6.6.1.
+  * Update ABI to 6.6.1.
+  * Remove binary packages libqt6waylandeglclienthwintegration6 and
+    libqt6waylandeglcompositorhwintegration6.
+
+ -- Patrick Franz <deltaone@debian.org>  Wed, 13 Dec 2023 19:01:56 +0100
+
+qt6-wayland (6.6.0-2) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * Update symbols from buildlogs.
+
+ -- Patrick Franz <deltaone@debian.org>  Wed, 15 Nov 2023 00:35:12 +0100
+
+qt6-wayland (6.6.0-1) experimental; urgency=medium
 
   [ Tianyu Chen ]
   * New upstream release (6.6.0).
-    - Update .install files.
-    - Update symbols from buildlogs.
+  * Update .install files.
+  * Update symbols from buildlogs.
 
- -- Tianyu Chen <sweetyfish@deepin.org>  Wed, 01 Nov 2023 16:52:30 +0800
+  [ Patrick Franz ]
+  * Add virtual ABIs for the private headers.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 14 Nov 2023 20:55:46 +0100
 
 qt6-wayland (6.4.2-5) unstable; urgency=medium
 
