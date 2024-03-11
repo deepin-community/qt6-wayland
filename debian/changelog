@@ -1,3 +1,9 @@
+qt6-wayland (6.6.1-2) unstable; urgency=medium
+
+  * feat: Support multi-key for input context plugin
+
+ -- dengbo <dengbo@deepin.org>  Mon, 11 Mar 2024 16:40:48 +0800
+
 qt6-wayland (6.6.1-1) experimental; urgency=medium
 
   [ Patrick Franz ]
