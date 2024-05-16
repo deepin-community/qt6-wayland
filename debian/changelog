@@ -1,3 +1,9 @@
+qt6-wayland (6.6.1-2+deepin1) unstable; urgency=medium
+
+  * Use static_cast rather than dynamic_cast.
+
+ -- Lu YaNing <luyaning@uniontech.com>  Thu, 16 May 2024 11:03:28 +0800
+
 qt6-wayland (6.6.1-2) unstable; urgency=medium
 
   * feat: Support multi-key for input context plugin
