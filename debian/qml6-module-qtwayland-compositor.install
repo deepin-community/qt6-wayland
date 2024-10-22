@@ -2,6 +2,7 @@ usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Compositor/IviApplication/libway
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Compositor/IviApplication/plugins.qmltypes
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Compositor/IviApplication/qmldir
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Compositor/PresentationTime/libwaylandcompositorpresentationtimeplugin.so
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Compositor/PresentationTime/plugins.qmltypes
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Compositor/PresentationTime/qmldir
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Compositor/QtShell/libwaylandcompositorqtshellplugin.so
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Compositor/QtShell/plugins.qmltypes
