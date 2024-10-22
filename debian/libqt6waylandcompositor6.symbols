@@ -1,7 +1,8 @@
-# SymbolsHelper-Confirmed: 6.6.0 amd64 armel armhf hppa i386 powerpc
+# SymbolsHelper-Confirmed: 6.8.0 amd64
 libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
 | libqt6waylandcompositor6 #MINVER#, qt6-waylandcompositor-private-abi (= 6.8.0)
 * Build-Depends-Packages: qt6-wayland-dev, qt6-wayland-private-dev
+ NonQt@NonQt 6.8.0
  Qt_6@Qt_6 6.6.0
  (symver)Qt_6_PRIVATE_API 0
  _Z20qLcWaylandCompositorv@Qt_6 6.6.0
@@ -42,6 +43,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN12QWaylandSeat19sendTouchFrameEventEP14QWaylandClient@Qt_6 6.6.0
  _ZN12QWaylandSeat19sendTouchPointEventEP15QWaylandSurfaceiRK7QPointFN2Qt15TouchPointStateE@Qt_6 6.6.0
  _ZN12QWaylandSeat19sendTouchPointMovedEP15QWaylandSurfaceiRK7QPointF@Qt_6 6.6.0
+ _ZN12QWaylandSeat19sendUnicodeKeyEventEjN6QEvent4TypeE@Qt_6 6.8.0
  _ZN12QWaylandSeat20cursorSurfaceRequestEP15QWaylandSurfaceii@Qt_6 6.6.0
  _ZN12QWaylandSeat20keyboardFocusChangedEP15QWaylandSurfaceS1_@Qt_6 6.6.0
  _ZN12QWaylandSeat20sendTouchCancelEventEP14QWaylandClient@Qt_6 6.6.0
@@ -49,7 +51,9 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN12QWaylandSeat21sendTouchPointPressedEP15QWaylandSurfaceiRK7QPointF@Qt_6 6.6.0
  _ZN12QWaylandSeat22cursorSurfaceRequestedEP15QWaylandSurfaceiiP14QWaylandClient@Qt_6 6.6.0
  _ZN12QWaylandSeat22sendTouchPointReleasedEP15QWaylandSurfaceiRK7QPointF@Qt_6 6.6.0
+ _ZN12QWaylandSeat24sendUnicodeKeyPressEventEj@Qt_6 6.8.0
  _ZN12QWaylandSeat25handleMouseFocusDestroyedEv@Qt_6 6.6.0
+ _ZN12QWaylandSeat26sendUnicodeKeyReleaseEventEj@Qt_6 6.8.0
  _ZN12QWaylandSeat6keymapEv@Qt_6 6.6.0
  _ZN12QWaylandSeatC1EP18QWaylandCompositor6QFlagsINS_14CapabilityFlagEE@Qt_6 6.6.0
  _ZN12QWaylandSeatC2EP18QWaylandCompositor6QFlagsINS_14CapabilityFlagEE@Qt_6 6.6.0
@@ -692,6 +696,8 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer12xdg_toplevel20display_destroy_funcEP11wl_listenerPv@Qt_6 6.6.0
  _ZN15QtWaylandServer12xdg_toplevel20handle_set_maximizedEP9wl_clientP11wl_resource@Qt_6 6.6.0
  _ZN15QtWaylandServer12xdg_toplevel20handle_set_minimizedEP9wl_clientP11wl_resource@Qt_6 6.6.0
+ _ZN15QtWaylandServer12xdg_toplevel20send_wm_capabilitiesEP11wl_resourceRK10QByteArray@Qt_6 6.8.0
+ _ZN15QtWaylandServer12xdg_toplevel20send_wm_capabilitiesERK10QByteArray@Qt_6 6.8.0
  _ZN15QtWaylandServer12xdg_toplevel20xdg_toplevel_destroyEPNS0_8ResourceE@Qt_6 6.6.0
  _ZN15QtWaylandServer12xdg_toplevel21handle_set_fullscreenEP9wl_clientP11wl_resourceS4_@Qt_6 6.6.0
  _ZN15QtWaylandServer12xdg_toplevel21send_configure_boundsEP11wl_resourceii@Qt_6 6.6.0
@@ -879,6 +885,39 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer13wp_viewporterD0Ev@Qt_6 6.6.0
  _ZN15QtWaylandServer13wp_viewporterD1Ev@Qt_6 6.6.0
  _ZN15QtWaylandServer13wp_viewporterD2Ev@Qt_6 6.6.0
+ _ZN15QtWaylandServer13xdg_dialog_v112destroy_funcEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v114handle_destroyEP9wl_clientP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v116handle_set_modalEP9wl_clientP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v118handle_unset_modalEP9wl_clientP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v120display_destroy_funcEP11wl_listenerPv@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v121xdg_dialog_v1_destroyEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v122xdg_dialog_v1_allocateEv@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v123xdg_dialog_v1_set_modalEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v125m_xdg_dialog_v1_interfaceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v125xdg_dialog_v1_unset_modalEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v127xdg_dialog_v1_bind_resourceEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v130xdg_dialog_v1_destroy_resourceEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v13addEP9wl_clienti@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v13addEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v14bindEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v14bindEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v14initEP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v14initEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v14initEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v18Resource12fromResourceEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v19bind_funcEP9wl_clientPvjj@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v19interfaceEv@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1C1EP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1C1EP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1C1EP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1C1Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1C2EP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1C2EP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1C2EP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1C2Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1D0Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1D1Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer13xdg_dialog_v1D2Ev@Qt_6 6.8.0
  _ZN15QtWaylandServer14wl_data_device10send_enterEP11wl_resourcejS2_iiS2_@Qt_6 6.6.0
  _ZN15QtWaylandServer14wl_data_device10send_enterEjP11wl_resourceiiS2_@Qt_6 6.6.0
  _ZN15QtWaylandServer14wl_data_device10send_leaveEP11wl_resource@Qt_6 6.6.0
@@ -1263,6 +1302,37 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer16wl_subcompositorD0Ev@Qt_6 6.6.0
  _ZN15QtWaylandServer16wl_subcompositorD1Ev@Qt_6 6.6.0
  _ZN15QtWaylandServer16wl_subcompositorD2Ev@Qt_6 6.6.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v112destroy_funcEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v114handle_destroyEP9wl_clientP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v120display_destroy_funcEP11wl_listenerPv@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v121handle_get_xdg_dialogEP9wl_clientP11wl_resourcejS4_@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v124xdg_wm_dialog_v1_destroyEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v125xdg_wm_dialog_v1_allocateEv@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v128m_xdg_wm_dialog_v1_interfaceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v130xdg_wm_dialog_v1_bind_resourceEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v131xdg_wm_dialog_v1_get_xdg_dialogEPNS0_8ResourceEjP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v133xdg_wm_dialog_v1_destroy_resourceEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v13addEP9wl_clienti@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v13addEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v14bindEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v14bindEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v14initEP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v14initEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v14initEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v18Resource12fromResourceEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v19bind_funcEP9wl_clientPvjj@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v19interfaceEv@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1C1EP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1C1EP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1C1EP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1C1Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1C2EP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1C2EP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1C2EP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1C2Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1D0Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1D1Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer16xdg_wm_dialog_v1D2Ev@Qt_6 6.8.0
  _ZN15QtWaylandServer17zwp_text_input_v210send_enterEP11wl_resourcejS2_@Qt_6 6.6.0
  _ZN15QtWaylandServer17zwp_text_input_v210send_enterEjP11wl_resource@Qt_6 6.6.0
  _ZN15QtWaylandServer17zwp_text_input_v210send_leaveEP11wl_resourcejS2_@Qt_6 6.6.0
@@ -1340,63 +1410,61 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer17zwp_text_input_v2D0Ev@Qt_6 6.6.0
  _ZN15QtWaylandServer17zwp_text_input_v2D1Ev@Qt_6 6.6.0
  _ZN15QtWaylandServer17zwp_text_input_v2D2Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v410send_enterEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v410send_enterEP11wl_resourceS2_@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v410send_leaveEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v410send_leaveEP11wl_resourceS2_@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v412destroy_funcEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v413handle_commitEP9wl_clientP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v413handle_enableEP9wl_clientP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v414handle_destroyEP9wl_clientP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v414handle_disableEP9wl_clientP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v418send_commit_stringEP11wl_resourceRK7QString@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v418send_commit_stringERK7QString@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v419send_preedit_stringEP11wl_resourceRK7QStringii@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v419send_preedit_stringERK7QStringii@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v420display_destroy_funcEP11wl_listenerPv@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v423handle_set_content_typeEP9wl_clientP11wl_resourcejj@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v424send_preedit_commit_modeEP11wl_resourcej@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v424send_preedit_commit_modeEj@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v424zwp_text_input_v4_commitEPNS0_8ResourceE@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v424zwp_text_input_v4_enableEPNS0_8ResourceE@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v425zwp_text_input_v4_destroyEPNS0_8ResourceE@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v425zwp_text_input_v4_disableEPNS0_8ResourceE@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v426zwp_text_input_v4_allocateEv@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v427handle_set_cursor_rectangleEP9wl_clientP11wl_resourceiiii@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v427handle_set_surrounding_textEP9wl_clientP11wl_resourcePKcii@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v428handle_set_text_change_causeEP9wl_clientP11wl_resourcej@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v428send_delete_surrounding_textEP11wl_resourcejj@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v428send_delete_surrounding_textEjj@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v429m_zwp_text_input_v4_interfaceE@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v431zwp_text_input_v4_bind_resourceEPNS0_8ResourceE@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v434zwp_text_input_v4_destroy_resourceEPNS0_8ResourceE@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v434zwp_text_input_v4_set_content_typeEPNS0_8ResourceEjj@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v438zwp_text_input_v4_set_cursor_rectangleEPNS0_8ResourceEiiii@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v438zwp_text_input_v4_set_surrounding_textEPNS0_8ResourceERK7QStringii@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v439zwp_text_input_v4_set_text_change_causeEPNS0_8ResourceEj@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v43addEP9wl_clienti@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v43addEP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v44bindEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v44bindEP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v44initEP10wl_displayi@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v44initEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v44initEP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v48Resource12fromResourceEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v49bind_funcEP9wl_clientPvjj@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v49interfaceEv@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v49send_doneEP11wl_resourcej@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v49send_doneEj@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4C1EP10wl_displayi@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4C1EP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4C1EP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4C1Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4C2EP10wl_displayi@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4C2EP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4C2EP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4C2Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4D0Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4D1Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer17zwp_text_input_v4D2Ev@Qt_6 6.6.0
+ _ZN15QtWaylandServer17zwp_text_input_v310send_enterEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v310send_enterEP11wl_resourceS2_@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v310send_leaveEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v310send_leaveEP11wl_resourceS2_@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v312destroy_funcEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v313handle_commitEP9wl_clientP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v313handle_enableEP9wl_clientP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v314handle_destroyEP9wl_clientP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v314handle_disableEP9wl_clientP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v318send_commit_stringEP11wl_resourceRK7QString@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v318send_commit_stringERK7QString@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v319send_preedit_stringEP11wl_resourceRK7QStringii@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v319send_preedit_stringERK7QStringii@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v320display_destroy_funcEP11wl_listenerPv@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v323handle_set_content_typeEP9wl_clientP11wl_resourcejj@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v324zwp_text_input_v3_commitEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v324zwp_text_input_v3_enableEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v325zwp_text_input_v3_destroyEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v325zwp_text_input_v3_disableEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v326zwp_text_input_v3_allocateEv@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v327handle_set_cursor_rectangleEP9wl_clientP11wl_resourceiiii@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v327handle_set_surrounding_textEP9wl_clientP11wl_resourcePKcii@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v328handle_set_text_change_causeEP9wl_clientP11wl_resourcej@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v328send_delete_surrounding_textEP11wl_resourcejj@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v328send_delete_surrounding_textEjj@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v329m_zwp_text_input_v3_interfaceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v331zwp_text_input_v3_bind_resourceEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v334zwp_text_input_v3_destroy_resourceEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v334zwp_text_input_v3_set_content_typeEPNS0_8ResourceEjj@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v338zwp_text_input_v3_set_cursor_rectangleEPNS0_8ResourceEiiii@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v338zwp_text_input_v3_set_surrounding_textEPNS0_8ResourceERK7QStringii@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v339zwp_text_input_v3_set_text_change_causeEPNS0_8ResourceEj@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v33addEP9wl_clienti@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v33addEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v34bindEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v34bindEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v34initEP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v34initEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v34initEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v38Resource12fromResourceEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v39bind_funcEP9wl_clientPvjj@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v39interfaceEv@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v39send_doneEP11wl_resourcej@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v39send_doneEj@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3C1EP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3C1EP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3C1EP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3C1Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3C2EP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3C2EP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3C2EP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3C2Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3D0Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3D1Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer17zwp_text_input_v3D2Ev@Qt_6 6.8.0
  _ZN15QtWaylandServer18qt_touch_extension10send_touchEP11wl_resourcejjjiiiiiijiijRK10QByteArray@Qt_6 6.6.0
  _ZN15QtWaylandServer18qt_touch_extension10send_touchEjjjiiiiiijiijRK10QByteArray@Qt_6 6.6.0
  _ZN15QtWaylandServer18qt_touch_extension12destroy_funcEP11wl_resource@Qt_6 6.6.0
@@ -1732,37 +1800,37 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN15QtWaylandServer25zwp_text_input_manager_v2D0Ev@Qt_6 6.6.0
  _ZN15QtWaylandServer25zwp_text_input_manager_v2D1Ev@Qt_6 6.6.0
  _ZN15QtWaylandServer25zwp_text_input_manager_v2D2Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v412destroy_funcEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v414handle_destroyEP9wl_clientP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v420display_destroy_funcEP11wl_listenerPv@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v421handle_get_text_inputEP9wl_clientP11wl_resourcejS4_@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v433zwp_text_input_manager_v4_destroyEPNS0_8ResourceE@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v434zwp_text_input_manager_v4_allocateEv@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v437m_zwp_text_input_manager_v4_interfaceE@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v439zwp_text_input_manager_v4_bind_resourceEPNS0_8ResourceE@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v43addEP9wl_clienti@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v43addEP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v440zwp_text_input_manager_v4_get_text_inputEPNS0_8ResourceEjP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v442zwp_text_input_manager_v4_destroy_resourceEPNS0_8ResourceE@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v44bindEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v44bindEP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v44initEP10wl_displayi@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v44initEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v44initEP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v48Resource12fromResourceEP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v49bind_funcEP9wl_clientPvjj@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v49interfaceEv@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4C1EP10wl_displayi@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4C1EP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4C1EP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4C1Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4C2EP10wl_displayi@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4C2EP11wl_resource@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4C2EP9wl_clientji@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4C2Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4D0Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4D1Ev@Qt_6 6.6.0
- _ZN15QtWaylandServer25zwp_text_input_manager_v4D2Ev@Qt_6 6.6.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v312destroy_funcEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v314handle_destroyEP9wl_clientP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v320display_destroy_funcEP11wl_listenerPv@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v321handle_get_text_inputEP9wl_clientP11wl_resourcejS4_@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v333zwp_text_input_manager_v3_destroyEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v334zwp_text_input_manager_v3_allocateEv@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v337m_zwp_text_input_manager_v3_interfaceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v339zwp_text_input_manager_v3_bind_resourceEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v33addEP9wl_clienti@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v33addEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v340zwp_text_input_manager_v3_get_text_inputEPNS0_8ResourceEjP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v342zwp_text_input_manager_v3_destroy_resourceEPNS0_8ResourceE@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v34bindEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v34bindEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v34initEP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v34initEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v34initEP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v38Resource12fromResourceEP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v39bind_funcEP9wl_clientPvjj@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v39interfaceEv@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3C1EP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3C1EP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3C1EP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3C1Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3C2EP10wl_displayi@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3C2EP11wl_resource@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3C2EP9wl_clientji@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3C2Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3D0Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3D1Ev@Qt_6 6.8.0
+ _ZN15QtWaylandServer25zwp_text_input_manager_v3D2Ev@Qt_6 6.8.0
  _ZN15QtWaylandServer26zxdg_decoration_manager_v112destroy_funcEP11wl_resource@Qt_6 6.6.0
  _ZN15QtWaylandServer26zxdg_decoration_manager_v114handle_destroyEP9wl_clientP11wl_resource@Qt_6 6.6.0
  _ZN15QtWaylandServer26zxdg_decoration_manager_v120display_destroy_funcEP11wl_listenerPv@Qt_6 6.6.0
@@ -2469,6 +2537,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN19QWaylandXdgToplevel11startResizeEP12QWaylandSeat6QFlagsIN2Qt4EdgeEE@Qt_6 6.6.0
  _ZN19QWaylandXdgToplevel12appIdChangedEv@Qt_6 6.6.0
  _ZN19QWaylandXdgToplevel12fromResourceEP11wl_resource@Qt_6 6.6.0
+ _ZN19QWaylandXdgToplevel12modalChangedEv@Qt_6 6.8.0
  _ZN19QWaylandXdgToplevel12sendResizingERK5QSize@Qt_6 6.6.0
  _ZN19QWaylandXdgToplevel12setMaximizedEv@Qt_6 6.6.0
  _ZN19QWaylandXdgToplevel12setMinimizedEv@Qt_6 6.6.0
@@ -2493,6 +2562,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN19QWaylandXdgToplevel21decorationModeChangedEv@Qt_6 6.6.0
  _ZN19QWaylandXdgToplevel21parentToplevelChangedEv@Qt_6 6.6.0
  _ZN19QWaylandXdgToplevel4roleEv@Qt_6 6.6.0
+ _ZN19QWaylandXdgToplevel8setModalEb@Qt_6 6.8.0
  _ZN19QWaylandXdgToplevel9sendCloseEv@Qt_6 6.6.0
  _ZN19QWaylandXdgToplevel9startMoveEP12QWaylandSeat@Qt_6 6.6.0
  _ZN19QWaylandXdgToplevelC1EP18QWaylandXdgSurfaceR16QWaylandResource@Qt_6 6.6.0
@@ -2514,8 +2584,12 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN20QWaylandQuickSurfaceD2Ev@Qt_6 6.6.0
  _ZN20QWaylandShellSurface11qt_metacallEN11QMetaObject4CallEiPPv@Qt_6 6.6.0
  _ZN20QWaylandShellSurface11qt_metacastEPKc@Qt_6 6.6.0
+ _ZN20QWaylandShellSurface12modalChangedEv@Qt_6 6.8.0
  _ZN20QWaylandShellSurface16staticMetaObjectE@Qt_6 6.6.0
  _ZN20QWaylandShellSurface17windowTypeChangedEv@Qt_6 6.6.0
+ _ZN20QWaylandShellSurface8setModalEb@Qt_6 6.8.0
+ _ZN20QWaylandShellSurfaceC1EP14QWaylandObject@Qt_6 6.8.0
+ _ZN20QWaylandShellSurfaceC2EP14QWaylandObject@Qt_6 6.8.0
  _ZN22QWaylandIviApplication10initializeEv@Qt_6 6.6.0
  _ZN22QWaylandIviApplication11qt_metacallEN11QMetaObject4CallEiPPv@Qt_6 6.6.0
  _ZN22QWaylandIviApplication11qt_metacastEPKc@Qt_6 6.6.0
@@ -2616,6 +2690,19 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN24QWaylandTextInputManagerC1Ev@Qt_6 6.6.0
  _ZN24QWaylandTextInputManagerC2EP18QWaylandCompositor@Qt_6 6.6.0
  _ZN24QWaylandTextInputManagerC2Ev@Qt_6 6.6.0
+ _ZN26QWaylandTextInputManagerV310initializeEv@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV311qt_metacallEN11QMetaObject4CallEiPPv@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV311qt_metacastEPKc@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV313interfaceNameEv@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV316staticMetaObjectE@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV39interfaceEv@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV3C1EP18QWaylandCompositor@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV3C1Ev@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV3C2EP18QWaylandCompositor@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV3C2Ev@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV3D0Ev@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV3D1Ev@Qt_6 6.8.0
+ _ZN26QWaylandTextInputManagerV3D2Ev@Qt_6 6.8.0
  _ZN26QWaylandXdgOutputManagerV110initializeEv@Qt_6 6.6.0
  _ZN26QWaylandXdgOutputManagerV111qt_metacallEN11QMetaObject4CallEiPPv@Qt_6 6.6.0
  _ZN26QWaylandXdgOutputManagerV111qt_metacastEPKc@Qt_6 6.6.0
@@ -2702,6 +2789,9 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZN38QWaylandTextInputManagerQuickExtension11qt_metacallEN11QMetaObject4CallEiPPv@Qt_6 6.6.0
  _ZN38QWaylandTextInputManagerQuickExtension11qt_metacastEPKc@Qt_6 6.6.0
  _ZN38QWaylandTextInputManagerQuickExtension16staticMetaObjectE@Qt_6 6.6.0
+ _ZN40QWaylandTextInputManagerV3QuickExtension11qt_metacallEN11QMetaObject4CallEiPPv@Qt_6 6.8.0
+ _ZN40QWaylandTextInputManagerV3QuickExtension11qt_metacastEPKc@Qt_6 6.8.0
+ _ZN40QWaylandTextInputManagerV3QuickExtension16staticMetaObjectE@Qt_6 6.8.0
  _ZN42QWaylandIdleInhibitManagerV1QuickExtension11qt_metacallEN11QMetaObject4CallEiPPv@Qt_6 6.6.0
  _ZN42QWaylandIdleInhibitManagerV1QuickExtension11qt_metacastEPKc@Qt_6 6.6.0
  _ZN42QWaylandIdleInhibitManagerV1QuickExtension16staticMetaObjectE@Qt_6 6.6.0
@@ -2915,6 +3005,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZNK19QWaylandXdgToplevel5appIdEv@Qt_6 6.6.0
  _ZNK19QWaylandXdgToplevel5titleEv@Qt_6 6.6.0
  _ZNK19QWaylandXdgToplevel6statesEv@Qt_6 6.6.0
+ _ZNK19QWaylandXdgToplevel7isModalEv@Qt_6 6.8.0
  _ZNK19QWaylandXdgToplevel7maxSizeEv@Qt_6 6.6.0
  _ZNK19QWaylandXdgToplevel7minSizeEv@Qt_6 6.6.0
  _ZNK19QWaylandXdgToplevel8resizingEv@Qt_6 6.6.0
@@ -2923,6 +3014,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZNK20QWaylandQuickSurface10metaObjectEv@Qt_6 6.6.0
  _ZNK20QWaylandQuickSurface15useTextureAlphaEv@Qt_6 6.6.0
  _ZNK20QWaylandShellSurface10metaObjectEv@Qt_6 6.6.0
+ _ZNK20QWaylandShellSurface7isModalEv@Qt_6 6.8.0
  _ZNK22QWaylandIviApplication10metaObjectEv@Qt_6 6.6.0
  _ZNK22QWaylandSurfaceGrabber10metaObjectEv@Qt_6 6.6.0
  _ZNK22QWaylandSurfaceGrabber7surfaceEv@Qt_6 6.6.0
@@ -2938,6 +3030,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZNK23QWaylandQuickCompositor10metaObjectEv@Qt_6 6.6.0
  _ZNK24QWaylandQuickXdgOutputV110metaObjectEv@Qt_6 6.6.0
  _ZNK24QWaylandTextInputManager10metaObjectEv@Qt_6 6.6.0
+ _ZNK26QWaylandTextInputManagerV310metaObjectEv@Qt_6 6.8.0
  _ZNK26QWaylandXdgOutputManagerV110metaObjectEv@Qt_6 6.6.0
  _ZNK27QWaylandCompositorExtension10metaObjectEv@Qt_6 6.6.0
  _ZNK27QWaylandCompositorExtension13isInitializedEv@Qt_6 6.6.0
@@ -2954,10 +3047,10 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZNK32QWaylandQtTextInputMethodManager10metaObjectEv@Qt_6 6.6.0
  _ZNK37QWaylandQtWindowManagerQuickExtension10metaObjectEv@Qt_6 6.6.0
  _ZNK38QWaylandTextInputManagerQuickExtension10metaObjectEv@Qt_6 6.6.0
+ _ZNK40QWaylandTextInputManagerV3QuickExtension10metaObjectEv@Qt_6 6.8.0
  _ZNK42QWaylandIdleInhibitManagerV1QuickExtension10metaObjectEv@Qt_6 6.6.0
  _ZNK45QWaylandTextureSharingExtensionQuickExtension10metaObjectEv@Qt_6 6.6.0
  _ZNK46QWaylandQtTextInputMethodManagerQuickExtension10metaObjectEv@Qt_6 6.6.0
- _ZSt19piecewise_construct@Qt_6 6.6.0
  _ZTI12QWaylandDrag@Qt_6 6.6.0
  _ZTI12QWaylandSeat@Qt_6 6.6.0
  _ZTI12QWaylandView@Qt_6 6.6.0
@@ -2993,6 +3086,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTI23QWaylandQuickCompositor@Qt_6 6.6.0
  _ZTI24QWaylandQuickXdgOutputV1@Qt_6 6.6.0
  _ZTI24QWaylandTextInputManager@Qt_6 6.6.0
+ _ZTI26QWaylandTextInputManagerV3@Qt_6 6.8.0
  _ZTI26QWaylandXdgOutputManagerV1@Qt_6 6.6.0
  _ZTI27QWaylandCompositorExtension@Qt_6 6.6.0
  _ZTI28QWaylandIdleInhibitManagerV1@Qt_6 6.6.0
@@ -3007,12 +3101,14 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTI35QWaylandCompositorExtensionTemplateI22QWaylandIviApplicationE@Qt_6 6.6.0
  _ZTI35QWaylandCompositorExtensionTemplateI23QWaylandQtWindowManagerE@Qt_6 6.6.0
  _ZTI35QWaylandCompositorExtensionTemplateI24QWaylandTextInputManagerE@Qt_6 6.6.0
+ _ZTI35QWaylandCompositorExtensionTemplateI26QWaylandTextInputManagerV3E@Qt_6 6.8.0
  _ZTI35QWaylandCompositorExtensionTemplateI26QWaylandXdgOutputManagerV1E@Qt_6 6.6.0
  _ZTI35QWaylandCompositorExtensionTemplateI28QWaylandIdleInhibitManagerV1E@Qt_6 6.6.0
  _ZTI35QWaylandCompositorExtensionTemplateI30QWaylandXdgDecorationManagerV1E@Qt_6 6.6.0
  _ZTI35QWaylandCompositorExtensionTemplateI32QWaylandQtTextInputMethodManagerE@Qt_6 6.6.0
  _ZTI37QWaylandQtWindowManagerQuickExtension@Qt_6 6.6.0
  _ZTI38QWaylandTextInputManagerQuickExtension@Qt_6 6.6.0
+ _ZTI40QWaylandTextInputManagerV3QuickExtension@Qt_6 6.8.0
  _ZTI42QWaylandIdleInhibitManagerV1QuickExtension@Qt_6 6.6.0
  _ZTI45QWaylandTextureSharingExtensionQuickExtension@Qt_6 6.6.0
  _ZTI46QWaylandQtTextInputMethodManagerQuickExtension@Qt_6 6.6.0
@@ -3032,6 +3128,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTIN15QtWaylandServer13wl_data_offerE@Qt_6 6.6.0
  _ZTIN15QtWaylandServer13wl_subsurfaceE@Qt_6 6.6.0
  _ZTIN15QtWaylandServer13wp_viewporterE@Qt_6 6.6.0
+ _ZTIN15QtWaylandServer13xdg_dialog_v1E@Qt_6 6.8.0
  _ZTIN15QtWaylandServer14wl_data_deviceE@Qt_6 6.6.0
  _ZTIN15QtWaylandServer14wl_data_sourceE@Qt_6 6.6.0
  _ZTIN15QtWaylandServer14xdg_positionerE@Qt_6 6.6.0
@@ -3042,8 +3139,9 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTIN15QtWaylandServer16qt_windowmanagerE@Qt_6 6.6.0
  _ZTIN15QtWaylandServer16wl_shell_surfaceE@Qt_6 6.6.0
  _ZTIN15QtWaylandServer16wl_subcompositorE@Qt_6 6.6.0
+ _ZTIN15QtWaylandServer16xdg_wm_dialog_v1E@Qt_6 6.8.0
  _ZTIN15QtWaylandServer17zwp_text_input_v2E@Qt_6 6.6.0
- _ZTIN15QtWaylandServer17zwp_text_input_v4E@Qt_6 6.6.0
+ _ZTIN15QtWaylandServer17zwp_text_input_v3E@Qt_6 6.8.0
  _ZTIN15QtWaylandServer18qt_touch_extensionE@Qt_6 6.6.0
  _ZTIN15QtWaylandServer21zwp_idle_inhibitor_v1E@Qt_6 6.6.0
  _ZTIN15QtWaylandServer22wl_data_device_managerE@Qt_6 6.6.0
@@ -3053,7 +3151,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTIN15QtWaylandServer23qt_text_input_method_v1E@Qt_6 6.6.0
  _ZTIN15QtWaylandServer24wp_presentation_feedbackE@Qt_6 6.6.0
  _ZTIN15QtWaylandServer25zwp_text_input_manager_v2E@Qt_6 6.6.0
- _ZTIN15QtWaylandServer25zwp_text_input_manager_v4E@Qt_6 6.6.0
+ _ZTIN15QtWaylandServer25zwp_text_input_manager_v3E@Qt_6 6.8.0
  _ZTIN15QtWaylandServer26zxdg_decoration_manager_v1E@Qt_6 6.6.0
  _ZTIN15QtWaylandServer27zwp_idle_inhibit_manager_v1E@Qt_6 6.6.0
  _ZTIN15QtWaylandServer27zxdg_toplevel_decoration_v1E@Qt_6 6.6.0
@@ -3108,6 +3206,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTS23QWaylandQuickCompositor@Qt_6 6.6.0
  _ZTS24QWaylandQuickXdgOutputV1@Qt_6 6.6.0
  _ZTS24QWaylandTextInputManager@Qt_6 6.6.0
+ _ZTS26QWaylandTextInputManagerV3@Qt_6 6.8.0
  _ZTS26QWaylandXdgOutputManagerV1@Qt_6 6.6.0
  _ZTS27QWaylandCompositorExtension@Qt_6 6.6.0
  _ZTS28QWaylandIdleInhibitManagerV1@Qt_6 6.6.0
@@ -3122,12 +3221,14 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTS35QWaylandCompositorExtensionTemplateI22QWaylandIviApplicationE@Qt_6 6.6.0
  _ZTS35QWaylandCompositorExtensionTemplateI23QWaylandQtWindowManagerE@Qt_6 6.6.0
  _ZTS35QWaylandCompositorExtensionTemplateI24QWaylandTextInputManagerE@Qt_6 6.6.0
+ _ZTS35QWaylandCompositorExtensionTemplateI26QWaylandTextInputManagerV3E@Qt_6 6.8.0
  _ZTS35QWaylandCompositorExtensionTemplateI26QWaylandXdgOutputManagerV1E@Qt_6 6.6.0
  _ZTS35QWaylandCompositorExtensionTemplateI28QWaylandIdleInhibitManagerV1E@Qt_6 6.6.0
  _ZTS35QWaylandCompositorExtensionTemplateI30QWaylandXdgDecorationManagerV1E@Qt_6 6.6.0
  _ZTS35QWaylandCompositorExtensionTemplateI32QWaylandQtTextInputMethodManagerE@Qt_6 6.6.0
  _ZTS37QWaylandQtWindowManagerQuickExtension@Qt_6 6.6.0
  _ZTS38QWaylandTextInputManagerQuickExtension@Qt_6 6.6.0
+ _ZTS40QWaylandTextInputManagerV3QuickExtension@Qt_6 6.8.0
  _ZTS42QWaylandIdleInhibitManagerV1QuickExtension@Qt_6 6.6.0
  _ZTS45QWaylandTextureSharingExtensionQuickExtension@Qt_6 6.6.0
  _ZTS46QWaylandQtTextInputMethodManagerQuickExtension@Qt_6 6.6.0
@@ -3163,6 +3264,8 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTSN15QtWaylandServer13wl_subsurfaceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer13wp_viewporter8ResourceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer13wp_viewporterE@Qt_6 6.6.0
+ _ZTSN15QtWaylandServer13xdg_dialog_v18ResourceE@Qt_6 6.8.0
+ _ZTSN15QtWaylandServer13xdg_dialog_v1E@Qt_6 6.8.0
  _ZTSN15QtWaylandServer14wl_data_device8ResourceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer14wl_data_deviceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer14wl_data_source8ResourceE@Qt_6 6.6.0
@@ -3183,10 +3286,12 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTSN15QtWaylandServer16wl_shell_surfaceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer16wl_subcompositor8ResourceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer16wl_subcompositorE@Qt_6 6.6.0
+ _ZTSN15QtWaylandServer16xdg_wm_dialog_v18ResourceE@Qt_6 6.8.0
+ _ZTSN15QtWaylandServer16xdg_wm_dialog_v1E@Qt_6 6.8.0
  _ZTSN15QtWaylandServer17zwp_text_input_v28ResourceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer17zwp_text_input_v2E@Qt_6 6.6.0
- _ZTSN15QtWaylandServer17zwp_text_input_v48ResourceE@Qt_6 6.6.0
- _ZTSN15QtWaylandServer17zwp_text_input_v4E@Qt_6 6.6.0
+ _ZTSN15QtWaylandServer17zwp_text_input_v38ResourceE@Qt_6 6.8.0
+ _ZTSN15QtWaylandServer17zwp_text_input_v3E@Qt_6 6.8.0
  _ZTSN15QtWaylandServer18qt_touch_extension8ResourceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer18qt_touch_extensionE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer21zwp_idle_inhibitor_v18ResourceE@Qt_6 6.6.0
@@ -3205,8 +3310,8 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTSN15QtWaylandServer24wp_presentation_feedbackE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer25zwp_text_input_manager_v28ResourceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer25zwp_text_input_manager_v2E@Qt_6 6.6.0
- _ZTSN15QtWaylandServer25zwp_text_input_manager_v48ResourceE@Qt_6 6.6.0
- _ZTSN15QtWaylandServer25zwp_text_input_manager_v4E@Qt_6 6.6.0
+ _ZTSN15QtWaylandServer25zwp_text_input_manager_v38ResourceE@Qt_6 6.8.0
+ _ZTSN15QtWaylandServer25zwp_text_input_manager_v3E@Qt_6 6.8.0
  _ZTSN15QtWaylandServer26zxdg_decoration_manager_v18ResourceE@Qt_6 6.6.0
  _ZTSN15QtWaylandServer26zxdg_decoration_manager_v1E@Qt_6 6.6.0
  _ZTSN15QtWaylandServer27zwp_idle_inhibit_manager_v18ResourceE@Qt_6 6.6.0
@@ -3272,6 +3377,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTV23QWaylandQuickCompositor@Qt_6 6.6.0
  _ZTV24QWaylandQuickXdgOutputV1@Qt_6 6.6.0
  _ZTV24QWaylandTextInputManager@Qt_6 6.6.0
+ _ZTV26QWaylandTextInputManagerV3@Qt_6 6.8.0
  _ZTV26QWaylandXdgOutputManagerV1@Qt_6 6.6.0
  _ZTV27QWaylandCompositorExtension@Qt_6 6.6.0
  _ZTV28QWaylandIdleInhibitManagerV1@Qt_6 6.6.0
@@ -3281,6 +3387,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTV32QWaylandQtTextInputMethodManager@Qt_6 6.6.0
  _ZTV37QWaylandQtWindowManagerQuickExtension@Qt_6 6.6.0
  _ZTV38QWaylandTextInputManagerQuickExtension@Qt_6 6.6.0
+ _ZTV40QWaylandTextInputManagerV3QuickExtension@Qt_6 6.8.0
  _ZTV42QWaylandIdleInhibitManagerV1QuickExtension@Qt_6 6.6.0
  _ZTV45QWaylandTextureSharingExtensionQuickExtension@Qt_6 6.6.0
  _ZTV46QWaylandQtTextInputMethodManagerQuickExtension@Qt_6 6.6.0
@@ -3300,6 +3407,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTVN15QtWaylandServer13wl_data_offerE@Qt_6 6.6.0
  _ZTVN15QtWaylandServer13wl_subsurfaceE@Qt_6 6.6.0
  _ZTVN15QtWaylandServer13wp_viewporterE@Qt_6 6.6.0
+ _ZTVN15QtWaylandServer13xdg_dialog_v1E@Qt_6 6.8.0
  _ZTVN15QtWaylandServer14wl_data_deviceE@Qt_6 6.6.0
  _ZTVN15QtWaylandServer14wl_data_sourceE@Qt_6 6.6.0
  _ZTVN15QtWaylandServer14xdg_positionerE@Qt_6 6.6.0
@@ -3310,8 +3418,9 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTVN15QtWaylandServer16qt_windowmanagerE@Qt_6 6.6.0
  _ZTVN15QtWaylandServer16wl_shell_surfaceE@Qt_6 6.6.0
  _ZTVN15QtWaylandServer16wl_subcompositorE@Qt_6 6.6.0
+ _ZTVN15QtWaylandServer16xdg_wm_dialog_v1E@Qt_6 6.8.0
  _ZTVN15QtWaylandServer17zwp_text_input_v2E@Qt_6 6.6.0
- _ZTVN15QtWaylandServer17zwp_text_input_v4E@Qt_6 6.6.0
+ _ZTVN15QtWaylandServer17zwp_text_input_v3E@Qt_6 6.8.0
  _ZTVN15QtWaylandServer18qt_touch_extensionE@Qt_6 6.6.0
  _ZTVN15QtWaylandServer21zwp_idle_inhibitor_v1E@Qt_6 6.6.0
  _ZTVN15QtWaylandServer22wl_data_device_managerE@Qt_6 6.6.0
@@ -3321,7 +3430,7 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  _ZTVN15QtWaylandServer23qt_text_input_method_v1E@Qt_6 6.6.0
  _ZTVN15QtWaylandServer24wp_presentation_feedbackE@Qt_6 6.6.0
  _ZTVN15QtWaylandServer25zwp_text_input_manager_v2E@Qt_6 6.6.0
- _ZTVN15QtWaylandServer25zwp_text_input_manager_v4E@Qt_6 6.6.0
+ _ZTVN15QtWaylandServer25zwp_text_input_manager_v3E@Qt_6 6.8.0
  _ZTVN15QtWaylandServer26zxdg_decoration_manager_v1E@Qt_6 6.6.0
  _ZTVN15QtWaylandServer27zwp_idle_inhibit_manager_v1E@Qt_6 6.6.0
  _ZTVN15QtWaylandServer27zxdg_toplevel_decoration_v1E@Qt_6 6.6.0
@@ -3342,8 +3451,6 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  (optional=templinst)_ZZN9QMetaType23registerMutableViewImplI5QListIN18QWaylandCompositor9ShmFormatEE9QIterableI13QMetaSequenceEEEbSt8functionIFbPvS9_EES_S_E10unregister@Qt_6 6.6.0
  (optional=templinst)_ZZN9QMetaType23registerMutableViewImplI5QListIiE9QIterableI13QMetaSequenceEEEbSt8functionIFbPvS7_EES_S_E10unregister@Qt_6 6.6.0
  _ZeqRK17QWaylandBufferRefS1_@Qt_6 6.6.0
- ivi_application_interface@Qt_6 6.6.0
- ivi_surface_interface@Qt_6 6.6.0
  (c++)"non-virtual thunk to QWaylandQuickCompositor::classBegin()@Qt_6" 6.6.0
  (c++)"non-virtual thunk to QWaylandQuickCompositor::componentComplete()@Qt_6" 6.6.0
  (c++)"non-virtual thunk to QWaylandQuickItem::~QWaylandQuickItem()@Qt_6" 6.6.0
@@ -3351,54 +3458,3 @@ libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
  (c++)"non-virtual thunk to QWaylandQuickOutput::componentComplete()@Qt_6" 6.6.0
  (c++)"non-virtual thunk to QWaylandQuickShellSurfaceItem::~QWaylandQuickShellSurfaceItem()@Qt_6" 6.6.0
  (c++)"non-virtual thunk to QWaylandQuickXdgOutputV1::componentComplete()@Qt_6" 6.6.0
- qt_hardware_integration_interface@Qt_6 6.6.0
- qt_server_buffer_interface@Qt_6 6.6.0
- qt_text_input_method_manager_v1_interface@Qt_6 6.6.0
- qt_text_input_method_v1_interface@Qt_6 6.6.0
- qt_touch_extension_interface@Qt_6 6.6.0
- qt_windowmanager_interface@Qt_6 6.6.0
- wl_buffer_interface@Qt_6 6.6.0
- wl_callback_interface@Qt_6 6.6.0
- wl_compositor_interface@Qt_6 6.6.0
- wl_data_device_interface@Qt_6 6.6.0
- wl_data_device_manager_interface@Qt_6 6.6.0
- wl_data_offer_interface@Qt_6 6.6.0
- wl_data_source_interface@Qt_6 6.6.0
- wl_display_interface@Qt_6 6.6.0
- wl_keyboard_interface@Qt_6 6.6.0
- wl_output_interface@Qt_6 6.6.0
- wl_pointer_interface@Qt_6 6.6.0
- wl_region_interface@Qt_6 6.6.0
- wl_registry_interface@Qt_6 6.6.0
- wl_scaler_interface@Qt_6 6.6.0
- wl_seat_interface@Qt_6 6.6.0
- wl_shell_interface@Qt_6 6.6.0
- wl_shell_surface_interface@Qt_6 6.6.0
- wl_shm_interface@Qt_6 6.6.0
- wl_shm_pool_interface@Qt_6 6.6.0
- wl_subcompositor_interface@Qt_6 6.6.0
- wl_subsurface_interface@Qt_6 6.6.0
- wl_surface_interface@Qt_6 6.6.0
- wl_touch_interface@Qt_6 6.6.0
- wl_viewport_interface@Qt_6 6.6.0
- wp_presentation_feedback_interface@Qt_6 6.6.0
- wp_presentation_interface@Qt_6 6.6.0
- wp_viewport_interface@Qt_6 6.6.0
- wp_viewporter_interface@Qt_6 6.6.0
- xdg_popup_interface@Qt_6 6.6.0
- xdg_positioner_interface@Qt_6 6.6.0
- xdg_surface_interface@Qt_6 6.6.0
- xdg_toplevel_interface@Qt_6 6.6.0
- xdg_wm_base_interface@Qt_6 6.6.0
- zqt_key_v1_interface@Qt_6 6.6.0
- zqt_texture_sharing_v1_interface@Qt_6 6.6.0
- zwp_idle_inhibit_manager_v1_interface@Qt_6 6.6.0
- zwp_idle_inhibitor_v1_interface@Qt_6 6.6.0
- zwp_text_input_manager_v2_interface@Qt_6 6.6.0
- zwp_text_input_manager_v4_interface@Qt_6 6.6.0
- zwp_text_input_v2_interface@Qt_6 6.6.0
- zwp_text_input_v4_interface@Qt_6 6.6.0
- zxdg_decoration_manager_v1_interface@Qt_6 6.6.0
- zxdg_output_manager_v1_interface@Qt_6 6.6.0
- zxdg_output_v1_interface@Qt_6 6.6.0
- zxdg_toplevel_decoration_v1_interface@Qt_6 6.6.0

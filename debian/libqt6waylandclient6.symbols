@@ -1,7 +1,8 @@
-# SymbolsHelper-Confirmed: 6.6.0 amd64
+# SymbolsHelper-Confirmed: 6.8.0 amd64
 libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
 | libqt6waylandclient6 #MINVER#, qt6-waylandclient-private-abi (= 6.8.0)
 * Build-Depends-Packages: qt6-wayland-dev, qt6-wayland-private-dev
+ NonQt@NonQt 6.8.0
  Qt_6@Qt_6 6.6.0
  (symver)Qt_6_PRIVATE_API 0
  _ZN15QtWaylandClient12lcQpaWaylandEv@Qt_6 6.6.0
@@ -262,9 +263,11 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland12xdg_toplevel16show_window_menuEP7wl_seatjii@Qt_6 6.6.0
  _ZN9QtWayland12xdg_toplevel16unset_fullscreenEv@Qt_6 6.6.0
  _ZN9QtWayland12xdg_toplevel18xdg_toplevel_closeEv@Qt_6 6.6.0
+ _ZN9QtWayland12xdg_toplevel22handle_wm_capabilitiesEPvP12xdg_toplevelP8wl_array@Qt_6 6.8.0
  _ZN9QtWayland12xdg_toplevel22xdg_toplevel_configureEiiP8wl_array@Qt_6 6.6.0
  _ZN9QtWayland12xdg_toplevel23handle_configure_boundsEPvP12xdg_toplevelii@Qt_6 6.6.0
  _ZN9QtWayland12xdg_toplevel23m_xdg_toplevel_listenerE@Qt_6 6.6.0
+ _ZN9QtWayland12xdg_toplevel28xdg_toplevel_wm_capabilitiesEP8wl_array@Qt_6 6.8.0
  _ZN9QtWayland12xdg_toplevel29xdg_toplevel_configure_boundsEii@Qt_6 6.6.0
  _ZN9QtWayland12xdg_toplevel4initEP11wl_registryji@Qt_6 6.6.0
  _ZN9QtWayland12xdg_toplevel4initEP12xdg_toplevel@Qt_6 6.6.0
@@ -712,43 +715,41 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland17zwp_text_input_v2D0Ev@Qt_6 6.6.0
  _ZN9QtWayland17zwp_text_input_v2D1Ev@Qt_6 6.6.0
  _ZN9QtWayland17zwp_text_input_v2D2Ev@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v410fromObjectEP17zwp_text_input_v4@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v411handle_doneEPvP17zwp_text_input_v4j@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v412handle_enterEPvP17zwp_text_input_v4P10wl_surface@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v412handle_leaveEPvP17zwp_text_input_v4P10wl_surface@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v413init_listenerEv@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v416set_content_typeEjj@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v420handle_commit_stringEPvP17zwp_text_input_v4PKc@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v420set_cursor_rectangleEiiii@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v420set_surrounding_textERK7QStringii@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v421handle_preedit_stringEPvP17zwp_text_input_v4PKcii@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v421set_text_change_causeEj@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v422zwp_text_input_v4_doneEj@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v423zwp_text_input_v4_enterEP10wl_surface@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v423zwp_text_input_v4_leaveEP10wl_surface@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v426handle_preedit_commit_modeEPvP17zwp_text_input_v4j@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v428m_zwp_text_input_v4_listenerE@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v430handle_delete_surrounding_textEPvP17zwp_text_input_v4jj@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v431zwp_text_input_v4_commit_stringERK7QString@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v432zwp_text_input_v4_preedit_stringERK7QStringii@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v437zwp_text_input_v4_preedit_commit_modeEj@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v441zwp_text_input_v4_delete_surrounding_textEjj@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v44initEP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v44initEP17zwp_text_input_v4@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v46commitEv@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v46enableEv@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v47destroyEv@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v47disableEv@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v49interfaceEv@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v4C1EP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v4C1EP17zwp_text_input_v4@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v4C1Ev@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v4C2EP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v4C2EP17zwp_text_input_v4@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v4C2Ev@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v4D0Ev@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v4D1Ev@Qt_6 6.6.0
- _ZN9QtWayland17zwp_text_input_v4D2Ev@Qt_6 6.6.0
+ _ZN9QtWayland17zwp_text_input_v310fromObjectEP17zwp_text_input_v3@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v311handle_doneEPvP17zwp_text_input_v3j@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v312handle_enterEPvP17zwp_text_input_v3P10wl_surface@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v312handle_leaveEPvP17zwp_text_input_v3P10wl_surface@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v313init_listenerEv@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v316set_content_typeEjj@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v320handle_commit_stringEPvP17zwp_text_input_v3PKc@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v320set_cursor_rectangleEiiii@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v320set_surrounding_textERK7QStringii@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v321handle_preedit_stringEPvP17zwp_text_input_v3PKcii@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v321set_text_change_causeEj@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v322zwp_text_input_v3_doneEj@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v323zwp_text_input_v3_enterEP10wl_surface@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v323zwp_text_input_v3_leaveEP10wl_surface@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v328m_zwp_text_input_v3_listenerE@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v330handle_delete_surrounding_textEPvP17zwp_text_input_v3jj@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v331zwp_text_input_v3_commit_stringERK7QString@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v332zwp_text_input_v3_preedit_stringERK7QStringii@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v341zwp_text_input_v3_delete_surrounding_textEjj@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v34initEP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v34initEP17zwp_text_input_v3@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v36commitEv@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v36enableEv@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v37destroyEv@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v37disableEv@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v39interfaceEv@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v3C1EP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v3C1EP17zwp_text_input_v3@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v3C1Ev@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v3C2EP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v3C2EP17zwp_text_input_v3@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v3C2Ev@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v3D0Ev@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v3D1Ev@Qt_6 6.8.0
+ _ZN9QtWayland17zwp_text_input_v3D2Ev@Qt_6 6.8.0
  _ZN9QtWayland18qt_touch_extension10fromObjectEP18qt_touch_extension@Qt_6 6.6.0
  _ZN9QtWayland18qt_touch_extension12handle_touchEPvP18qt_touch_extensionjjjiiiiiijiijP8wl_array@Qt_6 6.6.0
  _ZN9QtWayland18qt_touch_extension13init_listenerEv@Qt_6 6.6.0
@@ -872,21 +873,6 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland19qt_extended_surfaceD0Ev@Qt_6 6.6.0
  _ZN9QtWayland19qt_extended_surfaceD1Ev@Qt_6 6.6.0
  _ZN9QtWayland19qt_extended_surfaceD2Ev@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v110fromObjectEP19qt_toplevel_drag_v1@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v14initEP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v14initEP19qt_toplevel_drag_v1@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v16attachEP12xdg_toplevelii@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v17destroyEv@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v19interfaceEv@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v1C1EP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v1C1EP19qt_toplevel_drag_v1@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v1C1Ev@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v1C2EP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v1C2EP19qt_toplevel_drag_v1@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v1C2Ev@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v1D0Ev@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v1D1Ev@Qt_6 6.6.0
- _ZN9QtWayland19qt_toplevel_drag_v1D2Ev@Qt_6 6.6.0
  _ZN9QtWayland20qt_surface_extension10fromObjectEP20qt_surface_extension@Qt_6 6.6.0
  _ZN9QtWayland20qt_surface_extension20get_extended_surfaceEP10wl_surface@Qt_6 6.6.0
  _ZN9QtWayland20qt_surface_extension4initEP11wl_registryji@Qt_6 6.6.0
@@ -901,6 +887,21 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland20qt_surface_extensionD0Ev@Qt_6 6.6.0
  _ZN9QtWayland20qt_surface_extensionD1Ev@Qt_6 6.6.0
  _ZN9QtWayland20qt_surface_extensionD2Ev@Qt_6 6.6.0
+ _ZN9QtWayland20xdg_toplevel_drag_v110fromObjectEP20xdg_toplevel_drag_v1@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v14initEP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v14initEP20xdg_toplevel_drag_v1@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v16attachEP12xdg_toplevelii@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v17destroyEv@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v19interfaceEv@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v1C1EP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v1C1EP20xdg_toplevel_drag_v1@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v1C1Ev@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v1C2EP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v1C2EP20xdg_toplevel_drag_v1@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v1C2Ev@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v1D0Ev@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v1D1Ev@Qt_6 6.8.0
+ _ZN9QtWayland20xdg_toplevel_drag_v1D2Ev@Qt_6 6.8.0
  _ZN9QtWayland21zwp_tablet_manager_v210fromObjectEP21zwp_tablet_manager_v2@Qt_6 6.6.0
  _ZN9QtWayland21zwp_tablet_manager_v215get_tablet_seatEP7wl_seat@Qt_6 6.6.0
  _ZN9QtWayland21zwp_tablet_manager_v24initEP11wl_registryji@Qt_6 6.6.0
@@ -1174,21 +1175,21 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland25zwp_text_input_manager_v2D0Ev@Qt_6 6.6.0
  _ZN9QtWayland25zwp_text_input_manager_v2D1Ev@Qt_6 6.6.0
  _ZN9QtWayland25zwp_text_input_manager_v2D2Ev@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v410fromObjectEP25zwp_text_input_manager_v4@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v414get_text_inputEP7wl_seat@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v44initEP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v44initEP25zwp_text_input_manager_v4@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v47destroyEv@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v49interfaceEv@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v4C1EP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v4C1EP25zwp_text_input_manager_v4@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v4C1Ev@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v4C2EP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v4C2EP25zwp_text_input_manager_v4@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v4C2Ev@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v4D0Ev@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v4D1Ev@Qt_6 6.6.0
- _ZN9QtWayland25zwp_text_input_manager_v4D2Ev@Qt_6 6.6.0
+ _ZN9QtWayland25zwp_text_input_manager_v310fromObjectEP25zwp_text_input_manager_v3@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v314get_text_inputEP7wl_seat@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v34initEP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v34initEP25zwp_text_input_manager_v3@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v37destroyEv@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v39interfaceEv@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v3C1EP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v3C1EP25zwp_text_input_manager_v3@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v3C1Ev@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v3C2EP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v3C2EP25zwp_text_input_manager_v3@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v3C2Ev@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v3D0Ev@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v3D1Ev@Qt_6 6.8.0
+ _ZN9QtWayland25zwp_text_input_manager_v3D2Ev@Qt_6 6.8.0
  _ZN9QtWayland26wp_cursor_shape_manager_v110fromObjectEP26wp_cursor_shape_manager_v1@Qt_6 6.6.0
  _ZN9QtWayland26wp_cursor_shape_manager_v111get_pointerEP10wl_pointer@Qt_6 6.6.0
  _ZN9QtWayland26wp_cursor_shape_manager_v118get_tablet_tool_v2EP18zwp_tablet_tool_v2@Qt_6 6.6.0
@@ -1205,21 +1206,21 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZN9QtWayland26wp_cursor_shape_manager_v1D0Ev@Qt_6 6.6.0
  _ZN9QtWayland26wp_cursor_shape_manager_v1D1Ev@Qt_6 6.6.0
  _ZN9QtWayland26wp_cursor_shape_manager_v1D2Ev@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v110fromObjectEP27qt_toplevel_drag_manager_v1@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v120get_qt_toplevel_dragEP14wl_data_source@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v14initEP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v14initEP27qt_toplevel_drag_manager_v1@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v17releaseEv@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v19interfaceEv@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v1C1EP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v1C1EP27qt_toplevel_drag_manager_v1@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v1C1Ev@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v1C2EP11wl_registryji@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v1C2EP27qt_toplevel_drag_manager_v1@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v1C2Ev@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v1D0Ev@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v1D1Ev@Qt_6 6.6.0
- _ZN9QtWayland27qt_toplevel_drag_manager_v1D2Ev@Qt_6 6.6.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v110fromObjectEP28xdg_toplevel_drag_manager_v1@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v121get_xdg_toplevel_dragEP14wl_data_source@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v14initEP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v14initEP28xdg_toplevel_drag_manager_v1@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v17destroyEv@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v19interfaceEv@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v1C1EP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v1C1EP28xdg_toplevel_drag_manager_v1@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v1C1Ev@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v1C2EP11wl_registryji@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v1C2EP28xdg_toplevel_drag_manager_v1@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v1C2Ev@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v1D0Ev@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v1D1Ev@Qt_6 6.8.0
+ _ZN9QtWayland28xdg_toplevel_drag_manager_v1D2Ev@Qt_6 6.8.0
  _ZN9QtWayland28zwp_pointer_gesture_pinch_v110fromObjectEP28zwp_pointer_gesture_pinch_v1@Qt_6 6.6.0
  _ZN9QtWayland28zwp_pointer_gesture_pinch_v110handle_endEPvP28zwp_pointer_gesture_pinch_v1jji@Qt_6 6.6.0
  _ZN9QtWayland28zwp_pointer_gesture_pinch_v112handle_beginEPvP28zwp_pointer_gesture_pinch_v1jjP10wl_surfacej@Qt_6 6.6.0
@@ -1600,8 +1601,8 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK9QtWayland17zwp_text_input_v17versionEv@Qt_6 6.6.0
  _ZNK9QtWayland17zwp_text_input_v213isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland17zwp_text_input_v27versionEv@Qt_6 6.6.0
- _ZNK9QtWayland17zwp_text_input_v413isInitializedEv@Qt_6 6.6.0
- _ZNK9QtWayland17zwp_text_input_v47versionEv@Qt_6 6.6.0
+ _ZNK9QtWayland17zwp_text_input_v313isInitializedEv@Qt_6 6.8.0
+ _ZNK9QtWayland17zwp_text_input_v37versionEv@Qt_6 6.8.0
  _ZNK9QtWayland18qt_touch_extension13isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland18qt_touch_extension7versionEv@Qt_6 6.6.0
  _ZNK9QtWayland18zwp_tablet_seat_v213isInitializedEv@Qt_6 6.6.0
@@ -1610,10 +1611,10 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK9QtWayland18zwp_tablet_tool_v27versionEv@Qt_6 6.6.0
  _ZNK9QtWayland19qt_extended_surface13isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland19qt_extended_surface7versionEv@Qt_6 6.6.0
- _ZNK9QtWayland19qt_toplevel_drag_v113isInitializedEv@Qt_6 6.6.0
- _ZNK9QtWayland19qt_toplevel_drag_v17versionEv@Qt_6 6.6.0
  _ZNK9QtWayland20qt_surface_extension13isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland20qt_surface_extension7versionEv@Qt_6 6.6.0
+ _ZNK9QtWayland20xdg_toplevel_drag_v113isInitializedEv@Qt_6 6.8.0
+ _ZNK9QtWayland20xdg_toplevel_drag_v17versionEv@Qt_6 6.8.0
  _ZNK9QtWayland21zwp_tablet_manager_v213isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland21zwp_tablet_manager_v27versionEv@Qt_6 6.6.0
  _ZNK9QtWayland22wl_data_device_manager13isInitializedEv@Qt_6 6.6.0
@@ -1640,12 +1641,12 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK9QtWayland25zwp_text_input_manager_v17versionEv@Qt_6 6.6.0
  _ZNK9QtWayland25zwp_text_input_manager_v213isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland25zwp_text_input_manager_v27versionEv@Qt_6 6.6.0
- _ZNK9QtWayland25zwp_text_input_manager_v413isInitializedEv@Qt_6 6.6.0
- _ZNK9QtWayland25zwp_text_input_manager_v47versionEv@Qt_6 6.6.0
+ _ZNK9QtWayland25zwp_text_input_manager_v313isInitializedEv@Qt_6 6.8.0
+ _ZNK9QtWayland25zwp_text_input_manager_v37versionEv@Qt_6 6.8.0
  _ZNK9QtWayland26wp_cursor_shape_manager_v113isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland26wp_cursor_shape_manager_v17versionEv@Qt_6 6.6.0
- _ZNK9QtWayland27qt_toplevel_drag_manager_v113isInitializedEv@Qt_6 6.6.0
- _ZNK9QtWayland27qt_toplevel_drag_manager_v17versionEv@Qt_6 6.6.0
+ _ZNK9QtWayland28xdg_toplevel_drag_manager_v113isInitializedEv@Qt_6 6.8.0
+ _ZNK9QtWayland28xdg_toplevel_drag_manager_v17versionEv@Qt_6 6.8.0
  _ZNK9QtWayland28zwp_pointer_gesture_pinch_v113isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland28zwp_pointer_gesture_pinch_v17versionEv@Qt_6 6.6.0
  _ZNK9QtWayland28zwp_pointer_gesture_swipe_v113isInitializedEv@Qt_6 6.6.0
@@ -1678,8 +1679,6 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZNK9QtWayland9wl_region7versionEv@Qt_6 6.6.0
  _ZNK9QtWayland9xdg_popup13isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland9xdg_popup7versionEv@Qt_6 6.6.0
- (optional=templinst)_ZNSt3any17_Manager_internalIP12xdg_toplevelE9_S_manageENS_3_OpEPKS_PNS_4_ArgE@Qt_6 6.6.0
- (optional=templinst)_ZNSt3any17_Manager_internalIP13wl_subsurfaceE9_S_manageENS_3_OpEPKS_PNS_4_ArgE@Qt_6 6.6.0
  _ZTI23QWaylandClientExtension@Qt_6 6.6.0
  _ZTIN9QtWayland10wl_pointerE@Qt_6 6.6.0
  _ZTIN9QtWayland10wl_surfaceE@Qt_6 6.6.0
@@ -1708,13 +1707,13 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTIN9QtWayland17zwp_tablet_pad_v2E@Qt_6 6.6.0
  _ZTIN9QtWayland17zwp_text_input_v1E@Qt_6 6.6.0
  _ZTIN9QtWayland17zwp_text_input_v2E@Qt_6 6.6.0
- _ZTIN9QtWayland17zwp_text_input_v4E@Qt_6 6.6.0
+ _ZTIN9QtWayland17zwp_text_input_v3E@Qt_6 6.8.0
  _ZTIN9QtWayland18qt_touch_extensionE@Qt_6 6.6.0
  _ZTIN9QtWayland18zwp_tablet_seat_v2E@Qt_6 6.6.0
  _ZTIN9QtWayland18zwp_tablet_tool_v2E@Qt_6 6.6.0
  _ZTIN9QtWayland19qt_extended_surfaceE@Qt_6 6.6.0
- _ZTIN9QtWayland19qt_toplevel_drag_v1E@Qt_6 6.6.0
  _ZTIN9QtWayland20qt_surface_extensionE@Qt_6 6.6.0
+ _ZTIN9QtWayland20xdg_toplevel_drag_v1E@Qt_6 6.8.0
  _ZTIN9QtWayland21zwp_tablet_manager_v2E@Qt_6 6.6.0
  _ZTIN9QtWayland22wl_data_device_managerE@Qt_6 6.6.0
  _ZTIN9QtWayland22wp_fractional_scale_v1E@Qt_6 6.6.0
@@ -1728,9 +1727,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTIN9QtWayland25wp_cursor_shape_device_v1E@Qt_6 6.6.0
  _ZTIN9QtWayland25zwp_text_input_manager_v1E@Qt_6 6.6.0
  _ZTIN9QtWayland25zwp_text_input_manager_v2E@Qt_6 6.6.0
- _ZTIN9QtWayland25zwp_text_input_manager_v4E@Qt_6 6.6.0
+ _ZTIN9QtWayland25zwp_text_input_manager_v3E@Qt_6 6.8.0
  _ZTIN9QtWayland26wp_cursor_shape_manager_v1E@Qt_6 6.6.0
- _ZTIN9QtWayland27qt_toplevel_drag_manager_v1E@Qt_6 6.6.0
+ _ZTIN9QtWayland28xdg_toplevel_drag_manager_v1E@Qt_6 6.8.0
  _ZTIN9QtWayland28zwp_pointer_gesture_pinch_v1E@Qt_6 6.6.0
  _ZTIN9QtWayland28zwp_pointer_gesture_swipe_v1E@Qt_6 6.6.0
  _ZTIN9QtWayland30wp_fractional_scale_manager_v1E@Qt_6 6.6.0
@@ -1775,13 +1774,13 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTSN9QtWayland17zwp_tablet_pad_v2E@Qt_6 6.6.0
  _ZTSN9QtWayland17zwp_text_input_v1E@Qt_6 6.6.0
  _ZTSN9QtWayland17zwp_text_input_v2E@Qt_6 6.6.0
- _ZTSN9QtWayland17zwp_text_input_v4E@Qt_6 6.6.0
+ _ZTSN9QtWayland17zwp_text_input_v3E@Qt_6 6.8.0
  _ZTSN9QtWayland18qt_touch_extensionE@Qt_6 6.6.0
  _ZTSN9QtWayland18zwp_tablet_seat_v2E@Qt_6 6.6.0
  _ZTSN9QtWayland18zwp_tablet_tool_v2E@Qt_6 6.6.0
  _ZTSN9QtWayland19qt_extended_surfaceE@Qt_6 6.6.0
- _ZTSN9QtWayland19qt_toplevel_drag_v1E@Qt_6 6.6.0
  _ZTSN9QtWayland20qt_surface_extensionE@Qt_6 6.6.0
+ _ZTSN9QtWayland20xdg_toplevel_drag_v1E@Qt_6 6.8.0
  _ZTSN9QtWayland21zwp_tablet_manager_v2E@Qt_6 6.6.0
  _ZTSN9QtWayland22wl_data_device_managerE@Qt_6 6.6.0
  _ZTSN9QtWayland22wp_fractional_scale_v1E@Qt_6 6.6.0
@@ -1795,9 +1794,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTSN9QtWayland25wp_cursor_shape_device_v1E@Qt_6 6.6.0
  _ZTSN9QtWayland25zwp_text_input_manager_v1E@Qt_6 6.6.0
  _ZTSN9QtWayland25zwp_text_input_manager_v2E@Qt_6 6.6.0
- _ZTSN9QtWayland25zwp_text_input_manager_v4E@Qt_6 6.6.0
+ _ZTSN9QtWayland25zwp_text_input_manager_v3E@Qt_6 6.8.0
  _ZTSN9QtWayland26wp_cursor_shape_manager_v1E@Qt_6 6.6.0
- _ZTSN9QtWayland27qt_toplevel_drag_manager_v1E@Qt_6 6.6.0
+ _ZTSN9QtWayland28xdg_toplevel_drag_manager_v1E@Qt_6 6.8.0
  _ZTSN9QtWayland28zwp_pointer_gesture_pinch_v1E@Qt_6 6.6.0
  _ZTSN9QtWayland28zwp_pointer_gesture_swipe_v1E@Qt_6 6.6.0
  _ZTSN9QtWayland30wp_fractional_scale_manager_v1E@Qt_6 6.6.0
@@ -1842,13 +1841,13 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTVN9QtWayland17zwp_tablet_pad_v2E@Qt_6 6.6.0
  _ZTVN9QtWayland17zwp_text_input_v1E@Qt_6 6.6.0
  _ZTVN9QtWayland17zwp_text_input_v2E@Qt_6 6.6.0
- _ZTVN9QtWayland17zwp_text_input_v4E@Qt_6 6.6.0
+ _ZTVN9QtWayland17zwp_text_input_v3E@Qt_6 6.8.0
  _ZTVN9QtWayland18qt_touch_extensionE@Qt_6 6.6.0
  _ZTVN9QtWayland18zwp_tablet_seat_v2E@Qt_6 6.6.0
  _ZTVN9QtWayland18zwp_tablet_tool_v2E@Qt_6 6.6.0
  _ZTVN9QtWayland19qt_extended_surfaceE@Qt_6 6.6.0
- _ZTVN9QtWayland19qt_toplevel_drag_v1E@Qt_6 6.6.0
  _ZTVN9QtWayland20qt_surface_extensionE@Qt_6 6.6.0
+ _ZTVN9QtWayland20xdg_toplevel_drag_v1E@Qt_6 6.8.0
  _ZTVN9QtWayland21zwp_tablet_manager_v2E@Qt_6 6.6.0
  _ZTVN9QtWayland22wl_data_device_managerE@Qt_6 6.6.0
  _ZTVN9QtWayland22wp_fractional_scale_v1E@Qt_6 6.6.0
@@ -1862,9 +1861,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  _ZTVN9QtWayland25wp_cursor_shape_device_v1E@Qt_6 6.6.0
  _ZTVN9QtWayland25zwp_text_input_manager_v1E@Qt_6 6.6.0
  _ZTVN9QtWayland25zwp_text_input_manager_v2E@Qt_6 6.6.0
- _ZTVN9QtWayland25zwp_text_input_manager_v4E@Qt_6 6.6.0
+ _ZTVN9QtWayland25zwp_text_input_manager_v3E@Qt_6 6.8.0
  _ZTVN9QtWayland26wp_cursor_shape_manager_v1E@Qt_6 6.6.0
- _ZTVN9QtWayland27qt_toplevel_drag_manager_v1E@Qt_6 6.6.0
+ _ZTVN9QtWayland28xdg_toplevel_drag_manager_v1E@Qt_6 6.8.0
  _ZTVN9QtWayland28zwp_pointer_gesture_pinch_v1E@Qt_6 6.6.0
  _ZTVN9QtWayland28zwp_pointer_gesture_swipe_v1E@Qt_6 6.6.0
  _ZTVN9QtWayland30wp_fractional_scale_manager_v1E@Qt_6 6.6.0
@@ -1887,8 +1886,6 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  qt_surface_extension_interface@Qt_6 6.6.0
  qt_text_input_method_manager_v1_interface@Qt_6 6.6.0
  qt_text_input_method_v1_interface@Qt_6 6.6.0
- qt_toplevel_drag_manager_v1_interface@Qt_6 6.6.0
- qt_toplevel_drag_v1_interface@Qt_6 6.6.0
  qt_touch_extension_interface@Qt_6 6.6.0
  qt_windowmanager_interface@Qt_6 6.6.0
  wl_buffer_interface@Qt_6 6.6.0
@@ -1922,6 +1919,8 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  xdg_popup_interface@Qt_6 6.6.0
  xdg_positioner_interface@Qt_6 6.6.0
  xdg_surface_interface@Qt_6 6.6.0
+ xdg_toplevel_drag_manager_v1_interface@Qt_6 6.8.0
+ xdg_toplevel_drag_v1_interface@Qt_6 6.8.0
  xdg_toplevel_interface@Qt_6 6.6.0
  xdg_wm_base_interface@Qt_6 6.6.0
  zqt_key_v1_interface@Qt_6 6.6.0
@@ -1942,9 +1941,9 @@ libQt6WaylandClient.so.6 libqt6waylandclient6 #MINVER#
  zwp_tablet_v2_interface@Qt_6 6.6.0
  zwp_text_input_manager_v1_interface@Qt_6 6.6.0
  zwp_text_input_manager_v2_interface@Qt_6 6.6.0
- zwp_text_input_manager_v4_interface@Qt_6 6.6.0
+ zwp_text_input_manager_v3_interface@Qt_6 6.8.0
  zwp_text_input_v1_interface@Qt_6 6.6.0
  zwp_text_input_v2_interface@Qt_6 6.6.0
- zwp_text_input_v4_interface@Qt_6 6.6.0
+ zwp_text_input_v3_interface@Qt_6 6.8.0
  zxdg_output_manager_v1_interface@Qt_6 6.6.0
  zxdg_output_v1_interface@Qt_6 6.6.0
