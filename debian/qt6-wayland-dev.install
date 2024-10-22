@@ -7,7 +7,6 @@ usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandClient/qtwaylandclient-config.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandClient/qtwaylandclientexports.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandClient/qtwaylandclientglobal.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandClient/qtwaylandclientversion.h
-usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandClient/qwaylandclientexport.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandClient/qwaylandclientextension.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/QWaylandBufferRef
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/QWaylandClient
@@ -74,7 +73,6 @@ usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/qwaylandcompositor.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/qwaylandcompositorextension.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/qwaylanddestroylistener.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/qwaylanddrag.h
-usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/qwaylandexport.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/qwaylandidleinhibitv1.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/qwaylandinputmethodcontrol.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandCompositor/qwaylandiviapplication.h
