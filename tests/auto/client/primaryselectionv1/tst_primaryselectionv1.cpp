@@ -1,5 +1,5 @@
 // Copyright (C) 2018 The Qt Company Ltd.
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include "mockcompositor.h"
 
@@ -129,11 +129,6 @@ protected:
     {
         wl_resource_destroy(resource->handle);
     }
-    void zwp_primary_selection_device_v1_destroy_resource(Resource *resource) override
-    {
-        Q_UNUSED(resource);
-        delete this;
-    }
 };
 
 class PrimarySelectionDeviceManagerV1 : public Global, public QtWaylandServer::zwp_primary_selection_device_manager_v1
@@ -144,6 +139,10 @@ public:
         : QtWaylandServer::zwp_primary_selection_device_manager_v1(compositor->m_display, version)
         , m_version(version)
     {}
+    ~PrimarySelectionDeviceManagerV1() override
+    {
+        qDeleteAll(m_devices);
+    }
     bool isClean() override
     {
         for (auto *device : std::as_const(m_devices)) {
@@ -291,13 +290,13 @@ void tst_primaryselectionv1::pasteAscii()
 
         auto *device = primarySelectionDevice();
         auto *offer = device->sendDataOffer({"text/plain"});
-        connect(offer, &PrimarySelectionOfferV1::receive, [](QString mimeType, int fd) {
+        connect(offer, &PrimarySelectionOfferV1::receive, offer, [](QString mimeType, int fd) {
             QFile file;
             file.open(fd, QIODevice::WriteOnly, QFile::FileHandleFlag::AutoCloseHandle);
             QCOMPARE(mimeType, "text/plain");
             file.write(QByteArray("normal ascii"));
             file.close();
-        });
+        }, Qt::DirectConnection);
         device->sendSelection(offer);
 
         pointer()->sendEnter(surface, {32, 32});
@@ -337,13 +336,13 @@ void tst_primaryselectionv1::pasteUtf8()
 
         auto *device = primarySelectionDevice();
         auto *offer = device->sendDataOffer({"text/plain", "text/plain;charset=utf-8"});
-        connect(offer, &PrimarySelectionOfferV1::receive, [](QString mimeType, int fd) {
+        connect(offer, &PrimarySelectionOfferV1::receive, offer, [](QString mimeType, int fd) {
             QFile file;
             file.open(fd, QIODevice::WriteOnly, QFile::FileHandleFlag::AutoCloseHandle);
             QCOMPARE(mimeType, "text/plain;charset=utf-8");
             file.write(QByteArray("face with tears of joy: 😂"));
             file.close();
-        });
+        }, Qt::DirectConnection);
         device->sendSelection(offer);
 
         pointer()->sendEnter(surface, {32, 32});
@@ -465,7 +464,7 @@ void tst_primaryselectionv1::copy()
                     pastedBuf.append(buf, n);
                 }
             });
-        });
+        }, Qt::DirectConnection);
     });
 
     QCOMPOSITOR_TRY_VERIFY(pastedBuf.size()); // this assumes we got everything in one read

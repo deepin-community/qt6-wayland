@@ -11,6 +11,7 @@
 #include <QtWaylandCompositor/private/qwaylandoutput_p.h>
 
 #include <QtCore/QMutex>
+#include <QtCore/qpointer.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -28,7 +29,7 @@ void QWaylandViewPrivate::markSurfaceAsDestroyed(QWaylandSurface *surface)
 
 /*!
  * \qmltype WaylandView
- * \instantiates QWaylandView
+ * \nativetype QWaylandView
  * \inqmlmodule QtWayland.Compositor
  * \since 5.8
  * \brief Represents a view of a surface on an output.

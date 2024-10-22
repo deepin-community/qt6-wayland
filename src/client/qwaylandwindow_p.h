@@ -35,6 +35,8 @@
 #include <QtWaylandClient/qtwaylandclientglobal.h>
 #include <QtWaylandClient/private/qwaylandshellsurface_p.h>
 
+#include <QtCore/qpointer.h>
+
 struct wl_egl_window;
 
 QT_BEGIN_NAMESPACE
@@ -91,6 +93,7 @@ public:
     void setVisible(bool visible) override;
     void setParent(const QPlatformWindow *parent) override;
 
+    QString windowTitle() const;
     void setWindowTitle(const QString &title) override;
 
     inline QIcon windowIcon() const;
@@ -110,7 +113,6 @@ public:
     void damage(const QRect &rect);
 
     void safeCommit(QWaylandBuffer *buffer, const QRegion &damage);
-    void handleExpose(const QRegion &region);
     void commit(QWaylandBuffer *buffer, const QRegion &damage);
 
     void commit();
@@ -126,10 +128,10 @@ public:
     QPointF mapFromWlSurface(const QPointF &surfacePosition) const;
 
     QWaylandSurface *waylandSurface() const { return mSurface.data(); }
-    ::wl_surface *wlSurface();
+    ::wl_surface *wlSurface() const;
     ::wl_surface *surface() const override
     {
-        return const_cast<QWaylandWindow *>(this)->wlSurface();
+        return wlSurface();
     }
     static QWaylandWindow *fromWlSurface(::wl_surface *surface);
 
@@ -140,6 +142,7 @@ public:
     QWaylandScreen *waylandScreen() const;
 
     void handleContentOrientationChange(Qt::ScreenOrientation orientation) override;
+    void updateBufferTransform();
     void setOrientationMask(Qt::ScreenOrientations mask);
 
     ToplevelWindowTilingStates toplevelWindowTilingStates() const;
@@ -177,6 +180,9 @@ public:
 
     bool touchDragDecoration(QWaylandInputDevice *inputDevice, const QPointF &local, const QPointF &global,
                              QEventPoint::State state, Qt::KeyboardModifiers mods);
+    bool handleTabletEventDecoration(QWaylandInputDevice *inputDevice, const QPointF &local,
+                                     const QPointF &global, Qt::MouseButtons buttons,
+                                     Qt::KeyboardModifiers modifiers);
 
     bool createDecoration();
 
@@ -187,7 +193,6 @@ public:
 
     QWaylandWindow *transientParent() const;
 
-    QMutex *resizeMutex() { return &mResizeLock; }
     void doApplyConfigure();
     void setCanResize(bool canResize);
 
@@ -230,14 +235,17 @@ public:
     void endFrame();
 
     void closeChildPopups();
+    void sendRecursiveExposeEvent();
 
     virtual void reinit();
     void reset();
 
-public slots:
+    bool windowEvent(QEvent *event) override;
+
+public Q_SLOTS:
     void applyConfigure();
 
-signals:
+Q_SIGNALS:
     void wlSurfaceCreated();
     void wlSurfaceDestroyed();
 
@@ -295,7 +303,7 @@ protected:
     // True when we have called deliverRequestUpdate, but the client has not yet attached a new buffer
     bool mWaitingForUpdate = false;
 
-    QMutex mResizeLock;
+    QRecursiveMutex mResizeLock;
     bool mWaitingToApplyConfigure = false;
     bool mCanResize = true;
     bool mResizeDirty = false;
@@ -305,9 +313,9 @@ protected:
 
     bool mSentInitialResize = false;
     QPoint mOffset;
-    qreal mScale = 1;
-    QPlatformScreen *mLastReportedScreen = nullptr;
+    std::optional<qreal> mScale = std::nullopt;
 
+    QString mWindowTitle;
     QIcon mWindowIcon;
 
     Qt::WindowFlags mFlags;
@@ -322,15 +330,15 @@ protected:
     ToplevelWindowTilingStates mLastReportedToplevelWindowTilingStates = WindowNoState;
 
     QWaylandShmBackingStore *mBackingStore = nullptr;
-    QWaylandBuffer *mQueuedBuffer = nullptr;
-    QRegion mQueuedBufferDamage;
 
     QMargins mCustomMargins;
 
     QPointer<QWaylandWindow> mTransientParent;
     QList<QPointer<QWaylandWindow>> mChildPopups;
 
-private slots:
+    Qt::ScreenOrientation mLastReportedContentOrientation = Qt::PrimaryOrientation;
+
+private Q_SLOTS:
     void doApplyConfigureFromOtherThread();
 
 private:
@@ -347,9 +355,10 @@ private:
 
     void handleMouseEventWithDecoration(QWaylandInputDevice *inputDevice, const QWaylandPointerEvent &e);
     void handleScreensChanged();
-    void sendRecursiveExposeEvent();
+    void updateScale();
+    void setScale(qreal newScale);
 
-    QWaylandWindow *closestTransientParent() const;
+    QWaylandWindow *guessTransientParent() const;
     void addChildPopup(QWaylandWindow *child);
     void removeChildPopup(QWaylandWindow *child);
 
@@ -361,6 +370,7 @@ private:
     void handleFrameCallback(struct ::wl_callback* callback);
 
     static QWaylandWindow *mMouseGrab;
+    static QWaylandWindow *mTopPopup;
 
     friend class QWaylandSubSurface;
 };

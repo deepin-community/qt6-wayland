@@ -16,7 +16,7 @@
 //
 
 #include <qpa/qplatformscreen.h>
-#include <qpa/qplatformscreen_p.h>
+#include <QtGui/qscreen_platform.h>
 #include <QtWaylandClient/qtwaylandclientglobal.h>
 
 #include <QtWaylandClient/private/qwayland-wayland.h>
@@ -33,12 +33,13 @@ class QWaylandCursor;
 class Q_WAYLANDCLIENT_EXPORT QWaylandXdgOutputManagerV1 : public QtWayland::zxdg_output_manager_v1 {
 public:
     QWaylandXdgOutputManagerV1(QWaylandDisplay *display, uint id, uint version);
+    ~QWaylandXdgOutputManagerV1();
 };
 
 class Q_WAYLANDCLIENT_EXPORT QWaylandScreen : public QPlatformScreen,
                                               QtWayland::wl_output,
                                               QtWayland::zxdg_output_v1,
-                                              public QNativeInterface::Private::QWaylandScreen
+                                              public QNativeInterface::QWaylandScreen
 {
 public:
     QWaylandScreen(QWaylandDisplay *waylandDisplay, int version, uint32_t id);
@@ -73,6 +74,8 @@ public:
     QPlatformCursor *cursor() const override;
 #endif
 
+    SubpixelAntialiasingType subpixelAntialiasingTypeHint() const override;
+
     uint32_t outputId() const { return m_outputId; }
     ::wl_output *output() const override
     {
@@ -81,6 +84,9 @@ public:
 
     static QWaylandScreen *waylandScreenFromWindow(QWindow *window);
     static QWaylandScreen *fromWlOutput(::wl_output *output);
+
+    Qt::ScreenOrientation toScreenOrientation(int wlTransform,
+                                              Qt::ScreenOrientation fallback) const;
 
 protected:
     enum Event : uint {
@@ -117,6 +123,7 @@ protected:
     int mScale = 1;
     int mDepth = 32;
     int mRefreshRate = 60000;
+    int mSubpixel = -1;
     int mTransform = -1;
     QImage::Format mFormat = QImage::Format_ARGB32_Premultiplied;
     QSize mPhysicalSize;

@@ -41,6 +41,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QStringList>
 #include <QtCore/QSocketNotifier>
+#include <QStandardPaths>
 
 #include <QtGui/QDesktopServices>
 #include <QtGui/QScreen>
@@ -62,9 +63,7 @@ QT_BEGIN_NAMESPACE
 Q_LOGGING_CATEGORY(qLcWaylandCompositor, "qt.waylandcompositor")
 Q_LOGGING_CATEGORY(qLcWaylandCompositorHardwareIntegration, "qt.waylandcompositor.hardwareintegration")
 Q_LOGGING_CATEGORY(qLcWaylandCompositorInputMethods, "qt.waylandcompositor.inputmethods")
-#if QT_WAYLAND_TEXT_INPUT_V4_WIP
 Q_LOGGING_CATEGORY(qLcWaylandCompositorTextInput, "qt.waylandcompositor.textinput")
-#endif // QT_WAYLAND_TEXT_INPUT_V4_WIP
 
 namespace QtWayland {
 
@@ -137,6 +136,9 @@ public:
 
 QWaylandCompositorPrivate::QWaylandCompositorPrivate(QWaylandCompositor *compositor)
 {
+    // Create XDG_RUNTIME_DIR, if it does not already exist
+    QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
+
     if (QGuiApplication::platformNativeInterface())
         display = static_cast<wl_display*>(QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("server_wl_display"));
 
@@ -168,6 +170,8 @@ void QWaylandCompositorPrivate::init()
         const int socketArg = arguments.indexOf(QLatin1String("--wayland-socket-name"));
         if (socketArg != -1 && socketArg + 1 < arguments.size())
             socket_name = arguments.at(socketArg + 1).toLocal8Bit();
+        if (socket_name.isEmpty())
+            socket_name = qgetenv("WAYLAND_DISPLAY");
     }
     wl_compositor::init(display, 4);
     wl_subcompositor::init(display, 1);
@@ -474,7 +478,7 @@ QWaylandSeat *QWaylandCompositorPrivate::seatFor(QInputEvent *inputEvent)
 
 /*!
   \qmltype WaylandCompositor
-  \instantiates QWaylandCompositor
+  \nativetype QWaylandCompositor
   \inqmlmodule QtWayland.Compositor
   \since 5.8
   \brief Manages the Wayland display server.

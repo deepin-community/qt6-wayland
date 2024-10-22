@@ -37,6 +37,7 @@ class QWaylandPrimarySelectionDeviceManagerV1 : public QtWayland::zwp_primary_se
 {
 public:
     explicit QWaylandPrimarySelectionDeviceManagerV1(QWaylandDisplay *display, uint id, uint version);
+    ~QWaylandPrimarySelectionDeviceManagerV1();
     QWaylandPrimarySelectionDeviceV1 *createDevice(QWaylandInputDevice *seat);
     QWaylandDisplay *display() const { return m_display; }
 
@@ -69,7 +70,7 @@ public:
 
     QMimeData *mimeData() const { return m_mimeData; }
 
-signals:
+Q_SIGNALS:
     void cancelled();
 
 protected:
