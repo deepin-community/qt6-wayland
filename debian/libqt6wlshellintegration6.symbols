@@ -1,7 +1,8 @@
-# SymbolsHelper-Confirmed: 6.6.0 amd64
+# SymbolsHelper-Confirmed: 6.8.0 amd64
 libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
 | libqt6wlshellintegration6 #MINVER#, qt6-waylandclient-private-abi (= 6.8.0)
 * Build-Depends-Packages: qt6-wayland-dev, qt6-wayland-private-dev
+ NonQt@NonQt 6.8.0
  Qt_6@Qt_6 6.6.0
  (symver)Qt_6_PRIVATE_API 0
  _ZN9QtWayland10wl_pointer10fromObjectEP10wl_pointer@Qt_6 6.6.0
@@ -528,7 +529,6 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZNK9QtWayland9wl_output7versionEv@Qt_6 6.6.0
  _ZNK9QtWayland9wl_region13isInitializedEv@Qt_6 6.6.0
  _ZNK9QtWayland9wl_region7versionEv@Qt_6 6.6.0
- (optional=templinst)_ZNSt3any17_Manager_internalIPK16wl_shell_surfaceE9_S_manageENS_3_OpEPKS_PNS_4_ArgE@Qt_6 6.6.0
  _ZTIN15QtWaylandClient24QWaylandShellIntegrationE@Qt_6 6.6.0
  _ZTIN9QtWayland10wl_pointerE@Qt_6 6.6.0
  _ZTIN9QtWayland10wl_surfaceE@Qt_6 6.6.0
