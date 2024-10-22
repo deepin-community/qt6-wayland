@@ -195,9 +195,8 @@ QWaylandGLContext::QWaylandGLContext(EGLDisplay eglDisplay, QWaylandDisplay *dis
                                      const QSurfaceFormat &fmt, QPlatformOpenGLContext *share)
     : QEGLPlatformContext(fmt, share, eglDisplay), m_display(display)
 {
-    m_reconnectionWatcher = QObject::connect(m_display, &QWaylandDisplay::reconnected, [this]() {
-        invalidateContext();
-    });
+    m_reconnectionWatcher = QObject::connect(m_display, &QWaylandDisplay::connected,
+                                             m_display, [this] { invalidateContext(); });
 
     switch (format().renderableType()) {
     case QSurfaceFormat::OpenVG:
@@ -234,7 +233,7 @@ QWaylandGLContext::QWaylandGLContext(EGLDisplay eglDisplay, QWaylandDisplay *dis
             m_supportNonBlockingSwap = supportNonBlockingSwap != 0;
     }
     if (!m_supportNonBlockingSwap) {
-        qWarning(lcQpaWayland) << "Non-blocking swap buffers not supported."
+        qCWarning(lcQpaWayland) << "Non-blocking swap buffers not supported."
                                << "Subsurface rendering can be affected."
                                << "It may also cause the event loop to freeze in some situations";
     }
@@ -274,13 +273,15 @@ QWaylandGLContext::~QWaylandGLContext()
 void QWaylandGLContext::beginFrame()
 {
     Q_ASSERT(m_currentWindow != nullptr);
-    m_currentWindow->beginFrame();
+    if (m_supportNonBlockingSwap)
+        m_currentWindow->beginFrame();
 }
 
 void QWaylandGLContext::endFrame()
 {
     Q_ASSERT(m_currentWindow != nullptr);
-    m_currentWindow->endFrame();
+    if (m_supportNonBlockingSwap)
+        m_currentWindow->endFrame();
 }
 
 bool QWaylandGLContext::makeCurrent(QPlatformSurface *surface)
@@ -311,8 +312,6 @@ bool QWaylandGLContext::makeCurrent(QPlatformSurface *surface)
 
     if (m_currentWindow->isExposed())
         m_currentWindow->setCanResize(false);
-    if (m_decorationsContext != EGL_NO_CONTEXT && !m_currentWindow->decoration())
-        m_currentWindow->createDecoration();
 
     if (eglSurface == EGL_NO_SURFACE) {
         m_currentWindow->updateSurface(true);
@@ -372,7 +371,8 @@ void QWaylandGLContext::swapBuffers(QPlatformSurface *surface)
         window->waitForFrameSync(100);
     }
     window->handleUpdate();
-    eglSwapBuffers(eglDisplay(), eglSurface);
+    if (!eglSwapBuffers(eglDisplay(), eglSurface))
+        qCWarning(lcQpaWayland, "eglSwapBuffers failed with %#x, surface: %p", eglGetError(), eglSurface);
 
     window->setCanResize(true);
 }

@@ -22,6 +22,8 @@
 #include <QtWaylandCompositor/QWaylandQuickItem>
 #include <QtWaylandCompositor/QWaylandOutput>
 
+#include <QtCore/qpointer.h>
+
 QT_BEGIN_NAMESPACE
 
 class QWaylandSurfaceTextureProvider;
@@ -115,6 +117,9 @@ public:
         q->setAcceptHoverEvents(enable);
         inputEventsEnabled = enable;
     }
+
+    void handleDragEnded(QWaylandSeat *seat);
+    void handleDragUpdate(QWaylandSeat *seat, const QPointF &globalPosition);
 
     bool shouldSendInputEvents() const { return view->surface() && inputEventsEnabled; }
     qreal scaleFactor() const;

@@ -9,7 +9,6 @@
 
 qt_internal_add_module(WaylandClient
     PLUGIN_TYPES wayland-graphics-integration-client wayland-inputdevice-integration wayland-decoration-client wayland-shell-integration
-    GENERATE_CPP_EXPORTS
     SOURCES
         ../shared/qwaylandinputmethodeventbuilder.cpp ../shared/qwaylandinputmethodeventbuilder_p.h
         ../shared/qwaylandmimehelper.cpp ../shared/qwaylandmimehelper_p.h
@@ -36,11 +35,13 @@ qt_internal_add_module(WaylandClient
         qwaylandinputcontext.cpp qwaylandinputcontext_p.h
         qwaylandtextinputv1.cpp qwaylandtextinputv1_p.h
         qwaylandtextinputv2.cpp qwaylandtextinputv2_p.h
+        qwaylandtextinputv3.cpp qwaylandtextinputv3_p.h
         qwaylandtextinputinterface.cpp qwaylandtextinputinterface_p.h
         qwaylandinputdevice.cpp qwaylandinputdevice_p.h
         qwaylandinputmethodcontext.cpp qwaylandinputmethodcontext_p.h
         qwaylandintegration.cpp qwaylandintegration_p.h
         qwaylandnativeinterface.cpp qwaylandnativeinterface_p.h
+        qwaylandplatformservices.cpp qwaylandplatformservices_p.h
         qwaylandpointergestures.cpp qwaylandpointergestures_p.h
         qwaylandqtkey.cpp qwaylandqtkey_p.h
         qwaylandscreen.cpp qwaylandscreen_p.h
@@ -78,23 +79,36 @@ qt_internal_add_module(WaylandClient
         Qt::WaylandGlobalPrivate
     PRIVATE_HEADER_FILTERS
         "^qwayland-.*\.h|^wayland-.*-protocol\.h"
+    QT_LICENSE_ID QT_COMMERCIAL_OR_LGPL3
+    ATTRIBUTION_FILE_DIR_PATHS
+        ../3rdparty/protocol/pointer-gestures
+        ../3rdparty/protocol/tablet
+        ../3rdparty/protocol/text-input/v1
+        ../3rdparty/protocol/text-input/v2
+        ../3rdparty/protocol/text-input/v3
+        ../3rdparty/protocol/wayland
+        ../3rdparty/protocol/wp-primary-selection
+        ../3rdparty/protocol/xdg-output
+        ../3rdparty/protocol/fractional-scale
+        ../3rdparty/protocol/viewporter
+        ../3rdparty/protocol/xdg-shell
 )
 
 qt6_generate_wayland_protocol_client_sources(WaylandClient
     FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/cursor-shape-v1.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/pointer-gestures-unstable-v1.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/tablet-unstable-v2.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input-unstable-v1.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input-unstable-v2.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input-unstable-v4-wip.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/wayland.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/wp-primary-selection-unstable-v1.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/xdg-output-unstable-v1.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/fractional-scale-v1.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/viewporter.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/qt-toplevel-drag-v1.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/xdg-shell.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/cursor-shape/cursor-shape-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/pointer-gestures/pointer-gestures-unstable-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/tablet/tablet-unstable-v2.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input/v1/text-input-unstable-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input/v2/text-input-unstable-v2.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/text-input/v3/text-input-unstable-v3.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/wayland/wayland.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/wp-primary-selection/wp-primary-selection-unstable-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/xdg-output/xdg-output-unstable-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/fractional-scale/fractional-scale-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/viewporter/viewporter.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/xdg-shell/xdg-shell.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/protocol/xdg-toplevel-drag/xdg-toplevel-drag-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../extensions/qt-key-unstable-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../extensions/qt-text-input-method-unstable-v1.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/../extensions/qt-windowmanager.xml
@@ -124,13 +138,6 @@ qt6_generate_wayland_protocol_client_sources(WaylandClient
 qt_internal_extend_target(WaylandClient CONDITION QT_FEATURE_tabletevent
     SOURCES
         qwaylandtabletv2.cpp qwaylandtabletv2_p.h
-)
-
-qt_internal_extend_target(WaylandClient CONDITION QT_FEATURE_wayland_text_input_v4_wip
-    SOURCES
-        qwaylandtextinputv4.cpp qwaylandtextinputv4_p.h
-    DEFINES
-        QT_WAYLAND_TEXT_INPUT_V4_WIP=1
 )
 
 qt_internal_extend_target(WaylandClient CONDITION QT_FEATURE_clipboard
@@ -167,6 +174,10 @@ qt_internal_extend_target(WaylandClient CONDITION QT_FEATURE_wayland_client_prim
 qt_internal_extend_target(WaylandClient CONDITION QT_FEATURE_draganddrop
     SOURCES
         qwaylanddnd.cpp qwaylanddnd_p.h
+)
+
+qt_internal_add_docs(WaylandClient
+    doc/qtwaylandclient.qdocconf
 )
 
 qt_record_extra_qt_main_tools_package_dependency(WaylandClient WaylandScannerTools "${PROJECT_VERSION}")

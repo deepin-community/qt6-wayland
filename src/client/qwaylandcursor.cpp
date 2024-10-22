@@ -8,6 +8,9 @@
 #include "qwaylandinputdevice_p.h"
 #include "qwaylandshmbackingstore_p.h"
 
+#include <QtGui/private/qguiapplication_p.h>
+#include <qpa/qplatformtheme.h>
+
 #include <QtGui/QImageReader>
 #include <QDebug>
 
@@ -244,11 +247,11 @@ static QtWayland::wp_cursor_shape_device_v1::shape qtCursorShapeToWaylandShape(Q
     case Qt::SizeFDiagCursor:
         return wp_cursor_shape_device_v1::shape_nwse_resize;
     case Qt::WaitCursor:
-        return wp_cursor_shape_device_v1::shape_progress;
+        return wp_cursor_shape_device_v1::shape_wait;
     case Qt::SizeAllCursor:
         return wp_cursor_shape_device_v1::shape_all_scroll;
     case Qt::BusyCursor:
-        return wp_cursor_shape_device_v1::shape_wait;
+        return wp_cursor_shape_device_v1::shape_progress;
     case Qt::SplitVCursor:
         return wp_cursor_shape_device_v1::shape_row_resize;
     case Qt::ForbiddenCursor:
@@ -264,11 +267,11 @@ static QtWayland::wp_cursor_shape_device_v1::shape qtCursorShapeToWaylandShape(Q
     case Qt::ClosedHandCursor:
         return wp_cursor_shape_device_v1::shape_grabbing;
     case Qt::DragMoveCursor:
+        return wp_cursor_shape_device_v1::shape_move;
     case Qt::DragCopyCursor:
+        return wp_cursor_shape_device_v1::shape_copy;
     case Qt::DragLinkCursor:
-        // drags on wayland are different, the compositor knows
-        // the drag type and can do something custom
-        return wp_cursor_shape_device_v1::shape_grab;
+        return wp_cursor_shape_device_v1::shape_alias;
     }
     return wp_cursor_shape_device_v1::shape_default;
 }
@@ -334,6 +337,13 @@ void QWaylandCursor::setPos(const QPoint &pos)
 {
     Q_UNUSED(pos);
     qCWarning(lcQpaWayland) << "Setting cursor position is not possible on wayland";
+}
+
+QSize QWaylandCursor::size() const
+{
+    if (const QPlatformTheme *theme = QGuiApplicationPrivate::platformTheme())
+        return theme->themeHint(QPlatformTheme::MouseCursorSize).toSize();
+    return QSize(24, 24);
 }
 
 } // namespace QtWaylandClient

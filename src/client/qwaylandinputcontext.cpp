@@ -4,7 +4,6 @@
 
 #include "qwaylandinputcontext_p.h"
 
-#include <QLoggingCategory>
 #include <QtGui/QGuiApplication>
 #include <QtGui/QTextCharFormat>
 #include <QtGui/QWindow>
@@ -35,11 +34,7 @@ QWaylandInputContext::~QWaylandInputContext()
 
 bool QWaylandInputContext::isValid() const
 {
-#if QT_WAYLAND_TEXT_INPUT_V4_WIP
-    return mDisplay->textInputManagerv2() != nullptr || mDisplay->textInputManagerv1() != nullptr || mDisplay->textInputManagerv4() != nullptr;
-#else //  QT_WAYLAND_TEXT_INPUT_V4_WIP
-    return mDisplay->textInputManagerv2() != nullptr || mDisplay->textInputManagerv1() != nullptr;
-#endif // QT_WAYLAND_TEXT_INPUT_V4_WIP
+    return mDisplay->textInputManagerv2() != nullptr || mDisplay->textInputManagerv1() != nullptr || mDisplay->textInputManagerv3() != nullptr;
 }
 
 void QWaylandInputContext::reset()
@@ -52,20 +47,22 @@ void QWaylandInputContext::reset()
 
     QPlatformInputContext::reset();
 
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return;
 
-    textInput()->reset();
+    inputInterface->reset();
 }
 
 void QWaylandInputContext::commit()
 {
     qCDebug(qLcQpaInputMethods) << Q_FUNC_INFO;
 
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return;
 
-    textInput()->commit();
+    inputInterface->commit();
 }
 
 static ::wl_surface *surfaceForWindow(QWindow *window)
@@ -81,92 +78,100 @@ void QWaylandInputContext::update(Qt::InputMethodQueries queries)
 {
     qCDebug(qLcQpaInputMethods) << Q_FUNC_INFO << queries;
 
-    if (!QGuiApplication::focusObject() || !textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!QGuiApplication::focusObject() || !inputInterface)
         return;
 
     auto *currentSurface = surfaceForWindow(mCurrentWindow);
 
     if (currentSurface && !inputMethodAccepted()) {
-        textInput()->disableSurface(currentSurface);
+        inputInterface->disableSurface(currentSurface);
         mCurrentWindow.clear();
     } else if (!currentSurface && inputMethodAccepted()) {
         QWindow *window = QGuiApplication::focusWindow();
         if (auto *focusSurface = surfaceForWindow(window)) {
-            textInput()->enableSurface(focusSurface);
+            inputInterface->enableSurface(focusSurface);
             mCurrentWindow = window;
         }
     }
 
-    textInput()->updateState(queries, QWaylandTextInputInterface::update_state_change);
+    inputInterface->updateState(queries, QWaylandTextInputInterface::update_state_change);
 }
 
 void QWaylandInputContext::invokeAction(QInputMethod::Action action, int cursorPostion)
 {
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return;
 
     if (action == QInputMethod::Click)
-        textInput()->setCursorInsidePreedit(cursorPostion);
+        inputInterface->setCursorInsidePreedit(cursorPostion);
 }
 
 void QWaylandInputContext::showInputPanel()
 {
     qCDebug(qLcQpaInputMethods) << Q_FUNC_INFO;
 
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return;
 
-    textInput()->showInputPanel();
+    inputInterface->showInputPanel();
 }
 
 void QWaylandInputContext::hideInputPanel()
 {
     qCDebug(qLcQpaInputMethods) << Q_FUNC_INFO;
 
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return;
 
-    textInput()->hideInputPanel();
+    inputInterface->hideInputPanel();
 }
 
 bool QWaylandInputContext::isInputPanelVisible() const
 {
     qCDebug(qLcQpaInputMethods) << Q_FUNC_INFO;
 
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return QPlatformInputContext::isInputPanelVisible();
 
-    return textInput()->isInputPanelVisible();
+    return inputInterface->isInputPanelVisible();
 }
 
 QRectF QWaylandInputContext::keyboardRect() const
 {
     qCDebug(qLcQpaInputMethods) << Q_FUNC_INFO;
 
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return QPlatformInputContext::keyboardRect();
 
-    return textInput()->keyboardRect();
+    return inputInterface->keyboardRect();
 }
 
 QLocale QWaylandInputContext::locale() const
 {
     qCDebug(qLcQpaInputMethods) << Q_FUNC_INFO;
 
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return QPlatformInputContext::locale();
 
-    return textInput()->locale();
+    return inputInterface->locale();
 }
 
 Qt::LayoutDirection QWaylandInputContext::inputDirection() const
 {
     qCDebug(qLcQpaInputMethods) << Q_FUNC_INFO;
 
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return QPlatformInputContext::inputDirection();
 
-    return textInput()->inputDirection();
+    return inputInterface->inputDirection();
 }
 
 void QWaylandInputContext::setFocusObject(QObject *object)
@@ -178,7 +183,8 @@ void QWaylandInputContext::setFocusObject(QObject *object)
     Q_UNUSED(object);
 #endif
 
-    if (!textInput())
+    QWaylandTextInputInterface *inputInterface = textInput();
+    if (!inputInterface)
         return;
 
     QWindow *window = QGuiApplication::focusWindow();
@@ -187,7 +193,7 @@ void QWaylandInputContext::setFocusObject(QObject *object)
         if (mCurrentWindow.data() != window || !inputMethodAccepted()) {
             auto *surface = static_cast<QWaylandWindow *>(mCurrentWindow->handle())->wlSurface();
             if (surface)
-                textInput()->disableSurface(surface);
+                inputInterface->disableSurface(surface);
             mCurrentWindow.clear();
         }
     }
@@ -196,11 +202,11 @@ void QWaylandInputContext::setFocusObject(QObject *object)
         if (mCurrentWindow.data() != window) {
             auto *surface = static_cast<QWaylandWindow *>(window->handle())->wlSurface();
             if (surface) {
-                textInput()->enableSurface(surface);
+                inputInterface->enableSurface(surface);
                 mCurrentWindow = window;
             }
         }
-        textInput()->updateState(Qt::ImQueryAll, QWaylandTextInputInterface::update_state_enter);
+        inputInterface->updateState(Qt::ImQueryAll, QWaylandTextInputInterface::update_state_enter);
     }
 }
 

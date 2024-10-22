@@ -19,16 +19,16 @@ Build-Depends: cmake (>= 3.24~),
                ninja-build,
                pkg-config,
                pkg-kde-tools,
-               qt6-base-dev (>= 6.6.1+dfsg~),
-               qt6-base-private-dev (>= 6.6.1+dfsg~),
-               qt6-declarative-dev (>= 6.6.1+dfsg~),
-               qt6-declarative-private-dev (>= 6.6.1+dfsg~),
+               qt6-base-dev (>= 6.8.0+dfsg~),
+               qt6-base-private-dev (>= 6.8.0+dfsg~),
+               qt6-declarative-dev (>= 6.8.0+dfsg~),
+               qt6-declarative-private-dev (>= 6.8.0+dfsg~),
                qt6-wayland-dev:native <cross>,
                xauth <!nocheck>,
                xvfb <!nocheck>,
                zlib1g-dev,
-Build-Depends-Indep: qt6-base-dev (>= 6.6~) <!nodoc>,
-                     qt6-documentation-tools (>= 6.6~) <!nodoc>,
+Build-Depends-Indep: qt6-base-dev (>= 6.8~) <!nodoc>,
+                     qt6-documentation-tools (>= 6.8~) <!nodoc>,
 Standards-Version: 4.6.2
 Homepage: https://www.qt.io/developers/
 Vcs-Browser: https://salsa.debian.org/qt-kde-team/qt6/qt6-wayland
@@ -38,7 +38,7 @@ Rules-Requires-Root: no
 Package: libqt6waylandclient6
 Architecture: any
 Multi-Arch: same
-Provides: qt6-waylandclient-private-abi (= 6.6.1),
+Provides: qt6-waylandclient-private-abi (= 6.8.0),
 Depends: ${misc:Depends}, ${shlibs:Depends},
 Description: Qt 6 Wayland Client library
  Qt is a cross-platform C++ application framework. Qt's primary feature
@@ -51,7 +51,7 @@ Description: Qt 6 Wayland Client library
 Package: libqt6waylandcompositor6
 Architecture: any
 Multi-Arch: same
-Provides: qt6-waylandcompositor-private-abi (= 6.6.1),
+Provides: qt6-waylandcompositor-private-abi (= 6.8.0),
 Depends: ${misc:Depends}, ${shlibs:Depends},
 Description: Qt 6 Wayland Compositor library
  Qt is a cross-platform C++ application framework. Qt's primary feature

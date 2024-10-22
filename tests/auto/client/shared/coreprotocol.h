@@ -1,10 +1,12 @@
 // Copyright (C) 2018 The Qt Company Ltd.
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #ifndef MOCKCOMPOSITOR_COREPROTOCOL_H
 #define MOCKCOMPOSITOR_COREPROTOCOL_H
 
 #include "corecompositor.h"
+
+#include <QtCore/qpointer.h>
 
 #include <qwayland-server-wayland.h>
 
@@ -122,6 +124,7 @@ protected:
     void surface_set_buffer_scale(Resource *resource, int32_t scale) override;
     void surface_commit(Resource *resource) override;
     void surface_frame(Resource *resource, uint32_t callback) override;
+    void surface_offset(Resource *resource, int32_t x, int32_t y) override;
 };
 
 class Region : public QtWaylandServer::wl_region
@@ -143,7 +146,7 @@ class WlCompositor : public Global, public QtWaylandServer::wl_compositor
 {
     Q_OBJECT
 public:
-    explicit WlCompositor(CoreCompositor *compositor, int version = 4)
+    explicit WlCompositor(CoreCompositor *compositor, int version = 5)
         : QtWaylandServer::wl_compositor(compositor->m_display, version)
         , m_compositor(compositor)
     {}

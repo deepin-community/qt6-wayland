@@ -11,6 +11,8 @@
 
 #include <QtCore/QDebug>
 
+using namespace std::chrono;
+
 QT_BEGIN_NAMESPACE
 
 namespace QtWaylandClient {
@@ -30,6 +32,11 @@ static QString mozUrl()
     return QStringLiteral("text/x-moz-url");
 }
 
+static QString portalFileTransfer()
+{
+    return QStringLiteral("application/vnd.portal.filetransfer");
+}
+
 static QByteArray convertData(const QString &originalMime, const QString &newMime, const QByteArray &data)
 {
     if (originalMime == newMime)
@@ -40,19 +47,32 @@ static QByteArray convertData(const QString &originalMime, const QString &newMim
     // see also qtbase/src/plugins/platforms/xcb/qxcbmime.cpp
     if (originalMime == uriList() && newMime == mozUrl()) {
         if (data.size() > 1) {
-            const QString str = QString::fromUtf16(
-                  reinterpret_cast<const char16_t *>(data.constData()), data.size() / 2);
-            if (!str.isNull()) {
+            const quint8 byte0 = data.at(0);
+            const quint8 byte1 = data.at(1);
+
+            if ((byte0 == 0xff && byte1 == 0xfe) || (byte0 == 0xfe && byte1 == 0xff)
+                || (byte0 != 0 && byte1 == 0) || (byte0 == 0 && byte1 != 0)) {
                 QByteArray converted;
-                const auto urls = QStringView{str}.split(u'\n');
-                // Only the URL is interesting, skip the page title.
-                for (int i = 0; i < urls.size(); i += 2) {
-                    const QUrl url(urls.at(i).trimmed().toString());
-                    if (url.isValid()) {
-                        converted += url.toEncoded();
-                        converted += "\r\n";
+                const QString str = QString::fromUtf16(
+                      reinterpret_cast<const char16_t *>(data.constData()), data.size() / 2);
+                if (!str.isNull()) {
+                    const auto urls = QStringView{str}.split(u'\n');
+                    // Only the URL is interesting, skip the page title.
+                    for (int i = 0; i < urls.size(); i += 2) {
+                        const QUrl url(urls.at(i).trimmed().toString());
+                        if (url.isValid()) {
+                            converted += url.toEncoded();
+                            converted += "\r\n";
+                        }
                     }
                 }
+                return converted;
+            // 8 byte encoding, remove a possible 0 at the end.
+            } else {
+                QByteArray converted = data;
+                if (converted.endsWith('\0'))
+                    converted.chop(1);
+                converted += "\r\n";
                 return converted;
             }
         }
@@ -134,8 +154,11 @@ QWaylandMimeData::~QWaylandMimeData()
 
 void QWaylandMimeData::appendFormat(const QString &mimeType)
 {
-    m_types << mimeType;
-    m_data.remove(mimeType); // Clear previous contents
+    // "DELETE" is a potential leftover from XdndActionMode sent by e.g. Firefox, ignore it.
+    if (mimeType != QLatin1String("DELETE")) {
+        m_types << mimeType;
+        m_data.remove(mimeType); // Clear previous contents
+    }
 }
 
 bool QWaylandMimeData::hasFormat_sys(const QString &mimeType) const
@@ -196,7 +219,9 @@ QVariant QWaylandMimeData::retrieveData_sys(const QString &mimeType, QMetaType t
 
     content = convertData(mimeType, mime, content);
 
-    m_data.insert(mimeType, content);
+    if (mimeType != portalFileTransfer())
+        m_data.insert(mimeType, content);
+
     return content;
 }
 
@@ -205,13 +230,9 @@ int QWaylandMimeData::readData(int fd, QByteArray &data) const
     struct pollfd readset;
     readset.fd = fd;
     readset.events = POLLIN;
-    struct timespec timeout;
-    timeout.tv_sec = 1;
-    timeout.tv_nsec = 0;
-
 
     Q_FOREVER {
-        int ready = qt_safe_poll(&readset, 1, &timeout);
+        int ready = qt_safe_poll(&readset, 1, QDeadlineTimer(1s));
         if (ready < 0) {
             qWarning() << "QWaylandDataOffer: qt_safe_poll() failed";
             return -1;

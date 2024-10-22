@@ -1,5 +1,5 @@
 // Copyright (C) 2023 David Edmundson <davidedmundson@kde.org>
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include "mockcompositor.h"
 #include <QtGui/QRasterWindow>
@@ -65,7 +65,7 @@ void tst_cursor::setCursor()
     QCOMPARE(setCursorShapeSpy.takeFirst().at(0).toUInt(), enterSerial);
 
     // client sets a different shape
-    window.setCursor(QCursor(Qt::BusyCursor));
+    window.setCursor(QCursor(Qt::WaitCursor));
     QVERIFY(setCursorShapeSpy.wait());
     QCOMPOSITOR_COMPARE(cursorShape()->m_currentShape, CursorShapeDevice::shape_wait);
 
@@ -88,7 +88,7 @@ void tst_cursor::setCursor()
     // set a shape again
     window.setCursor(QCursor(Qt::BusyCursor));
     QVERIFY(setCursorShapeSpy.wait());
-    QCOMPOSITOR_COMPARE(cursorShape()->m_currentShape, CursorShapeDevice::shape_wait);
+    QCOMPOSITOR_COMPARE(cursorShape()->m_currentShape, CursorShapeDevice::shape_progress);
 
     setCursorShapeSpy.clear();
 

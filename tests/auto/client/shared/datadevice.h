@@ -1,5 +1,5 @@
 // Copyright (C) 2018 The Qt Company Ltd.
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #ifndef MOCKCOMPOSITOR_DATADEVICE_H
 #define MOCKCOMPOSITOR_DATADEVICE_H
@@ -63,7 +63,7 @@ public:
     DataDeviceManager *m_manager = nullptr;
     Seat *m_seat = nullptr;
     QList<DataOffer *> m_sentSelectionOffers;
-    QList<DataOffer *> m_offers;
+    QPointer<DataOffer> m_offer;
 
 signals:
     void dragStarted();

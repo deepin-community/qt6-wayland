@@ -40,6 +40,8 @@ struct wp_viewport;
 
 QT_BEGIN_NAMESPACE
 
+#define WAYLAND_IM_KEY "wayland"
+
 class QAbstractEventDispatcher;
 class QSocketNotifier;
 class QPlatformScreen;
@@ -49,12 +51,12 @@ namespace QtWayland {
     class qt_surface_extension;
     class zwp_text_input_manager_v1;
     class zwp_text_input_manager_v2;
-    class zwp_text_input_manager_v4;
+    class zwp_text_input_manager_v3;
     class qt_text_input_method_manager_v1;
     class wp_cursor_shape_manager_v1;
     class wp_fractional_scale_manager_v1;
     class wp_viewporter;
-    class qt_toplevel_drag_manager_v1;
+    class xdg_toplevel_drag_manager_v1;
 }
 
 namespace QtWaylandClient {
@@ -125,37 +127,91 @@ public:
     QWaylandCursor *waylandCursor();
     QWaylandCursorTheme *loadCursorTheme(const QString &name, int pixelSize);
 #endif
-    struct wl_display *wl_display() const { return mDisplay; }
+    struct wl_display *wl_display() const
+    {
+        return mDisplay;
+    }
     struct ::wl_registry *wl_registry() { return object(); }
 
-    const struct wl_compositor *wl_compositor() const { return mCompositor.object(); }
-    QtWayland::wl_compositor *compositor() { return &mCompositor; }
+    QtWayland::wl_compositor *compositor()
+    {
+        return mGlobals.compositor.get();
+    }
 
     QList<QWaylandInputDevice *> inputDevices() const { return mInputDevices; }
     QWaylandInputDevice *defaultInputDevice() const;
     QWaylandInputDevice *currentInputDevice() const { return defaultInputDevice(); }
 #if QT_CONFIG(wayland_datadevice)
-    QWaylandDataDeviceManager *dndSelectionHandler() const { return mDndSelectionHandler.get(); }
+    QWaylandDataDeviceManager *dndSelectionHandler() const
+    {
+        return mGlobals.dndSelectionHandler.get();
+    }
 #endif
 #if QT_CONFIG(wayland_client_primary_selection)
-    QWaylandPrimarySelectionDeviceManagerV1 *primarySelectionManager() const { return mPrimarySelectionManager.data(); }
+    QWaylandPrimarySelectionDeviceManagerV1 *primarySelectionManager() const
+    {
+        return mGlobals.primarySelectionManager.get();
+    }
 #endif
-    QtWayland::qt_surface_extension *windowExtension() const { return mWindowExtension.data(); }
+    QtWayland::qt_surface_extension *windowExtension() const
+    {
+        return mGlobals.surfaceExtension.get();
+    }
 #if QT_CONFIG(tabletevent)
-    QWaylandTabletManagerV2 *tabletManager() const { return mTabletManager.data(); }
+    QWaylandTabletManagerV2 *tabletManager() const
+    {
+        return mGlobals.tabletManager.get();
+    }
 #endif
-    QWaylandPointerGestures *pointerGestures() const { return mPointerGestures.data(); }
-    QWaylandTouchExtension *touchExtension() const { return mTouchExtension.data(); }
-    QtWayland::qt_text_input_method_manager_v1 *textInputMethodManager() const { return mTextInputMethodManager.data(); }
-    QtWayland::zwp_text_input_manager_v1 *textInputManagerv1() const { return mTextInputManagerv1.data(); }
-    QtWayland::zwp_text_input_manager_v2 *textInputManagerv2() const { return mTextInputManagerv2.data(); }
-    QtWayland::zwp_text_input_manager_v4 *textInputManagerv4() const { return mTextInputManagerv4.data(); }
-    QWaylandHardwareIntegration *hardwareIntegration() const { return mHardwareIntegration.data(); }
-    QWaylandXdgOutputManagerV1 *xdgOutputManager() const { return mXdgOutputManager.data(); }
-    QtWayland::wp_fractional_scale_manager_v1 *fractionalScaleManager() const { return mFractionalScaleManager.data(); }
-    QtWayland::wp_viewporter *viewporter() const { return mViewporter.data(); }
-    QtWayland::wp_cursor_shape_manager_v1 *cursorShapeManager() const { return mCursorShapeManager.data();}
-    QtWayland::qt_toplevel_drag_manager_v1 *xdgToplevelDragManager() const { return mXdgToplevelDragManager.data();}
+    QWaylandPointerGestures *pointerGestures() const
+    {
+        return mGlobals.pointerGestures.get();
+    }
+    QWaylandTouchExtension *touchExtension() const
+    {
+        return mGlobals.touchExtension.get();
+    }
+    QtWayland::qt_text_input_method_manager_v1 *textInputMethodManager() const
+    {
+        return mGlobals.textInputMethodManager.get();
+    }
+    QtWayland::zwp_text_input_manager_v1 *textInputManagerv1() const
+    {
+        return mGlobals.textInputManagerv1.get();
+    }
+    QtWayland::zwp_text_input_manager_v2 *textInputManagerv2() const
+    {
+        return mGlobals.textInputManagerv2.get();
+    }
+    QtWayland::zwp_text_input_manager_v3 *textInputManagerv3() const
+    {
+        return mGlobals.textInputManagerv3.get();
+    }
+    QWaylandHardwareIntegration *hardwareIntegration() const
+    {
+        return mGlobals.hardwareIntegration.get();
+    }
+    QWaylandXdgOutputManagerV1 *xdgOutputManager() const
+    {
+        return mGlobals.xdgOutputManager.get();
+    }
+    QtWayland::wp_fractional_scale_manager_v1 *fractionalScaleManager() const
+    {
+        return mGlobals.fractionalScaleManager.get();
+    }
+    QtWayland::wp_viewporter *viewporter() const
+    {
+        return mGlobals.viewporter.get();
+    }
+    QtWayland::wp_cursor_shape_manager_v1 *cursorShapeManager() const
+    {
+        return mGlobals.cursorShapeManager.get();
+    }
+    QtWayland::xdg_toplevel_drag_manager_v1 *xdgToplevelDragManager() const
+    {
+        return mGlobals.xdgToplevelDragManager.get();
+    }
+
 
     struct RegistryGlobal {
         uint32_t id;
@@ -165,7 +221,10 @@ public:
         RegistryGlobal(uint32_t id_, const QString &interface_, uint32_t version_, struct ::wl_registry *registry_)
             : id(id_), interface(interface_), version(version_), registry(registry_) { }
     };
-    QList<RegistryGlobal> globals() const { return mGlobals; }
+    QList<RegistryGlobal> globals() const
+    {
+        return mRegistryGlobals;
+    }
     bool hasRegistryGlobal(QStringView interfaceName) const;
 
     /* wl_registry_add_listener does not add but rather sets a listener, so this function is used
@@ -173,9 +232,10 @@ public:
     void addRegistryListener(RegistryListener listener, void *data);
     void removeListener(RegistryListener listener, void *data);
 
-    QWaylandShm *shm() const { return mShm.data(); }
-
-    static uint32_t currentTimeMillisec();
+    QWaylandShm *shm() const
+    {
+        return mGlobals.shm.get();
+    }
 
     void forceRoundTrip();
 
@@ -195,16 +255,16 @@ public:
     wl_event_queue *frameEventQueue() { return m_frameEventQueue; };
 
     bool isKeyboardAvailable() const;
-    bool isClientSideInputContextRequested() const;
+    bool isWaylandInputContextRequested() const;
 
     void initEventThread();
 
-public slots:
+public Q_SLOTS:
     void blockingReadEvents();
     void flushRequests();
 
-signals:
-    void reconnected();
+Q_SIGNALS:
+    void connected();
     void globalAdded(const RegistryGlobal &global);
     void globalRemoved(const RegistryGlobal &global);
 
@@ -226,13 +286,10 @@ private:
         RegistryListener listener = nullptr;
         void *data = nullptr;
     };
-
     struct wl_display *mDisplay = nullptr;
     std::unique_ptr<EventThread> m_eventThread;
     wl_event_queue *m_frameEventQueue = nullptr;
     QScopedPointer<EventThread> m_frameEventQueueThread;
-    QtWayland::wl_compositor mCompositor;
-    QScopedPointer<QWaylandShm> mShm;
     QList<QWaylandScreen *> mWaitingScreens;
     QList<QWaylandScreen *> mScreens;
     QPlatformPlaceholderScreen *mPlaceholderScreen = nullptr;
@@ -254,38 +311,44 @@ private:
         QWaylandCursorTheme *theme() const noexcept
         { return found ? position->theme.get() : nullptr; }
     };
-    FindExistingCursorThemeResult findExistingCursorTheme(const QString &name, int pixelSize) const noexcept;
-
+    FindExistingCursorThemeResult findExistingCursorTheme(const QString &name,
+                                                          int pixelSize) const noexcept;
     QScopedPointer<QWaylandCursor> mCursor;
 #endif
+
+    struct GlobalHolder
+    {
+        std::unique_ptr<QtWayland::wl_compositor> compositor;
+        std::unique_ptr<QWaylandShm> shm;
 #if QT_CONFIG(wayland_datadevice)
-    QScopedPointer<QWaylandDataDeviceManager> mDndSelectionHandler;
+        std::unique_ptr<QWaylandDataDeviceManager> dndSelectionHandler;
 #endif
-    QScopedPointer<QtWayland::qt_surface_extension> mWindowExtension;
-    QScopedPointer<QtWayland::wl_subcompositor> mSubCompositor;
-    QScopedPointer<QWaylandTouchExtension> mTouchExtension;
-    QScopedPointer<QWaylandQtKeyExtension> mQtKeyExtension;
-    QScopedPointer<QWaylandWindowManagerIntegration> mWindowManagerIntegration;
+        std::unique_ptr<QtWayland::qt_surface_extension> surfaceExtension;
+        std::unique_ptr<QtWayland::wl_subcompositor> subCompositor;
+        std::unique_ptr<QWaylandTouchExtension> touchExtension;
+        std::unique_ptr<QWaylandQtKeyExtension> qtKeyExtension;
 #if QT_CONFIG(tabletevent)
-    QScopedPointer<QWaylandTabletManagerV2> mTabletManager;
+        std::unique_ptr<QWaylandTabletManagerV2> tabletManager;
 #endif
-    QScopedPointer<QWaylandPointerGestures> mPointerGestures;
+        std::unique_ptr<QWaylandPointerGestures> pointerGestures;
 #if QT_CONFIG(wayland_client_primary_selection)
-    QScopedPointer<QWaylandPrimarySelectionDeviceManagerV1> mPrimarySelectionManager;
+        std::unique_ptr<QWaylandPrimarySelectionDeviceManagerV1> primarySelectionManager;
 #endif
-    QScopedPointer<QtWayland::qt_text_input_method_manager_v1> mTextInputMethodManager;
-    QScopedPointer<QtWayland::zwp_text_input_manager_v1> mTextInputManagerv1;
-    QScopedPointer<QtWayland::zwp_text_input_manager_v2> mTextInputManagerv2;
-    QScopedPointer<QtWayland::zwp_text_input_manager_v4> mTextInputManagerv4;
-    QScopedPointer<QWaylandHardwareIntegration> mHardwareIntegration;
-    QScopedPointer<QWaylandXdgOutputManagerV1> mXdgOutputManager;
-    QScopedPointer<QtWayland::wp_viewporter> mViewporter;
-    QScopedPointer<QtWayland::wp_fractional_scale_manager_v1> mFractionalScaleManager;
-    QScopedPointer<QtWayland::wp_cursor_shape_manager_v1> mCursorShapeManager;
-    QScopedPointer<QtWayland::qt_toplevel_drag_manager_v1> mXdgToplevelDragManager;
+        std::unique_ptr<QtWayland::qt_text_input_method_manager_v1> textInputMethodManager;
+        std::unique_ptr<QtWayland::zwp_text_input_manager_v1> textInputManagerv1;
+        std::unique_ptr<QtWayland::zwp_text_input_manager_v2> textInputManagerv2;
+        std::unique_ptr<QtWayland::zwp_text_input_manager_v3> textInputManagerv3;
+        std::unique_ptr<QWaylandHardwareIntegration> hardwareIntegration;
+        std::unique_ptr<QWaylandXdgOutputManagerV1> xdgOutputManager;
+        std::unique_ptr<QtWayland::wp_viewporter> viewporter;
+        std::unique_ptr<QtWayland::wp_fractional_scale_manager_v1> fractionalScaleManager;
+        std::unique_ptr<QtWayland::wp_cursor_shape_manager_v1> cursorShapeManager;
+        std::unique_ptr<QtWayland::xdg_toplevel_drag_manager_v1> xdgToplevelDragManager;
+        std::unique_ptr<QWaylandWindowManagerIntegration> windowManagerIntegration;
+    } mGlobals;
     int mFd = -1;
     int mWritableNotificationFd = -1;
-    QList<RegistryGlobal> mGlobals;
+    QList<RegistryGlobal> mRegistryGlobals;
     uint32_t mLastInputSerial = 0;
     QWaylandInputDevice *mLastInputDevice = nullptr;
     QPointer<QWaylandWindow> mLastInputWindow;
@@ -295,9 +358,9 @@ private:
     static const wl_callback_listener syncCallbackListener;
     bool mWaylandTryReconnect = false;
 
-    bool mClientSideInputContextRequested = [] () {
-        const QString& requested = QPlatformInputContextFactory::requested();
-        return !requested.isEmpty() && requested != QLatin1String("wayland");
+    bool mWaylandInputContextRequested = [] () {
+        const auto requested = QPlatformInputContextFactory::requested();
+        return requested.isEmpty() || requested.contains(QLatin1String(WAYLAND_IM_KEY));
     }();
     QStringList mTextInputManagerList;
     int mTextInputManagerIndex = INT_MAX;
