@@ -357,3 +357,9 @@ usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/WaylandEglClientHwIntegrationPrivate.j
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/WaylandEglCompositorHwIntegrationPrivate.json
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/WaylandGlobalPrivate.json
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/WlShellIntegrationPrivate.json
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginAdditionalTargetInfo.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginConfig.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginConfigVersion.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginConfigVersionImpl.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginTargets-none.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginTargets.cmake
