@@ -1,0 +1,27 @@
+Description: <fix crash when attach differ shellsurface to the same shellsurfaceitem>
+ Change shellSurface from a raw pointer to a QPointer to prevent
+ crash caused by accessing the wild pointer when shellSurface is destroyed.
+ https://codereview.qt-project.org/c/qt/qtwayland/+/599732
+ qt6-wayland (6.8.0-0deepin1.1) UNRELEASED; urgency=medium
+ .
+   [ Tianyu Chen ]
+   * New upstream release (6.8.0).
+   * Bump Qt B-Ds to 6.6.1.
+   * Update ABI to 6.6.1.
+   * Update list of installed files.
+ .
+   [ lichenggang ]
+   * add build-dep qt6-declarative-dev-tools
+Author: lichenggang <lichenggang@deepin.org>
+
+--- qt6-wayland-6.8.0.orig/src/compositor/extensions/qwaylandquickshellsurfaceitem_p.h
++++ qt6-wayland-6.8.0/src/compositor/extensions/qwaylandquickshellsurfaceitem_p.h
+@@ -41,7 +41,7 @@ public:
+     void lower() override;
+ 
+     QWaylandQuickShellIntegration *m_shellIntegration = nullptr;
+-    QWaylandShellSurface *m_shellSurface = nullptr;
++    QPointer<QWaylandShellSurface> m_shellSurface = nullptr;
+     QQuickItem *m_moveItem = nullptr;
+     bool m_autoCreatePopupItems = true;
+     bool staysOnTop = false;
