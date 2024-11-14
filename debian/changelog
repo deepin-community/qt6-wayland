@@ -1,3 +1,11 @@
+qt6-wayland (6.8.0-0deepin3) unstable; urgency=medium
+
+  * Apply patch from upstream:
+    client: Run waylandscanner with private-code
+    https://codereview.qt-project.org/c/qt/qtwayland/+/598596
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Thu, 14 Nov 2024 21:23:31 +0800
+
 qt6-wayland (6.8.0-0deepin2) unstable; urgency=medium
 
   [ Tianyu Chen ]
