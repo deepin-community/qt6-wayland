@@ -1,3 +1,9 @@
+qt6-wayland (6.8.0-0deepin4) unstable; urgency=medium
+
+  * Update symbols.
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 15 Nov 2024 10:33:05 +0800
+
 qt6-wayland (6.8.0-0deepin3) unstable; urgency=medium
 
   * Apply patch from upstream:
