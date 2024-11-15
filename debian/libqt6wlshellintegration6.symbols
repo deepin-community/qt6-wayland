@@ -1,4 +1,4 @@
-# SymbolsHelper-Confirmed: 6.8.0 amd64
+# SymbolsHelper-Confirmed: 6.8.0 amd64 arm64 loong64 riscv64
 libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
 | libqt6wlshellintegration6 #MINVER#, qt6-waylandclient-private-abi (= 6.8.0)
 * Build-Depends-Packages: qt6-wayland-dev, qt6-wayland-private-dev
@@ -594,25 +594,3 @@ libQt6WlShellIntegration.so.6 libqt6wlshellintegration6 #MINVER#
  _ZTVN9QtWayland9wl_bufferE@Qt_6 6.6.0
  _ZTVN9QtWayland9wl_outputE@Qt_6 6.6.0
  _ZTVN9QtWayland9wl_regionE@Qt_6 6.6.0
- wl_buffer_interface@Qt_6 6.6.0
- wl_callback_interface@Qt_6 6.6.0
- wl_compositor_interface@Qt_6 6.6.0
- wl_data_device_interface@Qt_6 6.6.0
- wl_data_device_manager_interface@Qt_6 6.6.0
- wl_data_offer_interface@Qt_6 6.6.0
- wl_data_source_interface@Qt_6 6.6.0
- wl_display_interface@Qt_6 6.6.0
- wl_keyboard_interface@Qt_6 6.6.0
- wl_output_interface@Qt_6 6.6.0
- wl_pointer_interface@Qt_6 6.6.0
- wl_region_interface@Qt_6 6.6.0
- wl_registry_interface@Qt_6 6.6.0
- wl_seat_interface@Qt_6 6.6.0
- wl_shell_interface@Qt_6 6.6.0
- wl_shell_surface_interface@Qt_6 6.6.0
- wl_shm_interface@Qt_6 6.6.0
- wl_shm_pool_interface@Qt_6 6.6.0
- wl_subcompositor_interface@Qt_6 6.6.0
- wl_subsurface_interface@Qt_6 6.6.0
- wl_surface_interface@Qt_6 6.6.0
- wl_touch_interface@Qt_6 6.6.0

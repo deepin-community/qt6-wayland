@@ -1,4 +1,4 @@
-# SymbolsHelper-Confirmed: 6.8.0 amd64
+# SymbolsHelper-Confirmed: 6.8.0 amd64 arm64 loong64 riscv64
 libQt6WaylandCompositor.so.6 libqt6waylandcompositor6 #MINVER#
 | libqt6waylandcompositor6 #MINVER#, qt6-waylandcompositor-private-abi (= 6.8.0)
 * Build-Depends-Packages: qt6-wayland-dev, qt6-wayland-private-dev
