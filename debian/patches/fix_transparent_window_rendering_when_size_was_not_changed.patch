@@ -1,0 +1,20 @@
+Subject: [PATCH] Fix transparent window rendering when size was not changed
+---
+Index: src/client/qwaylandshmbackingstore.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/client/qwaylandshmbackingstore.cpp b/src/client/qwaylandshmbackingstore.cpp
+--- a/src/client/qwaylandshmbackingstore.cpp	(revision c420e287a10b2c029a59f887c9bb92e76dfa504a)
++++ b/src/client/qwaylandshmbackingstore.cpp	(revision a42855d3bd0cb2b15b072e6f2deec5239e58a496)
+@@ -318,6 +318,9 @@
+                               QSizeF(rect.size()) * targetDevicePixelRatio);
+             painter.drawImage(targetRect, *sourceImage, sourceRect);
+         }
++
++        // when window has a surface format with an alpha, and size was the same, its region also needs to be cleaned
++        bufferWasRecreated = false;
+     }
+ 
+     mBackBuffer = buffer;

@@ -1,3 +1,9 @@
+qt6-wayland (6.8.0-0deepin6) unstable; urgency=medium
+
+  * Fix transparent window rendering when size was not changed
+
+ -- zhaoyingzhen <zhaoyingzhen@uniontech.com>  Tue, 11 Mar 2025 19:30:22 +0800
+
 qt6-wayland (6.8.0-0deepin5) unstable; urgency=medium
 
   * export the symbol of qtkey and qttouch protocol
