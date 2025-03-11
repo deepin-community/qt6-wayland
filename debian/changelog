@@ -1,3 +1,9 @@
+qt6-wayland (6.8.0-0deepin5) unstable; urgency=medium
+
+  * export the symbol of qtkey and qttouch protocol
+
+ -- YeShanShan <yeshanshan@deepin.org>  Tue, 11 Mar 2025 14:37:22 +0800
+
 qt6-wayland (6.8.0-0deepin4) unstable; urgency=medium
 
   * Update symbols.
