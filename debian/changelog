@@ -1,3 +1,9 @@
+qt6-wayland (6.8.0-0deepin7) UNRELEASED; urgency=medium
+
+  * compositor: Reset keyboard modifier state completely after screen unlock
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Fri, 18 Apr 2025 11:29:14 +0800
+
 qt6-wayland (6.8.0-0deepin6) unstable; urgency=medium
 
   * Fix transparent window rendering when size was not changed

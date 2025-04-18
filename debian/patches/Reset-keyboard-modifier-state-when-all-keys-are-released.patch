@@ -1,0 +1,39 @@
+Author: Tian Shilin<tianshilin@uniontech.com>
+Date:   Fri Apr 18 10:20:24 2025
+Subject:Reset keyboard modifier state when all keys are released
+Upstream: https://codereview.qt-project.org/c/qt/qtwayland/+/638357
+
+Index: qt6-wayland/src/compositor/compositor_api/qwaylandkeyboard.cpp
+===================================================================
+--- qt6-wayland.orig/src/compositor/compositor_api/qwaylandkeyboard.cpp
++++ qt6-wayland/src/compositor/compositor_api/qwaylandkeyboard.cpp
+@@ -180,11 +180,29 @@ void QWaylandKeyboardPrivate::resetKeybo
+     if (!xkbContext())
+         return;
+ 
++    // Process all pressed keys
+     while (!keys.isEmpty()) {
+         uint32_t code = fromWaylandKey(keys.first());
+         keyEvent(code, WL_KEYBOARD_KEY_STATE_RELEASED);
+         updateModifierState(code, WL_KEYBOARD_KEY_STATE_RELEASED);
+     }
++
++    // Reset XKB state directly
++    if (xkbState()) {
++        xkb_state_update_mask(xkbState(), 0, 0, 0, 0, 0, 0);
++
++        // Update internal state variables
++        modsDepressed = 0;
++        modsLatched = 0;
++        modsLocked = 0;
++        currentModifierState = Qt::NoModifier;
++
++        // Notify the client that the modifier state has been reset
++        if (focusResource) {
++            send_modifiers(focusResource->handle, compositor()->nextSerial(),
++                          modsDepressed, modsLatched, modsLocked, group);
++        }
++    }
+ }
+ #endif
+ 
