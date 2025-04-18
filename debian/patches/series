@@ -2,3 +2,4 @@ fix-crash-when-attach-differ-shellsurface-to-the-same-shellsurfaceitem
 client-Run-waylandscanner-with-private-code.patch
 feat-export-the-symbol-of-qtkey-and-qttouch-protocol.patch
 fix_transparent_window_rendering_when_size_was_not_changed.patch
+Reset-keyboard-modifier-state-when-all-keys-are-released.patch
