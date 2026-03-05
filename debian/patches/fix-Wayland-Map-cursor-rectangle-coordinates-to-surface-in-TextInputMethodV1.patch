@@ -1,0 +1,66 @@
+From 4c9daa5dd7693a62530381367376ae46611ba78d Mon Sep 17 00:00:00 2001
+From: zhaoyingzhen <zhaoyingzhen@uniontech.com>
+Date: Thu, 5 Mar 2026 14:06:36 +0800
+Subject: [PATCH] fix(Wayland): Map cursor rectangle coordinates to surface in
+ TextInputMethodV1
+
+QWaylandInputMethodContext::update directly used the ImCursorRectangle's
+local QRect without mapping it through the item transform to window
+surface coordinates. This caused the input method context to submit very
+small local coordinates instead of correct surface-relative coordinates
+via qt_text_input_method_v1.update_cursor_rectangle, leading to
+incorrectly placed input panels.
+
+We now properly map the Qt::ImCursorRectangle through
+inputItemTransform() and translate it with QHighDpi to native pixels
+plus client side margins, matching the correct behavior in
+qwaylandtextinputv3.cpp.
+
+Fixes: QTBUG-144715
+---
+ src/client/qwaylandinputmethodcontext.cpp | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/src/client/qwaylandinputmethodcontext.cpp b/src/client/qwaylandinputmethodcontext.cpp
+index b0f55ef..7dbb7a9 100644
+--- a/src/client/qwaylandinputmethodcontext.cpp
++++ b/src/client/qwaylandinputmethodcontext.cpp
+@@ -5,10 +5,12 @@
+ #include "qwaylandinputcontext_p.h"
+ #include "qwaylanddisplay_p.h"
+ #include "qwaylandinputdevice_p.h"
++#include "qwaylandwindow_p.h"
+ 
+ #include <QtGui/qguiapplication.h>
+ #include <QtGui/qtextformat.h>
+ #include <QtGui/private/qguiapplication_p.h>
++#include <QtGui/private/qhighdpiscaling_p.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+@@ -283,8 +285,20 @@ void QWaylandInputMethodContext::update(Qt::InputMethodQueries queries)
+             inputMethod->update_hints(event.value(Qt::ImHints).toInt());
+ 
+         if (queries & Qt::ImCursorRectangle) {
+-            QRect rect = event.value(Qt::ImCursorRectangle).toRect();
+-            inputMethod->update_cursor_rectangle(rect.x(), rect.y(), rect.width(), rect.height());
++            QRect cRect = event.value(Qt::ImCursorRectangle).toRect();
++            QWindow *window = QGuiApplication::focusWindow();
++            if (window) {
++                const QRect windowRect = QGuiApplication::inputMethod()->inputItemTransform().mapRect(cRect);
++                const QRect nativeRect = QHighDpi::toNativePixels(windowRect, window);
++                auto *waylandWindow = static_cast<QWaylandWindow *>(window->handle());
++                if (waylandWindow) {
++                    const QMargins margins = waylandWindow->clientSideMargins();
++                    cRect = nativeRect.translated(margins.left(), margins.top());
++                } else {
++                    cRect = nativeRect;
++                }
++            }
++            inputMethod->update_cursor_rectangle(cRect.x(), cRect.y(), cRect.width(), cRect.height());
+         }
+ 
+         inputMethod->sendInputState(&event, queries);
+-- 
+2.51.0
+

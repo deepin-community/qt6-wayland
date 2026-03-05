@@ -3,3 +3,4 @@ client-Run-waylandscanner-with-private-code.patch
 feat-export-the-symbol-of-qtkey-and-qttouch-protocol.patch
 fix_transparent_window_rendering_when_size_was_not_changed.patch
 Reset-keyboard-modifier-state-when-all-keys-are-released.patch
+fix-Wayland-Map-cursor-rectangle-coordinates-to-surface-in-TextInputMethodV1.patch
