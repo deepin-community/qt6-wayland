@@ -1,3 +1,9 @@
+qt6-wayland (6.8.0-0deepin9) unstable; urgency=medium
+
+  * fix: Notify application code of button release after leave
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Thu, 07 May 2026 19:47:38 +0800
+
 qt6-wayland (6.8.0-0deepin8) UNRELEASED; urgency=medium
 
   * fix(Wayland): Map cursor rectangle coordinates to surface in TextInputMethodV1
