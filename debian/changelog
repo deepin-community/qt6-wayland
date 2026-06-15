@@ -1,3 +1,9 @@
+qt6-wayland (6.8.0-0deepin10) UNRELEASED; urgency=medium
+
+  * fix: add multi-seat event support for wayland input device
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Mon, 15 Jun 2026 15:27:05 +0800
+
 qt6-wayland (6.8.0-0deepin9) unstable; urgency=medium
 
   * fix: Notify application code of button release after leave
