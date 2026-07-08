@@ -1,3 +1,9 @@
+qt6-wayland (6.8.0-0deepin11) unstable; urgency=medium
+
+  * fix: destroy keyboard when seat capability is removed
+
+ -- Guo Lin <guolin@uniontech.com>  Wed, 08 Jul 2026 13:27:39 +0800
+
 qt6-wayland (6.8.0-0deepin10) unstable; urgency=medium
 
   * fix: add multi-seat event support for wayland input device

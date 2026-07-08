@@ -26,7 +26,7 @@ Index: qt6-wayland/src/client/qwaylandinputdevice.cpp
  }
  
  QWaylandInputDevice::~QWaylandInputDevice()
-@@ -434,8 +444,17 @@ void QWaylandInputDevice::seat_capabilit
+@@ -434,8 +444,20 @@ void QWaylandInputDevice::seat_capabilit
  
      if (caps & WL_SEAT_CAPABILITY_KEYBOARD && !mKeyboard) {
          mKeyboard.reset(createKeyboard(this));
@@ -43,6 +43,9 @@ Index: qt6-wayland/src/client/qwaylandinputdevice.cpp
 +        }
 +    } else if (!(caps & WL_SEAT_CAPABILITY_KEYBOARD)) {
 +        mKeyboardDevice.reset();
++        if (mKeyboard) {
++            mKeyboard.reset();
++        }
      }
  
      if (caps & WL_SEAT_CAPABILITY_POINTER && !mPointer) {
