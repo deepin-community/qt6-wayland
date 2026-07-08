@@ -71,6 +71,12 @@ usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6WaylandTextureSharingEx
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6WaylandTextureSharingExtensionTargets-none.cmake
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6WaylandTextureSharingTargets.cmake
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6WaylandTextureSharingTargets-none.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginAdditionalTargetInfo.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginConfig.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginConfigVersion.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginConfigVersionImpl.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginTargets.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandAdwaitaDecorationPluginTargets-none.cmake
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandBradientDecorationPluginAdditionalTargetInfo.cmake
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandBradientDecorationPluginConfig.cmake
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/Qt6QWaylandBradientDecorationPluginConfigVersion.cmake
