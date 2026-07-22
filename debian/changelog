@@ -1,3 +1,9 @@
+qt6-wayland (6.8.0-0deepin14) unstable; urgency=medium
+
+  * Fix DnD cursor updates after pointer leave.
+
+ -- zorowk <pengwenhao@uniontech.com>  Fri, 24 Jul 2026 14:28:26 +0800
+
 qt6-wayland (6.8.0-0deepin13) unstable; urgency=medium
 
   * fix: set lastInputDevice on pointer and keyboard enter for popup grab

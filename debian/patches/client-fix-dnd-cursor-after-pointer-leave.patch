@@ -1,0 +1,99 @@
+Description: 修复拖拽期间协商动作变化后光标未更新
+ 指针拖拽开始时，wlroots 会清除普通指针焦点，Qt Wayland 因此收到
+ wl_pointer.leave，并在 invalidateFocus() 中清空 mEnterSerial。这一行为符合
+ Wayland 的指针焦点语义，不能通过保留 mEnterSerial 来规避。
+ .
+ 但是，拖拽来源仍需根据 wl_data_source.action 更新禁止、复制或移动光标。
+ 此时拖拽目标通过 wl_data_device 获得焦点，不会给拖拽来源重新发送
+ wl_pointer.enter，导致 Qt Wayland 因 mEnterSerial 为零而丢弃光标更新。
+ .
+ 在拖拽开始时单独保存最近的 pointer enter serial，拖拽期间仅将其用于
+ cursor-shape 和 cursor-surface 请求，并在拖拽结束时清除。这样既保留了
+ pointer leave 的正确语义，也能显示协商后的拖拽光标。
+Forwarded: no
+---
+diff --git a/src/client/qwaylandinputdevice.cpp b/src/client/qwaylandinputdevice.cpp
+index 567baab..73147cd 100644
+--- a/src/client/qwaylandinputdevice.cpp
++++ b/src/client/qwaylandinputdevice.cpp
+@@ -189,10 +189,10 @@ public:
+         // Calling code needs to ensure buffer scale is supported if != 1
+         Q_ASSERT(bufferScale == 1 || version() >= 3);
+ 
+-        auto enterSerial = m_pointer->mEnterSerial;
+-        if (m_setSerial < enterSerial || m_hotspot != hotspot) {
+-            m_pointer->set_cursor(m_pointer->mEnterSerial, object(), hotspot.x(), hotspot.y());
+-            m_setSerial = enterSerial;
++        const auto serial = m_pointer->cursorSerial();
++        if (m_setSerial < serial || m_hotspot != hotspot) {
++            m_pointer->set_cursor(serial, object(), hotspot.x(), hotspot.y());
++            m_setSerial = serial;
+             m_hotspot = hotspot;
+         }
+ 
+@@ -275,15 +275,16 @@ void QWaylandInputDevice::Pointer::updateCursorTheme()
+ 
+ void QWaylandInputDevice::Pointer::updateCursor()
+ {
+-    if (mEnterSerial == 0)
++    const auto serial = cursorSerial();
++    if (serial == 0)
+         return;
+ 
+     auto shape = seat()->mCursor.shape;
+ 
+     if (shape == Qt::BlankCursor) {
+         if (mCursor.surface)
+             mCursor.surface->reset();
+-        set_cursor(mEnterSerial, nullptr, 0, 0);
++        set_cursor(serial, nullptr, 0, 0);
+         return;
+     }
+ 
+@@ -303,7 +304,7 @@ void QWaylandInputDevice::Pointer::updateCursor()
+         if (mCursor.surface) {
+             mCursor.surface->reset();
+         }
+-        mCursor.shape->setShape(mEnterSerial, shape);
++        mCursor.shape->setShape(serial, shape);
+         return;
+     }
+ 
+@@ -556,14 +557,18 @@ void QWaylandInputDevice::handleEndDrag()
+ {
+     if (mTouch)
+         mTouch->releasePoints();
+-    if (mPointer)
++    if (mPointer) {
++        mPointer->mDragSerial = 0;
+         mPointer->releaseButtons();
++    }
+ }
+ 
+ void QWaylandInputDevice::handleStartDrag()
+ {
+-    if (mPointer)
++    if (mPointer) {
++        mPointer->mDragSerial = mPointer->mEnterSerial;
+         mPointer->leavePointers();
++    }
+ }
+ 
+ #if QT_CONFIG(wayland_datadevice)
+diff --git a/src/client/qwaylandinputdevice_p.h b/src/client/qwaylandinputdevice_p.h
+index efa7386..85a1572 100644
+--- a/src/client/qwaylandinputdevice_p.h
++++ b/src/client/qwaylandinputdevice_p.h
+@@ -327,10 +327,12 @@ private:
+ public:
+     void releaseButtons();
+     void leavePointers();
++    uint32_t cursorSerial() const { return mEnterSerial ? mEnterSerial : mDragSerial; }
+ 
+     QWaylandInputDevice *mParent = nullptr;
+     QPointer<QWaylandSurface> mFocus;
+     uint32_t mEnterSerial = 0;
++    uint32_t mDragSerial = 0;
+ #if QT_CONFIG(cursor)
+     struct {
+         QScopedPointer<QWaylandCursorShape> shape;
