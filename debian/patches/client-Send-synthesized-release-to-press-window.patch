@@ -1,0 +1,69 @@
+Description: wayland: Send synthesized release to press window
+ When a drag starts, wl_pointer.leave clears the pointer focus and
+ button state. At the end of the drag, releaseButtons() sends a
+ synthesized release without a target window. The event can therefore
+ reach a different window, while the item that handled the press does
+ not receive the release and keeps its drag state active.
+ .
+ Remember the window that receives the first button press after mouse
+ grab routing, and use it as the target of the synthesized release.
+ Clear the saved window after the final regular button release.
+Author: Kun Zhang <zhangkun2@uniontech.com>
+Origin: backport, https://codereview.qt-project.org/c/qt/qtbase/+/752603
+Applied-Upstream: 72dc17f64442c152eb304dfe9d0a696ce6c6a781
+Bug: https://qt-project.atlassian.net/browse/QTBUG-148285
+Last-Update: 2026-07-29
+--- a/src/client/qwaylandinputdevice.cpp
++++ b/src/client/qwaylandinputdevice.cpp
+@@ -883,6 +883,7 @@ void QWaylandInputDevice::Pointer::point
+     }
+ 
+     mLastButton = qt_button;
++    const bool firstPress = state && mButtons == Qt::NoButton;
+ 
+     if (state)
+         mButtons |= qt_button;
+@@ -905,10 +906,16 @@ void QWaylandInputDevice::Pointer::point
+         window = grab;
+     }
+ 
+-    if (state)
++    if (firstPress)
++        mPressedWindow = window;
++
++    if (state) {
+         setFrameEvent(new PressEvent(window, time, pos, global, mButtons, qt_button, mParent->modifiers()));
+-    else
++    } else {
+         setFrameEvent(new ReleaseEvent(window, time, pos, global, mButtons, qt_button, mParent->modifiers()));
++        if (mButtons == Qt::NoButton)
++            mPressedWindow.clear();
++    }
+ }
+ 
+ void QWaylandInputDevice::Pointer::invalidateFocus()
+@@ -922,7 +929,13 @@ void QWaylandInputDevice::Pointer::inval
+ 
+ void QWaylandInputDevice::Pointer::releaseButtons()
+ {
+-    setFrameEvent(new ReleaseEvent(nullptr, mParent->mTime, mSurfacePos, mGlobalPos, Qt::NoButton, Qt::NoButton, mParent->modifiers()));
++    QWaylandWindow *pressedWindow = mPressedWindow;
++    mPressedWindow.clear();
++    mButtons = Qt::NoButton;
++
++    setFrameEvent(new ReleaseEvent(pressedWindow, mParent->mTime, mSurfacePos, mGlobalPos,
++                                   Qt::NoButton, Qt::NoButton, mParent->modifiers()));
++    flushFrameEvent();
+ }
+ 
+ void QWaylandInputDevice::Pointer::leavePointers()
+--- a/src/client/qwaylandinputdevice_p.h
++++ b/src/client/qwaylandinputdevice_p.h
+@@ -366,6 +366,7 @@ public:
+ 
+     bool mScrollBeginSent = false;
+     QPointF mScrollDeltaRemainder;
++    QPointer<QWaylandWindow> mPressedWindow;
+ 
+     void setFrameEvent(QWaylandPointerEvent *event);
+     void flushScrollEvent();

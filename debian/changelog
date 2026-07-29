@@ -1,3 +1,9 @@
+qt6-wayland (6.8.0-0deepin14) unstable; urgency=medium
+
+  * fix: send synthesized release to the press window
+
+ -- Kun Zhang <zhangkun2@uniontech.com>  Wed, 29 Jul 2026 17:37:04 +0800
+
 qt6-wayland (6.8.0-0deepin13) unstable; urgency=medium
 
   * fix: set lastInputDevice on pointer and keyboard enter for popup grab
