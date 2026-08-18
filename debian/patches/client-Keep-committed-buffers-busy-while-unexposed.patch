@@ -1,0 +1,23 @@
+Description: wayland: Keep committed buffers busy while unexposed
+ After a frame callback timeout, safeCommit() may receive a committed
+ buffer while the window is unexposed. Clearing its busy state lets the
+ backing store reuse it before wl_buffer.release. The next commit is
+ ignored and the window stops updating.
+ .
+ Keep committed buffers busy until the compositor releases them.
+Author: Wu JiangYu <wujiangyu@uniontech.com>
+Origin: backport, https://codereview.qt-project.org/c/qt/qtbase/+/760986
+Bug: https://bugreports.qt.io/browse/QTBUG-149232
+Last-Update: 2026-08-18
+---
+--- a/src/client/qwaylandwindow.cpp
++++ b/src/client/qwaylandwindow.cpp
+@@ -756,7 +756,7 @@ void QWaylandWindow::safeCommit(QWaylandBuffer *buffer, const QRegion &damage)
+ {
+     if (isExposed()) {
+         commit(buffer, damage);
+-    } else {
++    } else if (!buffer->committed()) {
+         buffer->setBusy(false);
+     }
+ }

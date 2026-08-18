@@ -8,3 +8,4 @@ client-Notify-application-code-of-button-release-after-leave.patch
 qt6-wayland-add-multi-seat-event.patch
 fix-set-lastInputDevice-on-pointer-and-keyboard-enter.patch
 client-Send-synthesized-release-to-press-window.patch
+client-Keep-committed-buffers-busy-while-unexposed.patch
