@@ -24,10 +24,14 @@
 #include <QtWaylandCompositor/QWaylandViewporter>
 #include <QtWaylandCompositor/QWaylandIdleInhibitManagerV1>
 #include <QtWaylandCompositor/QWaylandXdgOutputManagerV1>
+#if QT_CONFIG(draganddrop)
+#include <QtWaylandCompositor/QWaylandDrag>
+#endif
 #include <qwayland-xdg-shell.h>
 #include <qwayland-ivi-application.h>
 #include <QtWaylandCompositor/private/qwaylandoutput_p.h>
 #include <QtWaylandCompositor/private/qwaylandsurface_p.h>
+#include <QtWaylandCompositor/private/qwaylandxdgoutputv1_p.h>
 
 #include <QtTest/QtTest>
 
@@ -42,6 +46,8 @@ private slots:
     void simpleKeyboard();
     void keyboardKeymaps();
     void keyboardLayoutSwitching();
+    void keyboardAltGrModifier();
+    void keyboardNumLockPreserved();
 #endif
     void keyboardGrab();
     void seatCreation();
@@ -92,6 +98,11 @@ private slots:
     void idleInhibit();
 
     void xdgOutput();
+
+    void subsurfaceSelfParentIsRejected();
+#if QT_CONFIG(draganddrop)
+    void dragFocusClientDisconnectDoesNotCrash();
+#endif
 
 private:
     QTemporaryDir m_tmpRuntimeDir;
@@ -285,6 +296,96 @@ void tst_WaylandCompositor::keyboardLayoutSwitching()
     seat->sendKeyEvent(Qt::Key_Y, false);
     compositor.flushClients();
     QTRY_COMPARE(mockKeyboard->m_lastKeyCode, 44u);
+}
+
+void tst_WaylandCompositor::keyboardAltGrModifier()
+{
+    TestCompositor compositor;
+    compositor.create();
+    QWaylandSeat *seat = compositor.defaultSeat();
+    seat->keymap()->setLayout("us");
+
+    MockClient client;
+    QTRY_COMPARE(client.m_seats.size(), 1);
+    MockKeyboard *mockKeyboard = client.m_seats.at(0)->keyboard();
+    client.createSurface();
+    QTRY_COMPARE(compositor.surfaces.size(), 1);
+    seat->setKeyboardFocus(compositor.surfaces.at(0));
+    compositor.flushClients();
+    QTRY_COMPARE(mockKeyboard->m_enteredSurface != nullptr, true);
+
+    // Get the mod5 index for AltGr from the keymap
+    auto keyboardPrivate = QWaylandKeyboardPrivate::get(seat->keyboard());
+    keyboardPrivate->maybeUpdateXkbScanCodeTable();
+    const uint32_t mod5Index = keyboardPrivate->mod5Index;
+
+    // Sending a key event with GroupSwitchModifier should instruct the client
+    // to activate Mod5 (AltGr / ISO_Level3_Shift)
+    // Key_A with GroupSwitchModifier: AltGr+A
+    QKeyEvent ke(QEvent::KeyPress, Qt::Key_A, Qt::GroupSwitchModifier, 30, 0, 0);
+    seat->sendFullKeyEvent(&ke);
+    compositor.flushClients();
+
+    // The modifier repair should have sent a modifiers event with Mod5 set
+    QTRY_VERIFY(mod5Index < 32);
+    const uint32_t expectedMods = 1u << mod5Index;
+    QTRY_COMPARE(mockKeyboard->m_modsDepressed, expectedMods);
+
+    QKeyEvent ke1(QEvent::KeyRelease, Qt::Key_A, Qt::GroupSwitchModifier, 30, 0, 0);
+    seat->sendFullKeyEvent(&ke1);
+    compositor.flushClients();
+    QTRY_COMPARE(mockKeyboard->m_modsDepressed, expectedMods);
+}
+
+void tst_WaylandCompositor::keyboardNumLockPreserved()
+{
+    TestCompositor compositor;
+    compositor.create();
+    QWaylandSeat *seat = compositor.defaultSeat();
+    seat->keymap()->setLayout("us");
+
+    MockClient client;
+    QTRY_COMPARE(client.m_seats.size(), 1);
+    MockKeyboard *mockKeyboard = client.m_seats.at(0)->keyboard();
+    client.createSurface();
+    QTRY_COMPARE(compositor.surfaces.size(), 1);
+    seat->setKeyboardFocus(compositor.surfaces.at(0));
+    compositor.flushClients();
+    QTRY_COMPARE(mockKeyboard->m_enteredSurface != nullptr, true);
+
+    // Simulate NumLock being active: press and release NumLock to toggle the lock state.
+    // NumLock XKB keycode = 77 (evdev KEY_NUMLOCK=69, +8 offset)
+    const uint numLockCode = 77;
+    auto keyboardPrivate = QWaylandKeyboardPrivate::get(seat->keyboard());
+    keyboardPrivate->keyEvent(numLockCode, WL_KEYBOARD_KEY_STATE_PRESSED);
+    keyboardPrivate->updateModifierState(numLockCode, WL_KEYBOARD_KEY_STATE_PRESSED);
+    keyboardPrivate->keyEvent(numLockCode, WL_KEYBOARD_KEY_STATE_RELEASED);
+    keyboardPrivate->updateModifierState(numLockCode, WL_KEYBOARD_KEY_STATE_RELEASED);
+    compositor.flushClients();
+
+    // modsLocked should now have NumLock bit set
+    const uint32_t numLockLockedMask = keyboardPrivate->modsLocked;
+    QTRY_COMPARE_NE(numLockLockedMask, 0); // NumLock should be in locked state
+
+    // Now send a key event that triggers checkAndRepairModifierState.
+    QKeyEvent ke(QEvent::KeyPress, Qt::Key_A, Qt::NoModifier, 30, 0, 0);
+    seat->sendFullKeyEvent(&ke);
+    compositor.flushClients();
+
+    // The repair must preserve modsLocked (NumLock), not pass 0
+    QTRY_COMPARE(mockKeyboard->m_modsLocked, numLockLockedMask);
+
+    QKeyEvent ke1(QEvent::KeyRelease, Qt::Key_A, Qt::NoModifier, 30, 0, 0);
+    seat->sendFullKeyEvent(&ke1);
+    compositor.flushClients();
+
+    keyboardPrivate->keyEvent(numLockCode, WL_KEYBOARD_KEY_STATE_PRESSED);
+    keyboardPrivate->updateModifierState(numLockCode, WL_KEYBOARD_KEY_STATE_PRESSED);
+    keyboardPrivate->keyEvent(numLockCode, WL_KEYBOARD_KEY_STATE_RELEASED);
+    keyboardPrivate->updateModifierState(numLockCode, WL_KEYBOARD_KEY_STATE_RELEASED);
+    compositor.flushClients();
+
+    QTRY_COMPARE(keyboardPrivate->modsLocked, 0); // NumLock should be in unlocked state
 }
 
 #endif // QT_CONFIG(xkbcommon)
@@ -509,7 +610,7 @@ void tst_WaylandCompositor::mapSurfaceHiDpi()
         QCOMPARE(damage, QRect(QPoint(), surfaceSize));
         verifyComittedState();
     });
-    QSignalSpy damagedSpy(waylandSurface, SIGNAL(damaged(const QRegion &)));
+    QSignalSpy damagedSpy(waylandSurface, SIGNAL(damaged(QRegion)));
 
     QObject::connect(waylandSurface, &QWaylandSurface::hasContentChanged,
                      this, verifyComittedState);
@@ -532,7 +633,7 @@ void tst_WaylandCompositor::mapSurfaceHiDpi()
         QCOMPARE(offset, attachOffset);
         verifyComittedState();
     });
-    QSignalSpy offsetSpy(waylandSurface, SIGNAL(offsetForNextFrame(const QPoint &)));
+    QSignalSpy offsetSpy(waylandSurface, SIGNAL(offsetForNextFrame(QPoint)));
 
     // No state should be applied before the commit
     QCOMPARE(waylandSurface->bufferSize(), QSize());
@@ -609,7 +710,7 @@ void tst_WaylandCompositor::frameCallback()
     view->setSurface(waylandSurface);
     view->setOutput(compositor.defaultOutput());
 
-    QSignalSpy damagedSpy(waylandSurface, SIGNAL(damaged(const QRegion &)));
+    QSignalSpy damagedSpy(waylandSurface, SIGNAL(damaged(QRegion)));
 
     for (int i = 0; i < 10; ++i) {
         QSize size(i * 8 + 2, i * 8 + 2);
@@ -688,7 +789,6 @@ void tst_WaylandCompositor::outputs()
 
     delete output;
     QTRY_COMPARE(outputRemovedSpy.size(), 1);
-    QEXPECT_FAIL("", "FIXME: defaultOutputChanged() is not emitted when the default output is removed", Continue);
     QTRY_COMPARE(defaultOutputSpy.size(), 3);
     compositor.flushClients();
     QTRY_COMPARE(client.m_outputs.size(), 1);
@@ -1755,7 +1855,7 @@ void tst_WaylandCompositor::xdgOutput()
     QVERIFY(wlOutput);
 
     // Output is not associated yet
-    QCOMPARE(QWaylandOutputPrivate::get(compositor.defaultOutput())->xdgOutput.isNull(), true);
+    QVERIFY(QWaylandXdgOutputManagerV1Private::get(&compositor.xdgOutputManager)->xdgOutput(compositor.defaultOutput()) == nullptr);
 
     // Create xdg-output on the server
     auto *xdgOutputServer = new QWaylandXdgOutputV1(compositor.defaultOutput(), &compositor.xdgOutputManager);
@@ -1769,7 +1869,7 @@ void tst_WaylandCompositor::xdgOutput()
     QVERIFY(client.m_xdgOutputs.contains(wlOutput));
 
     // Now it should be associated
-    QCOMPARE(QWaylandOutputPrivate::get(compositor.defaultOutput())->xdgOutput.isNull(), false);
+    QVERIFY(QWaylandXdgOutputManagerV1Private::get(&compositor.xdgOutputManager)->xdgOutput(compositor.defaultOutput()) != nullptr);
 
     // Verify initial values
     QTRY_COMPARE(xdgOutput->name, "OUTPUT1");
@@ -1792,6 +1892,72 @@ void tst_WaylandCompositor::xdgOutput()
     QTRY_COMPARE(xdgOutput->logicalPosition, QPoint(100, 100));
     QTRY_COMPARE(xdgOutput->logicalSize, QSize(1000, 1000));
 }
+
+void tst_WaylandCompositor::subsurfaceSelfParentIsRejected()
+{
+    TestCompositor compositor;
+    compositor.create();
+
+    MockClient client;
+    QTRY_VERIFY(client.subCompositor);
+
+    wl_surface *surface = client.createSurface();
+    QTRY_COMPARE(compositor.surfaces.size(), 1);
+
+    // Reject passing the surface itself as its parent
+    wl_subcompositor_get_subsurface(client.subCompositor, surface, surface);
+
+    QTRY_COMPARE(client.error, EPROTO);
+    QCOMPARE(client.protocolError.interface, &wl_subcompositor_interface);
+    QCOMPARE(static_cast<wl_subcompositor_error>(client.protocolError.code), WL_SUBCOMPOSITOR_ERROR_BAD_PARENT);
+}
+
+#if QT_CONFIG(draganddrop)
+void tst_WaylandCompositor::dragFocusClientDisconnectDoesNotCrash()
+{
+    TestCompositor compositor;
+    compositor.create();
+
+    MockClient origin;
+    QTRY_VERIFY(origin.dataDeviceManager);
+    QTRY_VERIFY(!origin.m_seats.isEmpty());
+    wl_seat *seat = origin.m_seats.first()->m_seat;
+
+    wl_surface *originSurface = origin.createSurface();
+    QTRY_COMPARE(compositor.surfaces.size(), 1);
+
+    wl_data_device *originDataDevice = wl_data_device_manager_get_data_device(origin.dataDeviceManager, seat);
+    wl_data_source *source = wl_data_device_manager_create_data_source(origin.dataDeviceManager);
+    wl_data_source_offer(source, "text/plain");
+    wl_data_device_start_drag(originDataDevice, source, originSurface, nullptr, 0);
+
+    {
+        // A second client whose surface will briefly hold drag focus, then
+        // disconnect while still holding it.
+        MockClient victim;
+        wl_surface *victimSurface = victim.createSurface();
+        Q_UNUSED(victimSurface);
+        wl_data_device_manager_get_data_device(victim.dataDeviceManager, seat);
+
+        QTRY_COMPARE(compositor.surfaces.size(), 2);
+        QWaylandSurface *victimWaylandSurface = compositor.surfaces.last();
+
+        // Give drag focus to the victim's surface, exactly as
+        // QWaylandQuickItemPrivate::handleDragUpdate() would in response to
+        // real pointer motion.
+        compositor.defaultSeat()->drag()->dragMove(victimWaylandSurface, QPointF());
+
+        // The victim disconnects here (falling out of scope), while still
+        // holding drag focus
+    }
+    QTRY_COMPARE(compositor.surfaces.size(), 1);
+
+    // Use after free would happen here
+    compositor.defaultSeat()->drag()->dragMove(compositor.surfaces.first(), QPointF());
+
+    QCOMPARE(origin.error, 0);
+}
+#endif // QT_CONFIG(draganddrop)
 
 #include <tst_compositor.moc>
 QTEST_MAIN(tst_WaylandCompositor);

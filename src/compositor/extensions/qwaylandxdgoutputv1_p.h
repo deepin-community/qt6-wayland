@@ -1,5 +1,6 @@
 // Copyright (C) 2019 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #ifndef QWAYLANDXDGOUTPUTV1_P_H
 #define QWAYLANDXDGOUTPUTV1_P_H
@@ -34,6 +35,7 @@ public:
 
     void registerXdgOutput(QWaylandOutput *output, QWaylandXdgOutputV1 *xdgOutput);
     void unregisterXdgOutput(QWaylandOutput *output);
+    QWaylandXdgOutputV1 *xdgOutput(QWaylandOutput *output) const;
 
     static QWaylandXdgOutputManagerV1Private *get(QWaylandXdgOutputManagerV1 *manager) { return manager ? manager->d_func() : nullptr; }
 
@@ -56,6 +58,7 @@ public:
     void sendLogicalPosition(const QPoint &position);
     void sendLogicalSize(const QSize &size);
     void sendDone();
+    void maybeSendDone(const Resource *resource);
 
     void setManager(QWaylandXdgOutputManagerV1 *manager);
     void setOutput(QWaylandOutput *output);
@@ -69,7 +72,6 @@ public:
     QSize logicalSize;
     QString name;
     QString description;
-    bool needToSendDone = false;
 
 protected:
     void zxdg_output_v1_bind_resource(Resource *resource) override;

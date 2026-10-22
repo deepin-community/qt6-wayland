@@ -1,5 +1,6 @@
 // Copyright (C) 2021 LG Electronics Inc.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "qwaylandcompositorpresentationtimeforeign_p.h"
 
@@ -22,9 +23,9 @@ QT_BEGIN_NAMESPACE
 
     \section2 Usage
     To use this module, import it like this:
-    \qml
+    \code
     import QtWayland.Compositor.PresentationTime
-    \endqml
+    \endcode
 */
 
 QT_END_NAMESPACE

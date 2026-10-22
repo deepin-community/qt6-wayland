@@ -1,5 +1,7 @@
 // Copyright (C) 2019 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
+
 #ifndef WAYLANDEGLSTREAMINTEGRATION_H
 #define WAYLANDEGLSTREAMINTEGRATION_H
 
@@ -29,7 +31,7 @@ private:
     QScopedPointer<WaylandEglStreamClientBufferIntegrationPrivate> d_ptr;
 };
 
-struct BufferState;
+struct ControllerBufferState;
 
 class WaylandEglStreamClientBuffer : public QtWayland::ClientBuffer
 {
@@ -48,7 +50,7 @@ private:
 
     WaylandEglStreamClientBuffer(WaylandEglStreamClientBufferIntegration* integration, wl_resource *bufferResource);
 
-    BufferState *d = nullptr;
+    ControllerBufferState *d = nullptr;
     WaylandEglStreamClientBufferIntegration *m_integration = nullptr;
 };
 

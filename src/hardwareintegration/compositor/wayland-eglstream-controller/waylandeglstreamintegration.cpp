@@ -1,5 +1,6 @@
 // Copyright (C) 2019 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "waylandeglstreamintegration.h"
 #include "waylandeglstreamcontroller.h"
@@ -106,9 +107,9 @@ egl_error_string(EGLint code)
 #undef MYERRCODE
 }
 
-struct BufferState
+struct ControllerBufferState
 {
-    BufferState() = default;
+    ControllerBufferState() = default;
 
     EGLint egl_format = EGL_TEXTURE_EXTERNAL_WL;
     QOpenGLTexture *textures[3] = {nullptr, nullptr, nullptr};
@@ -129,7 +130,7 @@ public:
 
     bool ensureContext();
     bool initEglStream(WaylandEglStreamClientBuffer *buffer, struct ::wl_resource *bufferHandle);
-    void setupBufferAndCleanup(BufferState *bs, QOpenGLTexture *texture, int plane);
+    void setupBufferAndCleanup(ControllerBufferState *bs, QOpenGLTexture *texture, int plane);
     void handleEglstreamTexture(WaylandEglStreamClientBuffer *buffer);
 
     EGLDisplay egl_display = EGL_NO_DISPLAY;
@@ -177,7 +178,7 @@ bool WaylandEglStreamClientBufferIntegrationPrivate::ensureContext()
 }
 
 
-void WaylandEglStreamClientBufferIntegrationPrivate::setupBufferAndCleanup(BufferState *bs, QOpenGLTexture *texture, int plane)
+void WaylandEglStreamClientBufferIntegrationPrivate::setupBufferAndCleanup(ControllerBufferState *bs, QOpenGLTexture *texture, int plane)
 {
     QMutexLocker locker(&bs->texturesLock);
 
@@ -222,7 +223,7 @@ void WaylandEglStreamClientBufferIntegrationPrivate::setupBufferAndCleanup(Buffe
 
 bool WaylandEglStreamClientBufferIntegrationPrivate::initEglStream(WaylandEglStreamClientBuffer *buffer, wl_resource *bufferHandle)
 {
-    BufferState &state = *buffer->d;
+    ControllerBufferState &state = *buffer->d;
     state.egl_format = EGL_TEXTURE_EXTERNAL_WL;
     state.isYInverted = false;
 
@@ -272,7 +273,7 @@ void WaylandEglStreamClientBufferIntegrationPrivate::handleEglstreamTexture(Wayl
 {
     bool usingLocalContext = ensureContext();
 
-    BufferState &state = *buffer->d;
+    ControllerBufferState &state = *buffer->d;
     auto texture = state.textures[0];
 
     // EGLStream requires calling acquire on every frame.
@@ -383,7 +384,7 @@ WaylandEglStreamClientBuffer::WaylandEglStreamClientBuffer(WaylandEglStreamClien
     , m_integration(integration)
 {
     auto *p = WaylandEglStreamClientBufferIntegrationPrivate::get(m_integration);
-    d = new BufferState;
+    d = new ControllerBufferState;
     if (buffer && !wl_shm_buffer_get(buffer)) {
         EGLint width, height;
         p->egl_query_wayland_buffer(p->egl_display, buffer, EGL_WIDTH, &width);

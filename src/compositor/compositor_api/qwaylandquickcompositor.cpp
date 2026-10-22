@@ -1,6 +1,7 @@
 // Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
 // Copyright (C) 2017 Jolla Ltd, author: <giulio.camuffo@jollamobile.com>
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include <QtQml/QQmlEngine>
 #include <QQuickWindow>
@@ -51,16 +52,19 @@ QWaylandQuickCompositor::QWaylandQuickCompositor(QObject *parent)
  *
  * A list of extensions that the compositor advertises to its clients. For
  * any Wayland extension the compositor should support, instantiate its component,
- * and add it to the list of extensions.
+ * and add it to the list of extensions. However, it is generally not necessary to
+ * reference this property, as all direct child items are automatically assigned to
+ * it.
  *
- * For instance, the following code would allow the clients to request \c wl_shell
- * surfaces in the compositor using the \c wl_shell interface.
+ * For instance, the following code would allow the clients to request \c xdg_shell
+ * surfaces in the compositor using the \c xdg_shell interface.
  *
  * \qml
  * import QtWayland.Compositor
+ * import QtWayland.Compositor.XdgShell
  *
  * WaylandCompositor {
- *     WlShell {
+ *     XdgShell {
  *         // ...
  *     }
  * }
@@ -84,6 +88,7 @@ void QWaylandQuickCompositor::componentComplete()
 }
 
 /*!
+ * \internal
  * Grab the surface content from the given \a buffer.
  * Reimplemented from QWaylandCompositor::grabSurface.
  */

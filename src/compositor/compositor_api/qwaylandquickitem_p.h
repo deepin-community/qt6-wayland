@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #ifndef QWAYLANDQUICKITEM_P_H
 #define QWAYLANDQUICKITEM_P_H
@@ -98,7 +99,8 @@ public:
         QObject::connect(view.data(), &QWaylandView::outputChanged, q, &QWaylandQuickItem::outputChanged);
         QObject::connect(view.data(), &QWaylandView::outputChanged, q, &QWaylandQuickItem::updateOutput);
         QObject::connect(view.data(), &QWaylandView::bufferLockedChanged, q, &QWaylandQuickItem::bufferLockedChanged);
-        QObject::connect(view.data(), &QWaylandView::allowDiscardFrontBufferChanged, q, &QWaylandQuickItem::allowDiscardFrontBuffer);
+        QObject::connect(view.data(), &QWaylandView::bufferLockedChanged, q, &QWaylandQuickItem::handleBufferLockedChanged);
+        QObject::connect(view.data(), &QWaylandView::allowDiscardFrontBufferChanged, q, &QWaylandQuickItem::allowDiscardFrontBufferChanged);
 
         q->updateWindow();
     }

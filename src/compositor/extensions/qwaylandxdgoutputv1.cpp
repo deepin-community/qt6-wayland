@@ -1,5 +1,6 @@
 // Copyright (C) 2019 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #include <QWaylandCompositor>
 
@@ -9,6 +10,18 @@
 #include <wayland-server.h>
 
 QT_BEGIN_NAMESPACE
+/*!
+ * \qmltype XdgOutputV1
+ * \nativetype QWaylandXdgOutputV1
+ * \inqmlmodule QtWayland.Compositor.XdgShell
+ * \brief Represents a display in a compositor.
+ */
+
+/*!
+ * \class QWaylandXdgOutputV1
+ * \inmodule QtWaylandCompositor
+ * \brief Represents a display in a compositor.
+ */
 
 /*!
  * \qmltype XdgOutputManagerV1
@@ -130,13 +143,17 @@ void QWaylandXdgOutputManagerV1Private::registerXdgOutput(QWaylandOutput *output
 {
     if (!xdgOutputs.contains(output)) {
         xdgOutputs[output] = xdgOutput;
-        QWaylandOutputPrivate::get(output)->xdgOutput = xdgOutput;
     }
 }
 
 void QWaylandXdgOutputManagerV1Private::unregisterXdgOutput(QWaylandOutput *output)
 {
     xdgOutputs.remove(output);
+}
+
+QWaylandXdgOutputV1 *QWaylandXdgOutputManagerV1Private::xdgOutput(QWaylandOutput *output) const
+{
+    return xdgOutputs.value(output);
 }
 
 void QWaylandXdgOutputManagerV1Private::zxdg_output_manager_v1_get_xdg_output(Resource *resource,
@@ -214,6 +231,7 @@ QWaylandXdgOutputV1::~QWaylandXdgOutputV1()
 /*!
  * \property QWaylandXdgOutputV1::manager
  * \readonly
+ * \internal
  *
  * This property holds the object that manages this QWaylandXdgOutputV1.
  */
@@ -454,7 +472,6 @@ void QWaylandXdgOutputV1Private::sendLogicalPosition(const QPoint &position)
     const auto values = resourceMap().values();
     for (auto *resource : values)
         send_logical_position(resource->handle, position.x(), position.y());
-    needToSendDone = true;
 }
 
 void QWaylandXdgOutputV1Private::sendLogicalSize(const QSize &size)
@@ -462,19 +479,21 @@ void QWaylandXdgOutputV1Private::sendLogicalSize(const QSize &size)
     const auto values = resourceMap().values();
     for (auto *resource : values)
         send_logical_size(resource->handle, size.width(), size.height());
-    needToSendDone = true;
+}
+
+void QWaylandXdgOutputV1Private::maybeSendDone(const Resource *resource)
+{
+    if (resource->version() < 3)
+        send_done(resource->handle);
 }
 
 void QWaylandXdgOutputV1Private::sendDone()
 {
-    if (needToSendDone) {
-        const auto values = resourceMap().values();
-        for (auto *resource : values) {
-            if (resource->version() < 3)
-                send_done(resource->handle);
-        }
-        needToSendDone = false;
-    }
+    const auto values = resourceMap().values();
+    for (auto *resource : values)
+        maybeSendDone(resource);
+
+    QWaylandOutputPrivate::get(output)->sendDone();
 }
 
 void QWaylandXdgOutputV1Private::setManager(QWaylandXdgOutputManagerV1 *_manager)
@@ -550,7 +569,12 @@ void QWaylandXdgOutputV1Private::zxdg_output_v1_bind_resource(Resource *resource
         send_name(resource->handle, name);
     if (resource->version() >= ZXDG_OUTPUT_V1_DESCRIPTION_SINCE_VERSION)
         send_description(resource->handle, description);
-    send_done(resource->handle);
+    maybeSendDone(resource);
+
+    QWaylandOutputPrivate *output_d = QWaylandOutputPrivate::get(output);
+    auto *outputResource = output_d->resourceMap().value(resource->client());
+    if (outputResource)
+        output_d->maybeSendDone(outputResource);
 
     initialized = true;
 }

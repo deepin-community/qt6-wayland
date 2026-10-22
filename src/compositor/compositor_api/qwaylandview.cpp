@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Jolla Ltd, author: <giulio.camuffo@jollamobile.com>
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "qwaylandview.h"
 #include "qwaylandview_p.h"
@@ -26,18 +27,6 @@ void QWaylandViewPrivate::markSurfaceAsDestroyed(QWaylandSurface *surface)
     if (!deleteGuard.isNull())
         clearFrontBuffer();
 }
-
-/*!
- * \qmltype WaylandView
- * \nativetype QWaylandView
- * \inqmlmodule QtWayland.Compositor
- * \since 5.8
- * \brief Represents a view of a surface on an output.
- *
- * The WaylandView corresponds to the presentation of a surface on a specific
- * output, managing the buffers that contain the contents to be rendered.
- * You can have several views into the same surface.
- */
 
 /*!
  * \class QWaylandView
@@ -75,20 +64,15 @@ QWaylandView::~QWaylandView()
 }
 
 /*!
-* \internal
-*  Didn't we decide to remove this property?
-*/
+ * \property QWaylandView::renderObject
+ * \internal
+ * Didn't we decide to remove this property?
+ */
 QObject *QWaylandView::renderObject() const
 {
     Q_D(const QWaylandView);
     return d->renderObject;
 }
-
-/*!
- * \qmlproperty WaylandSurface QtWayland.Compositor::WaylandView::surface
- *
- * This property holds the surface viewed by this WaylandView.
- */
 
 /*!
  * \property QWaylandView::surface
@@ -116,6 +100,7 @@ void QWaylandViewPrivate::setSurface(QWaylandSurface *newSurface)
     nextBuffer = QWaylandBufferRef();
     nextBufferCommitted = false;
     nextDamage = QRegion();
+    forceAdvanceSucceed = false;
 
     if (surface) {
         QWaylandSurfacePrivate::get(surface)->refView(q);
@@ -142,12 +127,6 @@ void QWaylandView::setSurface(QWaylandSurface *newSurface)
     d->clearFrontBuffer();
     emit surfaceChanged();
 }
-
-/*!
- * \qmlproperty WaylandOutput QtWayland.Compositor::WaylandView::output
- *
- * This property holds the output on which this view displays its surface.
- */
 
 /*!
  * \property QWaylandView::output
@@ -222,8 +201,8 @@ bool QWaylandView::advance()
     QMutexLocker locker(&d->bufferMutex);
     d->forceAdvanceSucceed = false;
     d->nextBufferCommitted = false;
-    d->currentBuffer = d->nextBuffer;
-    d->currentDamage = d->nextDamage;
+    d->currentBuffer = std::exchange(d->nextBuffer, {});
+    d->currentDamage = std::exchange(d->nextDamage, {});
     return true;
 }
 
@@ -259,16 +238,6 @@ QRegion QWaylandView::currentDamage()
 }
 
 /*!
- * \qmlproperty bool QtWayland.Compositor::WaylandView::bufferLocked
- *
- * This property holds whether the view's buffer is currently locked. When
- * the buffer is locked, advance() will not advance to the next buffer and
- * returns \c false.
- *
- * The default is \c false.
- */
-
-/*!
  * \property QWaylandView::bufferLocked
  *
  * This property holds whether the view's buffer is currently locked. When
@@ -290,16 +259,10 @@ void QWaylandView::setBufferLocked(bool locked)
         return;
     d->bufferLocked = locked;
     emit bufferLockedChanged();
+
+    if (d->surface == nullptr && !d->bufferLocked)
+        d->clearFrontBuffer();
 }
-/*!
- * \qmlproperty bool QtWayland.Compositor::WaylandView::allowDiscardFrontBuffer
- *
- * By default, the view locks the current buffer until advance() is called. Set this property
- * to true to allow Qt to release the buffer when the primary view is no longer using it.
- *
- * This can be used to avoid the situation where a secondary view that updates on a lower
- * frequency will throttle the frame rate of the client application.
- */
 
 /*!
  * \property QWaylandView::allowDiscardFrontBuffer

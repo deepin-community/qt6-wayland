@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #include "qwaylandtouch.h"
 #include "qwaylandtouch_p.h"
@@ -8,8 +9,6 @@
 #include <QtWaylandCompositor/QWaylandSeat>
 #include <QtWaylandCompositor/QWaylandView>
 #include <QtWaylandCompositor/QWaylandClient>
-
-#include <QtWaylandCompositor/private/qwlqttouch_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -180,10 +179,6 @@ void QWaylandTouch::sendFullTouchEvent(QWaylandSurface *surface, QTouchEvent *ev
         sendCancelEvent(surface->client());
         return;
     }
-
-    QtWayland::TouchExtensionGlobal *ext = QtWayland::TouchExtensionGlobal::findIn(d->compositor());
-    if (ext && ext->postTouchEvent(event, surface))
-        return;
 
     const QList<QTouchEvent::TouchPoint> points = event->points();
     if (points.isEmpty())

@@ -1,5 +1,6 @@
 // Copyright (C) 2021 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #include "qwaylandqtsurface_p.h"
 #include <qpa/qwindowsysteminterface.h>
@@ -31,6 +32,8 @@ void QWaylandQtSurface::resetConfiguration()
 
 void QWaylandQtSurface::applyConfigure()
 {
+    ack_configure(m_currentConfigureSerial);
+
     if (m_pendingSize.isValid() && m_pendingPositionValid)
         setGeometryFromApplyConfigure(m_pendingPosition, m_pendingSize);
     else if (m_pendingSize.isValid())
@@ -42,8 +45,6 @@ void QWaylandQtSurface::applyConfigure()
         QWindowSystemInterface::handleWindowStateChanged(platformWindow()->window(), m_pendingStates);
         m_currentStates = m_pendingStates;
     }
-
-    ack_configure(m_currentConfigureSerial);
 
     resetConfiguration();
     m_currentConfigureSerial = UINT32_MAX;
@@ -156,14 +157,14 @@ void QWaylandQtSurface::zqt_shell_surface_v1_set_window_state(uint32_t serial, u
     m_pendingStates = Qt::WindowStates(state);
 }
 
-void QWaylandQtSurface::setWindowGeometry(const QRect &rect)
-{
-    set_size(rect.width(), rect.height());
-}
-
 void QWaylandQtSurface::setWindowPosition(const QPoint &position)
 {
     reposition(position.x(), position.y());
+}
+
+void QWaylandQtSurface::setWindowSize(const QSize &size)
+{
+    set_size(size.width(), size.height());
 }
 
 void QWaylandQtSurface::setWindowFlags(Qt::WindowFlags flags)

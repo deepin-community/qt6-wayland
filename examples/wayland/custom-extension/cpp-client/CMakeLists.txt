@@ -12,7 +12,7 @@ endif()
 
 set(INSTALL_EXAMPLEDIR "${INSTALL_EXAMPLESDIR}/wayland/custom-extension/cpp-client")
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui WaylandClient)
+find_package(Qt6 REQUIRED COMPONENTS Core GuiPrivate WaylandClient)
 
 qt_add_executable(custom-extension-cpp-client
     ../client-common/customextension.cpp ../client-common/customextension.h
@@ -20,6 +20,7 @@ qt_add_executable(custom-extension-cpp-client
 )
 
 qt6_generate_wayland_protocol_client_sources(custom-extension-cpp-client
+    PRIVATE_CODE
     FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/../protocol/custom.xml
 )

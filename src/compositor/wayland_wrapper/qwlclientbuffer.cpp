@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "qwlclientbuffer_p.h"
 
@@ -128,7 +129,7 @@ QOpenGLTexture *SharedMemoryBuffer::toOpenGlTexture(int plane)
     Q_UNUSED(plane);
     if (isSharedMemory()) {
         if (!m_shmTexture) {
-            m_shmTexture = new QOpenGLTexture(QOpenGLTexture::Target2D);
+            m_shmTexture.reset(new QOpenGLTexture(QOpenGLTexture::Target2D));
             m_shmTexture->create();
         }
         if (m_textureDirty) {
@@ -153,7 +154,7 @@ QOpenGLTexture *SharedMemoryBuffer::toOpenGlTexture(int plane)
             if (isCommitted())
                 sendRelease();
         }
-        return m_shmTexture;
+        return m_shmTexture.data();
     }
     return nullptr;
 }

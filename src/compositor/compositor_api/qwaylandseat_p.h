@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #ifndef QWAYLANDSEAT_P_H
 #define QWAYLANDSEAT_P_H
@@ -94,7 +95,8 @@ private:
 # endif
 #endif
     QScopedPointer<QWaylandKeymap> keymap;
-
+    int name = 0;
+    static int max_name;
 };
 
 QT_END_NAMESPACE

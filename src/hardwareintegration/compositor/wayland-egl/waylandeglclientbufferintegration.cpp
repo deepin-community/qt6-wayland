@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "waylandeglclientbufferintegration_p.h"
 
@@ -169,13 +170,9 @@ public:
 
     QEGLStreamConvenience *funcs = nullptr;
     static WaylandEglClientBufferIntegrationPrivate *get(WaylandEglClientBufferIntegration *integration) {
-        return shuttingDown ? nullptr : integration->d_ptr.data();
+        return integration ? integration->d_ptr.data() : nullptr;
     }
-
-    static bool shuttingDown;
 };
-
-bool WaylandEglClientBufferIntegrationPrivate::shuttingDown = false;
 
 WaylandEglClientBufferIntegrationPrivate::WaylandEglClientBufferIntegrationPrivate()
 {
@@ -417,7 +414,6 @@ WaylandEglClientBufferIntegration::WaylandEglClientBufferIntegration()
 
 WaylandEglClientBufferIntegration::~WaylandEglClientBufferIntegration()
 {
-    WaylandEglClientBufferIntegrationPrivate::shuttingDown = true;
     Q_D(WaylandEglClientBufferIntegration);
     if (d->egl_unbind_wayland_display && d->display_bound) {
         Q_ASSERT(d->wlDisplay);

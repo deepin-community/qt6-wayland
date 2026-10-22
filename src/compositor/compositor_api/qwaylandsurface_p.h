@@ -1,6 +1,7 @@
 // Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
 // Copyright (C) 2017 Jolla Ltd, author: <giulio.camuffo@jollamobile.com>
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #ifndef QWAYLANDSURFACE_P_H
 #define QWAYLANDSURFACE_P_H
@@ -81,12 +82,14 @@ public:
 
     void initSubsurface(QWaylandSurface *parent, struct ::wl_client *client, int id, int version);
     bool isSubsurface() const { return subsurface; }
+    QPoint subsurfacePosition() const { return subsurface ? subsurface->position() : QPoint(); }
     QWaylandSurfacePrivate *parentSurface() const { return subsurface ? subsurface->parentSurface : nullptr; }
 
 protected:
     void surface_destroy_resource(Resource *resource) override;
 
     void surface_destroy(Resource *resource) override;
+    void surface_offset(Resource *resource, int32_t x, int32_t y) override;
     void surface_attach(Resource *resource,
                         struct wl_resource *buffer, int x, int y) override;
     void surface_damage(Resource *resource,
@@ -125,6 +128,7 @@ public: //member variables
         QRectF sourceGeometry;
         QSize destinationSize;
         QRegion opaqueRegion;
+        Qt::ScreenOrientation contentOrientation = Qt::PrimaryOrientation;
     } pending;
 
     QPoint lastLocalMousePos;
@@ -160,6 +164,7 @@ public: //member variables
     public:
         Subsurface(QWaylandSurfacePrivate *s) : surface(s) {}
         QWaylandSurfacePrivate *surfaceFromResource();
+        QPoint position() const { return pos; };
 
     protected:
         void subsurface_set_position(wl_subsurface::Resource *resource, int32_t x, int32_t y) override;
@@ -172,7 +177,7 @@ public: //member variables
         friend class QWaylandSurfacePrivate;
         QWaylandSurfacePrivate *surface = nullptr;
         QWaylandSurfacePrivate *parentSurface = nullptr;
-        QPoint position;
+        QPoint pos;
     };
 
     Subsurface *subsurface = nullptr;

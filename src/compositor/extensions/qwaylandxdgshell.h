@@ -1,6 +1,6 @@
-
 // Copyright (C) 2018 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #ifndef QWAYLANDXDGSHELL_H
 #define QWAYLANDXDGSHELL_H
@@ -168,7 +168,7 @@ public:
     Q_INVOKABLE uint sendMaximized(const QSize &size);
     Q_INVOKABLE uint sendUnmaximized(const QSize &size = QSize(0, 0));
     Q_INVOKABLE uint sendFullscreen(const QSize &size);
-    Q_INVOKABLE uint sendResizing(const QSize &maxSize);
+    Q_INVOKABLE uint sendResizing(const QSize &size);
 
     static QWaylandSurfaceRole *role();
     static QWaylandXdgToplevel *fromResource(::wl_resource *resource);

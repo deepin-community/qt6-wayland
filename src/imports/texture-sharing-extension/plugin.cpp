@@ -1,10 +1,13 @@
 // Copyright (C) 2019 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include <QtQml/qqmlextensionplugin.h>
 #include <QtQml/qqmlengine.h>
 
 #include "QtWaylandCompositor/private/qwltexturesharingextension_p.h"
+
+#include "plugin_p.h"
 
 /*!
     \internal
@@ -62,7 +65,6 @@ public:
     void registerTypes(const char *uri) override
     {
         Q_ASSERT(uri == QStringLiteral("QtWayland.Compositor.TextureSharingExtension"));
-        qmlRegisterType<QWaylandTextureSharingExtensionQuickExtension>("QtWayland.Compositor.TextureSharingExtension", 1, 0, "TextureSharingExtension");
     }
 
     void initializeEngine(QQmlEngine *engine, const char *uri) override

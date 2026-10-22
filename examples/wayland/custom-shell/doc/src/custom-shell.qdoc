@@ -13,7 +13,9 @@
  * extensions, but in some circumstances it can be useful to be able to write a custom one which
  * contains the exact features your applications need.
  *
- * \image custom-shell.jpg
+ * \image custom-shell.jpg {Compositor running Qt Quick 3D Baked Lightmap
+ *        Example with 3D room showing red, green, and white walls and
+ *        "Use lightmaps" checkbox}
  *
  * This requires that you implement the shell extension on both the server-side and client-side
  * of the Wayland connection, so it is mainly useful when you are building a platform and are in
@@ -39,8 +41,8 @@
  * \endlist
  *
  * In order to have \c qtwaylandscanner run automatically as part of the build, we use the
- * CMake functions \l{qt_generate_wayland_protocol_server_sources}{qt_generate_wayland_protocol_server_sources()} and
- * \l{qt_generate_wayland_protocol_client_sources}{qt_generate_wayland_protocol_client_sources()} for generating the server-side and
+ * CMake functions \l qt_generate_wayland_protocol_server_sources() and
+ * \l qt_generate_wayland_protocol_client_sources() for generating the server-side and
  * client-side glue code, respectively. (When using \c qmake, the \c WAYLANDSERVERSOURCES and
  * \c WAYLANDCLIENTSOURCES variables achieve the same.)
  *
@@ -135,7 +137,7 @@
  * the building blocks of a \l{Qt Wayland Compositor}.
  *
  * One notable difference in the Custom Shell compositor is the instantiation of the shell
- * extension. Where the \l{Minimal QML}{the Minimal QML example}
+ * extension. Where the \l{Minimal QML}{Minimal QML example}
  * instantiates the shell extensions \l{IviApplication}, \l{XdgShell} and \l{WlShell}, the
  * Custom Shell example only creates an instance of the \c ExampleShell extension.
  *

@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "qwaylandinputmethodcontrol.h"
 #include "qwaylandinputmethodcontrol_p.h"
@@ -71,6 +72,15 @@ void QWaylandInputMethodControl::inputMethodEvent(QInputMethodEvent *event)
     }
 }
 
+/*!
+ * \property QWaylandInputMethodControl::enabled
+ *
+ * This property indicates whether the input method control is enabled for the
+ * surface.
+ *
+ * The property is \c true when text input is enabled for the associated
+ * surface; otherwise \c false.
+ */
 bool QWaylandInputMethodControl::enabled() const
 {
     Q_D(const QWaylandInputMethodControl);

@@ -1,5 +1,6 @@
 // Copyright (C) 2021 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "qwaylandshellsurface_p.h"
 
@@ -24,7 +25,8 @@
  *   provided container, and returns this if it is found.
  * \endlist
  *
- * The same usage pattern applies as for QWaylandCompositorExtensionTemplate.
+ * The same usage pattern applies as for QWaylandCompositorExtensionTemplate, with \a T
+ * being the subclass itself.
  *
  * \sa { Custom Shell}
  */
@@ -54,7 +56,7 @@
  * directly on the ShellSurface. See the various implementations for additional properties and
  * signals.
  *
- * \sa WaylandSurface, ShellSurfaceItem, WlShellSurface, IviSurface
+ * \sa WaylandSurface, ShellSurfaceItem, XdgSurface, IviSurface, WlShellSurface
  */
 
 /*!
@@ -66,7 +68,7 @@
  * This interface represents a Wayland surface role given by a Wayland protocol extension that
  * defines how the QWaylandSurface should map onto the screen.
  *
- * \sa QWaylandSurface, QWaylandWlShellSurface, QWaylandIviSurface, QWaylandShellSurfaceTemplate
+ * \sa QWaylandSurface, QWaylandXdgSurface, QWaylandIviSurface, QWaylandWlShellSurface, QWaylandShellSurfaceTemplate
  */
 
 #if QT_CONFIG(wayland_compositor_quick)
@@ -83,13 +85,13 @@
 /*!
  * \qmlproperty enum QtWayland.Compositor::ShellSurface::windowType
  *
- * This property holds the window type of the ShellSurface.
+ * This property holds the \l{Qt::WindowType}{window type} of the ShellSurface.
  */
 
 /*!
  * \property QWaylandShellSurface::windowType
  *
- * This property holds the window type of the QWaylandShellSurface.
+ * This property holds the \l{Qt::WindowType}{window type} of the QWaylandShellSurface.
  */
 
 /*!

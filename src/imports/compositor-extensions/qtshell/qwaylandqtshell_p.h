@@ -1,5 +1,6 @@
 // Copyright (C) 2021 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #ifndef QWAYLANDQTSHELL_P_H
 #define QWAYLANDQTSHELL_P_H
@@ -96,7 +97,7 @@ private:
     QSize m_pendingSize;
 
     uint32_t m_lastAckedConfigure = UINT32_MAX;
-    QMap<uint32_t, QPair<uint, QRect> > m_pendingConfigures;
+    QMap<uint32_t, std::pair<uint, QRect> > m_pendingConfigures;
 
     QWaylandQtShellSurface::CapabilityFlags m_capabilities;
 

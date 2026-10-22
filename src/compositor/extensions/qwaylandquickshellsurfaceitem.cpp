@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "qwaylandquickshellsurfaceitem.h"
 #include "qwaylandquickshellsurfaceitem_p.h"
@@ -8,6 +9,40 @@
 #include <QGuiApplication>
 
 QT_BEGIN_NAMESPACE
+
+void QWaylandQuickShellSurfaceItemPrivate::setShellSurface(QWaylandShellSurface *shellSurface)
+{
+    Q_Q(QWaylandQuickShellSurfaceItem);
+
+    if (m_shellSurface) {
+        QObject::disconnect(m_shellSurface, &QObject::destroyed, q, nullptr);
+        QObject::disconnect(m_shellSurface, &QWaylandShellSurface::modalChanged, q, nullptr);
+    }
+
+    m_shellSurface = shellSurface;
+
+    if (m_shellIntegration) {
+        q->removeEventFilter(m_shellIntegration);
+        delete m_shellIntegration;
+        m_shellIntegration = nullptr;
+    }
+
+    if (m_shellSurface) {
+        m_shellIntegration = m_shellSurface->createIntegration(q);
+        q->installEventFilter(m_shellIntegration);
+
+        QObject::connect(m_shellSurface, &QObject::destroyed,
+                         q, [this]() {
+            setShellSurface(nullptr);
+            emit q_func()->shellSurfaceChanged();
+        });
+        QObject::connect(m_shellSurface, &QWaylandShellSurface::modalChanged,
+                         q, [this]() {
+            if (m_shellSurface && m_shellSurface->isModal())
+                raise();
+        });
+    }
+}
 
 QWaylandQuickShellSurfaceItem *QWaylandQuickShellSurfaceItemPrivate::maybeCreateAutoPopup(QWaylandShellSurface* shellSurface)
 {
@@ -31,10 +66,10 @@ QWaylandQuickShellSurfaceItem *QWaylandQuickShellSurfaceItemPrivate::maybeCreate
  * \since 5.8
  * \brief A Qt Quick item type for displaying and interacting with a ShellSurface.
  *
- * This type is used to render \c wl_shell, \c xdg_shell or \c ivi_application surfaces as part of
- * a Qt Quick scene. It handles moving and resizing triggered by clicking on the window decorations.
+ * This type is used to render \c xdg_shell, \c ivi_application, \c wl_shell or \c qt_shell
+ * surfaces as part of a Qt Quick scene.
  *
- * \sa WaylandQuickItem, WlShellSurface, IviSurface
+ * \sa WaylandQuickItem, XdgSurface, IviSurface, QtShellSurface, WlShellSurface
  */
 
 /*!
@@ -43,10 +78,10 @@ QWaylandQuickShellSurfaceItem *QWaylandQuickShellSurfaceItemPrivate::maybeCreate
  * \since 5.8
  * \brief The QWaylandQuickShellSurfaceItem class provides a Qt Quick item that represents a QWaylandShellSurface.
  *
- * This class is used to render \c wl_shell, \c xdg_shell or \c ivi_application surfaces as part of
- * a Qt Quick scene. It handles moving and resizing triggered by clicking on the window decorations.
+ * This type is used to render \c xdg_shell, \c ivi_application, \c wl_shell or \c qt_shell
+ * surfaces as part of a Qt Quick scene.
  *
- * \sa QWaylandQuickItem, QWaylandWlShellSurface, QWaylandIviSurface
+ * \sa QWaylandQuickItem, QWaylandXdgSurface, QWaylandIviSurface, QWaylandWlShellSurface
  */
 
 /*!
@@ -61,10 +96,7 @@ QWaylandQuickShellSurfaceItem::~QWaylandQuickShellSurfaceItem()
 {
     Q_D(QWaylandQuickShellSurfaceItem);
 
-    if (d->m_shellIntegration) {
-        removeEventFilter(d->m_shellIntegration);
-        delete d->m_shellIntegration;
-    }
+    d->setShellSurface(nullptr);
 }
 
 /*!
@@ -102,24 +134,7 @@ void QWaylandQuickShellSurfaceItem::setShellSurface(QWaylandShellSurface *shellS
     if (d->m_shellSurface == shellSurface)
         return;
 
-    if (Q_UNLIKELY(d->m_shellSurface))
-        disconnect(d->m_shellSurface, &QWaylandShellSurface::modalChanged, this, nullptr);
-
-    d->m_shellSurface = shellSurface;
-
-    if (d->m_shellIntegration) {
-        removeEventFilter(d->m_shellIntegration);
-        delete d->m_shellIntegration;
-        d->m_shellIntegration = nullptr;
-    }
-
-    if (shellSurface) {
-        d->m_shellIntegration = shellSurface->createIntegration(this);
-        installEventFilter(d->m_shellIntegration);
-    }
-
-    connect(shellSurface, &QWaylandShellSurface::modalChanged, this,
-            [d](){ if (d->m_shellSurface->isModal()) d->raise(); });
+    d->setShellSurface(shellSurface);
 
     emit shellSurfaceChanged();
 }
@@ -157,6 +172,7 @@ void QWaylandQuickShellSurfaceItem::setMoveItem(QQuickItem *moveItem)
 
 /*!
  * \qmlproperty bool QtWayland.Compositor::ShellSurfaceItem::autoCreatePopupItems
+ * \default true
  *
  * This property holds whether ShellSurfaceItems for popups parented to the shell
  * surface managed by this item should automatically be created.
@@ -298,7 +314,9 @@ static QWaylandQuickShellSurfaceItem *findSurfaceItemFromMoveItem(QQuickItem *mo
         return nullptr;
     if (auto *surf = qobject_cast<QWaylandQuickShellSurfaceItem *>(moveItem))
         return surf;
-    for (auto *item : moveItem->childItems()) {
+
+    const auto childItems = moveItem->childItems();
+    for (auto *item : childItems) {
         if (auto *surf = findSurfaceItemFromMoveItem(item))
             return surf;
     }
@@ -307,12 +325,12 @@ static QWaylandQuickShellSurfaceItem *findSurfaceItemFromMoveItem(QQuickItem *mo
 
 static inline bool onTop(QWaylandQuickShellSurfaceItem *surf)
 {
-    return surf->staysOnTop() || surf->shellSurface()->isModal();
+    return surf->staysOnTop() || (surf->shellSurface() && surf->shellSurface()->isModal());
 }
 
 static inline bool onBottom(QWaylandQuickShellSurfaceItem *surf)
 {
-    return surf->staysOnBottom() && !surf->shellSurface()->isModal();
+    return surf->staysOnBottom() && !(surf->shellSurface() && surf->shellSurface()->isModal());
 }
 
 /*
@@ -327,18 +345,19 @@ void QWaylandQuickShellSurfaceItemPrivate::raise()
     Q_Q(QWaylandQuickShellSurfaceItem);
     auto *moveItem = q->moveItem();
     QQuickItem *parent = moveItem->parentItem();
-    if (!parent)
+    if (!parent || !m_shellSurface)
         return;
     const bool putOnTop = staysOnTop || m_shellSurface->isModal();
     const bool putOnBottom = staysOnBottom && !m_shellSurface->isModal();
 
-    auto it = parent->childItems().crbegin();
-    auto skip = [=](QQuickItem *item) {
+    const QList<QQuickItem *> childItems = parent->childItems();
+    auto it = childItems.crbegin();
+    const auto end = childItems.crend();
+    auto skip = [putOnTop, putOnBottom](QQuickItem *item) {
         if (auto *surf = findSurfaceItemFromMoveItem(item))
             return (!putOnTop && onTop(surf)) || (putOnBottom && !onBottom(surf));
         return true; // ignore any other Quick items that may be there
     };
-    auto end = parent->childItems().crend();
     while (it != end && skip(*it))
         ++it;
     if (it != end) {
@@ -360,13 +379,14 @@ void QWaylandQuickShellSurfaceItemPrivate::lower()
     Q_Q(QWaylandQuickShellSurfaceItem);
     auto *moveItem = q->moveItem();
     QQuickItem *parent = moveItem->parentItem();
-    if (!parent)
+    if (!parent || !m_shellSurface)
         return;
     const bool putOnTop = staysOnTop || m_shellSurface->isModal();
     const bool putOnBottom = staysOnBottom && !m_shellSurface->isModal();
 
-    auto it = parent->childItems().cbegin();
-    auto skip = [=](QQuickItem *item) {
+    const QList<QQuickItem *> childItems = parent->childItems();
+    auto it = childItems.cbegin();
+    auto skip = [putOnTop, putOnBottom](QQuickItem *item) {
         if (auto *surf = findSurfaceItemFromMoveItem(item))
             return (!putOnBottom && onBottom(surf)) || (putOnTop && !onTop(surf));
         return true; // ignore any other Quick items that may be there

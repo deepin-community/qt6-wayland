@@ -2,6 +2,7 @@
 // Copyright (C) 2017 Klarälvdalens Datakonsult AB (KDAB).
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #ifndef QWAYLANDOUTPUT_P_H
 #define QWAYLANDOUTPUT_P_H
@@ -45,10 +46,9 @@ struct QWaylandSurfaceViewMapper
 
     QWaylandView *maybePrimaryView() const
     {
-        for (int i = 0; i < views.size(); i++) {
-            if (surface && surface->primaryView() == views.at(i))
-                return views.at(i);
-        }
+        QWaylandView *primaryView = surface != nullptr ? surface->primaryView() : nullptr;
+        if (views.contains(primaryView))
+            return primaryView;
         return nullptr;
     }
 
@@ -75,10 +75,11 @@ public:
 
     void sendMode(const Resource *resource, const QWaylandOutputMode &mode);
     void sendModesInfo();
+    void sendDone();
+    void maybeSendDone(const Resource *resource);
+    void maybeSendScale(const Resource *resource, int scale);
 
     void handleWindowPixelSizeChanged();
-
-    QPointer<QWaylandXdgOutputV1> xdgOutput;
 
 protected:
     void output_bind_resource(Resource *resource) override;
@@ -103,6 +104,7 @@ private:
     int scaleFactor = 1;
     bool sizeFollowsWindow = false;
     bool initialized = false;
+    bool canSendFrameCallbacks = false;
     QSize windowPixelSize;
 
     Q_DISABLE_COPY(QWaylandOutputPrivate)
