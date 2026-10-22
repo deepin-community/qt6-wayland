@@ -1,6 +1,7 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // Copyright (C) 2017 Klarälvdalens Datakonsult AB (KDAB).
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #ifndef QTWAYLAND_QWLKEYBOARD_P_H
 #define QTWAYLAND_QWLKEYBOARD_P_H
@@ -90,6 +91,7 @@ private:
     Resource *focusResource = nullptr;
     QWaylandDestroyListener focusDestroyListener;
 
+public:
     QList<uint32_t> keys;
     uint32_t modsDepressed = 0;
     uint32_t modsLatched = 0;
@@ -99,7 +101,9 @@ private:
     uint32_t shiftIndex = 0;
     uint32_t controlIndex = 0;
     uint32_t altIndex = 0;
+    uint32_t mod5Index = 0;  // AltGr (ISO_Level3_Shift) - maps to Qt::GroupSwitchModifier
 
+private:
     Qt::KeyboardModifiers currentModifierState;
 
     bool pendingKeymap = false;

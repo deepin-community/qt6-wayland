@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "qwaylandkeymap.h"
 #include "qwaylandkeymap_p.h"
@@ -11,6 +12,19 @@ QWaylandKeymap::QWaylandKeymap(const QString &layout, const QString &variant, co
 {
 }
 
+/*!
+ * \qmlproperty string QtWayland.Compositor::WaylandKeymap::layout
+ *
+ * This property holds the layout name of the keyboard as defined in the XKB
+ * keymap.
+ */
+
+/*!
+ * \property QWaylandKeymap::layout
+ *
+ * This property holds the layout name of the keyboard as defined in the XKB
+ * keymap.
+ */
 QString QWaylandKeymap::layout() const {
     Q_D(const QWaylandKeymap);
     return d->m_layout;
@@ -25,6 +39,19 @@ void QWaylandKeymap::setLayout(const QString &layout)
     emit layoutChanged();
 }
 
+/*!
+ * \qmlproperty string QtWayland.Compositor::WaylandKeymap::variant
+ *
+ * This property holds the variant name of the keyboard layout as defined in the
+ * XKB keymap.
+ */
+
+/*!
+ * \property QWaylandKeymap::variant
+ *
+ * This property holds the variant name of the keyboard layout as defined in the
+ * XKB keymap.
+ */
 QString QWaylandKeymap::variant() const
 {
     Q_D(const QWaylandKeymap);
@@ -40,6 +67,19 @@ void QWaylandKeymap::setVariant(const QString &variant)
     emit variantChanged();
 }
 
+/*!
+ * \qmlproperty string QtWayland.Compositor::WaylandKeymap::options
+ *
+ * This property holds the options string for the keyboard as defined in the
+ * XKB keymap.
+ */
+
+/*!
+ * \property QWaylandKeymap::options
+ *
+ * This property holds the options string for the keyboard as defined in the
+ * XKB keymap.
+ */
 QString QWaylandKeymap::options() const {
     Q_D(const QWaylandKeymap);
     return d->m_options;
@@ -54,6 +94,19 @@ void QWaylandKeymap::setOptions(const QString &options)
     emit optionsChanged();
 }
 
+/*!
+ * \qmlproperty string QtWayland.Compositor::WaylandKeymap::rules
+ *
+ * This property holds the rules name for the keyboard as defined in the XKB
+ * keymap.
+ */
+
+/*!
+ * \property QWaylandKeymap::rules
+ *
+ * This property holds the rules name for the keyboard as defined in the XKB
+ * keymap.
+ */
 QString QWaylandKeymap::rules() const {
     Q_D(const QWaylandKeymap);
     return d->m_rules;
@@ -68,6 +121,19 @@ void QWaylandKeymap::setRules(const QString &rules)
     emit rulesChanged();
 }
 
+/*!
+ * \qmlproperty string QtWayland.Compositor::WaylandKeymap::model
+ *
+ * This property holds the model name of the keyboard as defined in the XKB
+ * keymap.
+ */
+
+/*!
+ * \property QWaylandKeymap::model
+ *
+ * This property holds the model name of the keyboard as defined in the XKB
+ * keymap.
+ */
 QString QWaylandKeymap::model() const {
     Q_D(const QWaylandKeymap);
     return d->m_model;

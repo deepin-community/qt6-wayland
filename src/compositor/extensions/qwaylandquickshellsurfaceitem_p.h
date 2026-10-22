@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #ifndef QWAYLANDQUICKSHELLSURFACEITEM_P_H
 #define QWAYLANDQUICKSHELLSURFACEITEM_P_H
@@ -34,6 +35,8 @@ class Q_WAYLANDCOMPOSITOR_EXPORT QWaylandQuickShellSurfaceItemPrivate : public Q
     Q_DECLARE_PUBLIC(QWaylandQuickShellSurfaceItem)
 public:
     QWaylandQuickShellSurfaceItemPrivate() {}
+
+    void setShellSurface(QWaylandShellSurface *shellSurface);
     QWaylandQuickShellSurfaceItem *maybeCreateAutoPopup(QWaylandShellSurface* shellSurface);
     static QWaylandQuickShellSurfaceItemPrivate *get(QWaylandQuickShellSurfaceItem *item) { return item->d_func(); }
 
@@ -41,7 +44,7 @@ public:
     void lower() override;
 
     QWaylandQuickShellIntegration *m_shellIntegration = nullptr;
-    QWaylandShellSurface *m_shellSurface = nullptr;
+    QPointer<QWaylandShellSurface> m_shellSurface;
     QQuickItem *m_moveItem = nullptr;
     bool m_autoCreatePopupItems = true;
     bool staysOnTop = false;

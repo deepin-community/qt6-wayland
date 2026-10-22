@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 //
 //  W A R N I N G
@@ -17,13 +18,14 @@
 
 #include <QtWaylandCompositor/private/qwlclientbufferintegration_p.h>
 #include <QtCore/QScopedPointer>
+#include <QtCore/QPointer>
 #include <QtWaylandCompositor/private/qwlclientbuffer_p.h>
 
 QT_BEGIN_NAMESPACE
 
 class WaylandEglClientBufferIntegrationPrivate;
 
-class Q_WAYLANDCOMPOSITOR_EXPORT WaylandEglClientBufferIntegration : public QtWayland::ClientBufferIntegration
+class Q_WAYLANDCOMPOSITOR_EXPORT WaylandEglClientBufferIntegration : public QObject, public QtWayland::ClientBufferIntegration
 {
     Q_DECLARE_PRIVATE(WaylandEglClientBufferIntegration)
 public:
@@ -61,7 +63,7 @@ private:
     friend class WaylandEglClientBufferIntegrationPrivate;
 
     BufferState *d = nullptr;
-    WaylandEglClientBufferIntegration *m_integration = nullptr;
+    QPointer<WaylandEglClientBufferIntegration> m_integration;
 };
 
 QT_END_NAMESPACE

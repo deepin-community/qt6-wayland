@@ -1,5 +1,6 @@
 // Copyright (C) 2019 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #ifndef QWLCLIENTBUFFER_P_H
 #define QWLCLIENTBUFFER_P_H
@@ -19,6 +20,7 @@
 #include <QtGui/qopengl.h>
 #include <QImage>
 #include <QAtomicInt>
+#include <QScopedPointer>
 
 #include <QtWaylandCompositor/QWaylandSurface>
 #include <QtWaylandCompositor/QWaylandBufferRef>
@@ -28,6 +30,7 @@
 
 QT_BEGIN_NAMESPACE
 
+class QWaylandSurfaceTextureProvider;
 class QWaylandClientBufferIntegration;
 class QWaylandBufferRef;
 class QWaylandCompositor;
@@ -92,6 +95,7 @@ private:
 
     friend class ::QWaylandBufferRef;
     friend class BufferManager;
+    friend class ::QWaylandSurfaceTextureProvider;
 };
 
 class Q_WAYLANDCOMPOSITOR_EXPORT SharedMemoryBuffer : public ClientBuffer
@@ -107,7 +111,7 @@ public:
     QOpenGLTexture *toOpenGlTexture(int plane = 0) override;
 
 private:
-    QOpenGLTexture *m_shmTexture = nullptr;
+    QScopedPointer<QOpenGLTexture> m_shmTexture;
 #endif
 };
 

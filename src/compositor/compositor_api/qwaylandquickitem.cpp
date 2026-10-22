@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "qwaylandquickitem.h"
 #include "qwaylandquickitem_p.h"
@@ -377,6 +378,18 @@ public:
 
     ~QWaylandSurfaceTextureProvider() override
     {
+        // Note: If the ClientBuffer is deleted from the render thread, it happens on a deferred delete
+        // which is processed during the sync phase. Or it may be deleted from the main thread. In
+        // either case, we know the compositor is not shutting down simultaneously. Therefore, we can
+        // safely rely on the value of m_compositorDestroyed to stay the same for the duration of this
+        // destructor.
+        //
+        // Calling setDestroyed() on the buffer will cause it to skip its final sendRelease()
+        // on destruction, which would otherwise cause a crash when the compositor has been
+        // destroyed.
+        if (m_compositorDestroyed.loadAcquire() && m_ref.hasBuffer())
+            m_ref.buffer()->setDestroyed();
+
         delete m_sgTex;
     }
 
@@ -417,9 +430,18 @@ public:
     }
 
     void setSmooth(bool smooth) { m_smooth = smooth; }
+
+    void reportCompositorDestroyed()
+    {
+        m_compositorDestroyed.storeRelease(1);
+        deleteLater();
+    }
+
 private:
     bool m_smooth = false;
     QSGTexture *m_sgTex = nullptr;
+
+    QAtomicInt m_compositorDestroyed;
     QWaylandBufferRef m_ref;
 };
 
@@ -457,7 +479,7 @@ void QWaylandQuickItemPrivate::handleDragEnded(QWaylandSeat *seat)
  * \nativetype QWaylandQuickItem
  * \inqmlmodule QtWayland.Compositor
  * \since 5.8
- * \brief Provides a Qt Quick item that represents a WaylandView.
+ * \brief The WaylandQuickItem type provides a Qt Quick item which represents the surface of a Wayland client.
  *
  * Qt Quick-based Wayland compositors can use this type to display a client's
  * contents on an output device. It passes user input to the
@@ -468,7 +490,7 @@ void QWaylandQuickItemPrivate::handleDragEnded(QWaylandSeat *seat)
  * \class QWaylandQuickItem
  * \inmodule QtWaylandCompositor
  * \since 5.8
- * \brief The QWaylandQuickItem class provides a Qt Quick item representing a QWaylandView.
+ * \brief The QWaylandQuickItem class provides a Qt Quick item which represents the surface of a Wayland client.
  *
  * When writing a QWaylandCompositor in Qt Quick, this class can be used to display a
  * client's contents on an output device and will pass user input to the
@@ -556,13 +578,15 @@ void QWaylandQuickItem::setSurface(QWaylandSurface *surface)
 {
     Q_D(QWaylandQuickItem);
     QWaylandSurface *oldSurf = d->view->surface();
-    QWaylandCompositor *oldComp = d->view->surface() ? d->view->surface()->compositor() : nullptr;
-    d->view->setSurface(surface);
-    QWaylandCompositor *newComp = d->view->surface() ? d->view->surface()->compositor() : nullptr;
+    if (oldSurf == surface)
+        return;
+
+    QWaylandCompositor *oldComp = oldSurf ? oldSurf->compositor() : nullptr;
+    QWaylandCompositor *newComp = surface ? surface->compositor() : nullptr;
     if (oldComp != newComp)
         emit compositorChanged();
-    if (oldSurf != surface)
-        emit surfaceChanged();
+
+    d->view->setSurface(surface);
 
     updateFocus();
     update();
@@ -571,13 +595,19 @@ void QWaylandQuickItem::setSurface(QWaylandSurface *surface)
 /*!
  * \qmlproperty enum QtWayland.Compositor::WaylandQuickItem::origin
  *
- * This property holds the origin of the QWaylandQuickItem.
+ * This property reflects the origin of the surface's current buffer, that is,
+ * which corner of the buffer corresponds to coordinate (0, 0).
+ *
+ * \sa WaylandSurface::origin
  */
 
 /*!
  * \property QWaylandQuickItem::origin
  *
- * This property holds the origin of the QWaylandQuickItem.
+ * This property reflects the origin of the surface's current buffer, that is,
+ * which corner of the buffer corresponds to coordinate (0, 0).
+ *
+ * \sa QWaylandSurface::origin
  */
 QWaylandSurface::Origin QWaylandQuickItem::origin() const
 {
@@ -718,10 +748,13 @@ void QWaylandQuickItem::hoverLeaveEvent(QHoverEvent *event)
     Q_D(QWaylandQuickItem);
     if (d->shouldSendInputEvents()) {
         QWaylandSeat *seat = compositor()->seatFor(event);
-        seat->setMouseFocus(nullptr);
-    } else {
-        event->ignore();
+        if (d->view.data() == seat->mouseFocus()) {
+            seat->setMouseFocus(nullptr);
+            return;
+        }
     }
+
+    event->ignore();
 }
 
 #if QT_CONFIG(wheelevent)
@@ -827,9 +860,10 @@ void QWaylandQuickItem::touchUngrabEvent()
 {
     Q_D(QWaylandQuickItem);
 
-    if (d->shouldSendInputEvents())
-        for (auto seat : d->touchingSeats)
+    if (d->shouldSendInputEvents()) {
+        for (auto seat : std::as_const(d->touchingSeats))
             seat->sendTouchCancelEvent(surface()->client());
+    }
 
     d->touchingSeats.clear();
 }
@@ -867,6 +901,7 @@ void QWaylandQuickItem::handleSubsurfaceAdded(QWaylandSurface *childSurface)
         childItem->setVisible(true);
         childItem->setParentItem(this);
         childItem->setParent(this);
+        childItem->setPosition(QWaylandSurfacePrivate::get(childSurface)->subsurfacePosition() * d->scaleFactor());
         connect(childSurface, &QWaylandSurface::subsurfacePositionChanged, childItem, &QWaylandQuickItem::handleSubsurfacePosition);
         connect(childSurface, &QWaylandSurface::destroyed, childItem, &QObject::deleteLater);
     } else {
@@ -944,7 +979,20 @@ void QWaylandQuickItem::updateFocus()
   The default value of this property is \c null.
  */
 
-
+/*!
+ * \property QWaylandQuickItem::subsurfaceHandler
+ *
+ * This property provides a way to override the default subsurface behavior.
+ *
+ * By default, Qt will create a new QWaylandQuickItem as a child of this item
+ * and maintain the correct position.
+ *
+ * To override the default behavior, assign a handler object to this property.
+ * The handler must implement a \c handleSubsurfaceAdded(QWaylandSurface*)
+ * method.
+ *
+ * The default value of this property is \nullptr.
+ */
 QObject *QWaylandQuickItem::subsurfaceHandler() const
 {
     Q_D(const QWaylandQuickItem);
@@ -1008,10 +1056,6 @@ void QWaylandQuickItem::setBufferLocked(bool locked)
 {
     Q_D(QWaylandQuickItem);
     d->view->setBufferLocked(locked);
-
-    // Apply the latest surface size
-    if (!locked)
-        updateSize();
 }
 
 /*!
@@ -1035,7 +1079,7 @@ void QWaylandQuickItem::setAllowDiscardFrontBuffer(bool discard)
 }
 
 /*!
- * \qmlmethod WaylandQuickItem::setPrimary()
+ * \qmlmethod void WaylandQuickItem::setPrimary()
  *
  * Makes this WaylandQuickItem the primary view for the surface.
  */
@@ -1058,7 +1102,6 @@ void QWaylandQuickItem::handleSurfaceChanged()
 {
     Q_D(QWaylandQuickItem);
     if (d->oldSurface) {
-        disconnect(d->oldSurface.data(), &QWaylandSurface::hasContentChanged, this, &QWaylandQuickItem::surfaceMappedChanged);
         disconnect(d->oldSurface.data(), &QWaylandSurface::parentChanged, this, &QWaylandQuickItem::parentChanged);
         disconnect(d->oldSurface.data(), &QWaylandSurface::destinationSizeChanged, this, &QWaylandQuickItem::updateSize);
         disconnect(d->oldSurface.data(), &QWaylandSurface::bufferScaleChanged, this, &QWaylandQuickItem::updateSize);
@@ -1075,7 +1118,6 @@ void QWaylandQuickItem::handleSurfaceChanged()
 #endif
     }
     if (QWaylandSurface *newSurface = d->view->surface()) {
-        connect(newSurface, &QWaylandSurface::hasContentChanged, this, &QWaylandQuickItem::surfaceMappedChanged);
         connect(newSurface, &QWaylandSurface::parentChanged, this, &QWaylandQuickItem::parentChanged);
         connect(newSurface, &QWaylandSurface::destinationSizeChanged, this, &QWaylandQuickItem::updateSize);
         connect(newSurface, &QWaylandSurface::bufferScaleChanged, this, &QWaylandQuickItem::updateSize);
@@ -1099,7 +1141,7 @@ void QWaylandQuickItem::handleSurfaceChanged()
             QWaylandOutput *output = newSurface->compositor()->outputFor(window());
             d->view->setOutput(output);
         }
-        for (auto subsurface : QWaylandSurfacePrivate::get(newSurface)->subsurfaceChildren) {
+        for (const auto &subsurface : std::as_const(QWaylandSurfacePrivate::get(newSurface)->subsurfaceChildren)) {
             if (!subsurface.isNull())
                 handleSubsurfaceAdded(subsurface.data());
         }
@@ -1155,10 +1197,23 @@ void QWaylandQuickItem::takeFocus(QWaylandSeat *device)
 /*!
  * \internal
  */
+void QWaylandQuickItem::handleBufferLockedChanged()
+{
+    Q_D(QWaylandQuickItem);
+
+    // Apply the latest surface size
+    if (!d->view->isBufferLocked()) {
+        updateSize();
+        update();
+    }
+}
+
+#if QT_VERSION < QT_VERSION_CHECK(7, 0, 0)
 void QWaylandQuickItem::surfaceMappedChanged()
 {
     update();
 }
+#endif
 
 /*!
  * \internal
@@ -1312,20 +1367,19 @@ QVariant QWaylandQuickItem::inputMethodQuery(Qt::InputMethodQuery query, QVarian
 
 /*!
     \qmlproperty bool QtWayland.Compositor::WaylandQuickItem::paintEnabled
+    \default true
 
-    Returns true if the item is hidden, though the texture
-    is still updated. As opposed to hiding the item by
-    setting \l{Item::visible}{visible} to \c false, setting this property to \c false
-    will not prevent mouse or keyboard input from reaching item.
+    Setting this property to \c false will stop rendering the item. As opposed
+    to hiding the item by setting \l{Item::visible}{visible} to \c false, it
+    will not prevent mouse or keyboard input from reaching the item.
 */
 
 /*!
     \property QWaylandQuickItem::paintEnabled
 
-    Holds \c true if the item is hidden, though the texture
-    is still updated. As opposed to hiding the item by
-    setting \l{QQuickItem::}{visible} to \c false, setting this property to \c false
-    will not prevent mouse or keyboard input from reaching item.
+    Setting this property to \c false will stop rendering the item. As opposed
+    to hiding the item by setting \l{Item::visible}{visible} to \c false, it
+    will not prevent mouse or keyboard input from reaching the item.
 */
 bool QWaylandQuickItem::isPaintEnabled() const
 {
@@ -1510,20 +1564,15 @@ QSGNode *QWaylandQuickItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeDat
 
         if (!d->provider) {
             d->provider = new QWaylandSurfaceTextureProvider();
-            if (compositor()) {
+            if (auto *c = compositor()) {
                 d->texProviderConnection =
-                    QObject::connect(
-                            compositor(),
-                            &QObject::destroyed,
-                            this,
-                            [this](QObject*) {
-                                    auto *itemPriv = QWaylandQuickItemPrivate::get(this);
-                                    if (itemPriv->provider) {
-                                        itemPriv->provider->deleteLater();
-                                        itemPriv->provider = nullptr;
-                                    }
-                                    disconnect(itemPriv->texProviderConnection); }
-                    );
+                    QObject::connect(c, &QObject::destroyed, this, [d = d] {
+                        if (d->provider) {
+                            d->provider->reportCompositorDestroyed();
+                            d->provider = nullptr;
+                        }
+                        QObject::disconnect(d->texProviderConnection);
+                    });
             }
         }
 
@@ -1608,6 +1657,23 @@ void QWaylandQuickItem::setTouchEventsEnabled(bool enabled)
     }
 }
 
+/*!
+ * \qmlproperty bool QtWayland.Compositor::WaylandQuickItem::inputEventsEnabled
+ *
+ * This property holds whether input events are enabled for this item.
+ *
+ * When \c true, the item will process and handle input events such as keyboard
+ * and mouse events; when \c false, input events are ignored.
+ */
+
+/*!
+ * \property QWaylandQuickItem::inputEventsEnabled
+ *
+ * This property holds whether input events are enabled for this item.
+ *
+ * When \c true, the item will process and handle input events such as keyboard
+ * and mouse events; when \c false, input events are ignored.
+ */
 bool QWaylandQuickItem::inputEventsEnabled() const
 {
     Q_D(const QWaylandQuickItem);

@@ -1,6 +1,7 @@
 // Copyright (C) 2023 Jan Grulich <jgrulich@redhat.com>
 // Copyright (C) 2023 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include "qwaylandadwaitadecoration_p.h"
 
@@ -33,7 +34,6 @@
 #include <QtWaylandClient/private/qwaylandshmbackingstore_p.h>
 #include <QtWaylandClient/private/qwaylandwindow_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt::StringLiterals;
@@ -46,7 +46,6 @@ static constexpr int ceCornerRadius = 12;
 static constexpr int ceShadowsWidth = 10;
 static constexpr int ceTitlebarHeight = 38;
 static constexpr int ceWindowBorderWidth = 1;
-static constexpr qreal ceTitlebarSeperatorWidth = 0.5;
 
 static QMap<QWaylandAdwaitaDecoration::ButtonIcon, QString> buttonMap = {
     { QWaylandAdwaitaDecoration::CloseIcon, "window-close-symbolic"_L1 },
@@ -129,35 +128,37 @@ void QWaylandAdwaitaDecoration::paint(QPaintDevice *device)
     /*
      * Titlebar and window border
      */
-    const int titleBarWidth = surfaceRect.width() - margins().left() - margins().right();
     QPainterPath path;
+    const QPointF topLeft = { margins(ShadowsOnly).left() + qreal(0.5),
+                              margins(ShadowsOnly).top() - qreal(0.5) };
+    const int frameWidth = surfaceRect.width() - margins(ShadowsOnly).left()
+            - margins(ShadowsOnly).right() - qreal(0.5);
+    const int frameHeight = surfaceRect.height() - margins(ShadowsOnly).top()
+            - margins(ShadowsOnly).bottom() + qreal(0.5);
+    const QRectF fullFrameRect = QRectF(topLeft, QSizeF(frameWidth, frameHeight));
 
     // Maximized or tiled won't have rounded corners
     if (waylandWindow()->windowStates() & Qt::WindowMaximized
-        || waylandWindow()->toplevelWindowTilingStates() != QWaylandWindow::WindowNoState)
-        path.addRect(margins().left(), margins().bottom(), titleBarWidth, margins().top());
-    else
-        path.addRoundedRect(margins().left(), margins().bottom(), titleBarWidth,
-                            margins().top() + ceCornerRadius, ceCornerRadius, ceCornerRadius);
+        || waylandWindow()->toplevelWindowTilingStates() != QWaylandWindow::WindowNoState) {
+        path.addRect(fullFrameRect);
+    } else {
+        const QSizeF radiusRectSize = QSizeF(ceCornerRadius * 2, ceCornerRadius * 2);
+        path.moveTo(fullFrameRect.bottomLeft());
+        path.lineTo(fullFrameRect.topLeft() + QPointF(0, ceCornerRadius));
+        path.arcTo(QRectF(fullFrameRect.topLeft(), radiusRectSize), 180, -90);
+        path.lineTo(fullFrameRect.topRight() - QPointF(ceCornerRadius, 0));
+        path.arcTo(QRectF(fullFrameRect.topRight() - QPointF(ceCornerRadius * 2, 0),
+                          radiusRectSize),
+                    90, -90);
+        path.lineTo(fullFrameRect.bottomRight());
+        path.closeSubpath();
+    }
 
     p.save();
     p.setPen(color(Border));
     p.fillPath(path.simplified(), color(Background));
     p.drawPath(path);
-    p.drawRect(margins().left(), margins().top(), titleBarWidth, surfaceRect.height() - margins().top() - margins().bottom());
     p.restore();
-
-
-    /*
-     * Titlebar separator
-     */
-    p.save();
-    p.setPen(color(Border));
-    p.drawLine(QLineF(margins().left(), margins().top() - ceTitlebarSeperatorWidth,
-                        surfaceRect.width() - margins().right(),
-                        margins().top() - ceTitlebarSeperatorWidth));
-    p.restore();
-
 
     /*
      * Window title
@@ -291,7 +292,11 @@ QString getIconSvg(const QString &iconName)
                 if (fileInfo.fileName() == iconName) {
                     qCDebug(lcQWaylandAdwaitaDecorationLog) << "Using " << iconName << " from " << themeName << " theme";
                     QFile readFile(fileInfo.filePath());
-                    readFile.open(QFile::ReadOnly);
+                    if (!readFile.open(QFile::ReadOnly)) {
+                        qCWarning(lcQWaylandAdwaitaDecorationLog, "Failed to open %ls: %ls",
+                                  qUtf16Printable(readFile.fileName()),
+                                  qUtf16Printable(readFile.errorString()));
+                    }
                     return readFile.readAll();
                 }
             }
@@ -329,11 +334,16 @@ void QWaylandAdwaitaDecoration::loadConfiguration()
                 const QString buttonLayout = settings.value("org.gnome.desktop.wm.preferences"_L1).value("button-layout"_L1).toString();
                 if (!buttonLayout.isEmpty())
                     updateTitlebarLayout(buttonLayout);
-                // Workaround for QGtkStyle not having correct titlebar font
-                const QString titlebarFont =
-                    settings.value("org.gnome.desktop.wm.preferences"_L1).value("titlebar-font"_L1).toString();
-                if (titlebarFont.contains("bold"_L1, Qt::CaseInsensitive)) {
-                    m_font->setBold(true);
+                // Do not rely on titlebar-font in case titlebar-uses-desktop-font is set to true
+                // https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas/-/blob/main/schemas/org.gnome.desktop.wm.preferences.gschema.xml.in
+                const bool titlebarUseDesktopFont = settings.value("org.gnome.desktop.wm.preferences"_L1).value("titlebar-uses-desktop-font"_L1).toBool();
+                if (!titlebarUseDesktopFont) {
+                    // Workaround for QGtkStyle not having correct titlebar font
+                    const QString titlebarFont =
+                        settings.value("org.gnome.desktop.wm.preferences"_L1).value("titlebar-font"_L1).toString();
+                    if (titlebarFont.contains("bold"_L1, Qt::CaseInsensitive)) {
+                        m_font->setBold(true);
+                    }
                 }
             }
         }
@@ -342,7 +352,7 @@ void QWaylandAdwaitaDecoration::loadConfiguration()
 
     QDBusConnection::sessionBus().connect(QString(), "/org/freedesktop/portal/desktop"_L1,
                                           "org.freedesktop.portal.Settings"_L1, "SettingChanged"_L1, this,
-                                          SLOT(settingChanged(QString, QString, QDBusVariant)));
+                                          SLOT(settingChanged(QString,QString,QDBusVariant)));
 
     // Load SVG icons
     for (auto mapIt = buttonMap.constBegin(); mapIt != buttonMap.constEnd(); mapIt++) {
@@ -357,16 +367,17 @@ void QWaylandAdwaitaDecoration::updateColors(bool isDark)
 {
     qCDebug(lcQWaylandAdwaitaDecorationLog) << "Color scheme changed to: " << (isDark ? "dark" : "light");
 
-    m_colors = { { Background, isDark ? QColor(0x303030) : QColor(0xffffff) },
-                 { BackgroundInactive, isDark ? QColor(0x242424) : QColor(0xfafafa) },
-                 { Foreground, isDark ? QColor(0xffffff) : QColor(0x2e2e2e) },
-                 { ForegroundInactive, isDark ? QColor(0x919191) : QColor(0x949494) },
-                 { Border, isDark ? QColor(0x3b3b3b) : QColor(0xdbdbdb) },
-                 { BorderInactive, isDark ? QColor(0x303030) : QColor(0xdbdbdb) },
-                 { ButtonBackground, isDark ? QColor(0x444444) : QColor(0xebebeb) },
-                 { ButtonBackgroundInactive, isDark ? QColor(0x2e2e2e) : QColor(0xf0f0f0) },
-                 { HoveredButtonBackground, isDark ? QColor(0x4f4f4f) : QColor(0xe0e0e0) },
-                 { PressedButtonBackground, isDark ? QColor(0x6e6e6e) : QColor(0xc2c2c2) } };
+    m_colors = { { Background, isDark ? QColor(0x2e2e32) : QColor(0xffffff) },
+                 { BackgroundInactive, isDark ? QColor(0x222226) : QColor(0xfafafb) },
+                 { Foreground, isDark ? QColor(0xffffff) : QColor(0x333338) },
+                 { ForegroundInactive, isDark ? QColor(0x919193) : QColor(0x969699) },
+                 { Border, isDark ? QColor(0x3d3d40) : QColor(0xc8c8c8) },
+                 { BorderInactive, isDark ? QColor(0x313135) : QColor(0xe2e2e2) },
+                 { Shadow, isDark ? QColor(0x2e2e32) : QColor(0x2e2e32) },
+                 { ButtonBackground, isDark ? QColor(0x434347) : QColor(0xebebeb) },
+                 { ButtonBackgroundInactive, isDark ? QColor(0x2d2d31) : QColor(0xf0f0f1) },
+                 { HoveredButtonBackground, isDark ? QColor(0x4d4d51) : QColor(0xe0e0e1) },
+                 { PressedButtonBackground, isDark ? QColor(0x6c6c6f) : QColor(0xc2c2c3) } };
     requestRepaint();
 }
 
@@ -467,9 +478,12 @@ static void renderButtonIcon(const QString &svgIcon, QPainter *painter, const QR
     QRegularExpression regexp("fill=[\"']#[0-9A-F]{6}[\"']", QRegularExpression::CaseInsensitiveOption);
     QRegularExpression regexpAlt("fill:#[0-9A-F]{6}", QRegularExpression::CaseInsensitiveOption);
     QRegularExpression regexpCurrentColor("fill=[\"']currentColor[\"']");
+    QRegularExpression regexpCurrentColorCss("fill:currentColor",
+                                             QRegularExpression::CaseInsensitiveOption);
     icon.replace(regexp, QString("fill=\"%1\"").arg(color.name()));
     icon.replace(regexpAlt, QString("fill:%1").arg(color.name()));
     icon.replace(regexpCurrentColor, QString("fill=\"%1\"").arg(color.name()));
+    icon.replace(regexpCurrentColorCss, QString("fill:%1").arg(color.name()));
     QSvgRenderer svgRenderer(icon.toLocal8Bit());
     svgRenderer.render(painter, rect);
 
@@ -616,19 +630,19 @@ void QWaylandAdwaitaDecoration::processMouseTop(QWaylandInputDevice *inputDevice
         if (local.x() <= margins().left()) {
             // top left bit
 #if QT_CONFIG(cursor)
-            waylandWindow()->setMouseCursor(inputDevice, Qt::SizeFDiagCursor);
+            waylandWindow()->applyCursor(inputDevice, Qt::SizeFDiagCursor);
 #endif
             startResize(inputDevice, Qt::TopEdge | Qt::LeftEdge, b);
         } else if (local.x() > surfaceRect.right() - margins().left()) {
             // top right bit
 #if QT_CONFIG(cursor)
-            waylandWindow()->setMouseCursor(inputDevice, Qt::SizeBDiagCursor);
+            waylandWindow()->applyCursor(inputDevice, Qt::SizeBDiagCursor);
 #endif
             startResize(inputDevice, Qt::TopEdge | Qt::RightEdge, b);
         } else {
             // top resize bit
 #if QT_CONFIG(cursor)
-            waylandWindow()->setMouseCursor(inputDevice, Qt::SizeVerCursor);
+            waylandWindow()->applyCursor(inputDevice, Qt::SizeVerCursor);
 #endif
             startResize(inputDevice, Qt::TopEdge, b);
         }
@@ -674,19 +688,19 @@ void QWaylandAdwaitaDecoration::processMouseBottom(QWaylandInputDevice *inputDev
     if (local.x() <= margins().left()) {
         // bottom left bit
 #if QT_CONFIG(cursor)
-        waylandWindow()->setMouseCursor(inputDevice, Qt::SizeBDiagCursor);
+        waylandWindow()->applyCursor(inputDevice, Qt::SizeBDiagCursor);
 #endif
         startResize(inputDevice, Qt::BottomEdge | Qt::LeftEdge, b);
     } else if (local.x() > window()->width() + margins().right()) {
         // bottom right bit
 #if QT_CONFIG(cursor)
-        waylandWindow()->setMouseCursor(inputDevice, Qt::SizeFDiagCursor);
+        waylandWindow()->applyCursor(inputDevice, Qt::SizeFDiagCursor);
 #endif
         startResize(inputDevice, Qt::BottomEdge | Qt::RightEdge, b);
     } else {
         // bottom bit
 #if QT_CONFIG(cursor)
-        waylandWindow()->setMouseCursor(inputDevice, Qt::SizeVerCursor);
+        waylandWindow()->applyCursor(inputDevice, Qt::SizeVerCursor);
 #endif
         startResize(inputDevice, Qt::BottomEdge, b);
     }
@@ -698,7 +712,7 @@ void QWaylandAdwaitaDecoration::processMouseLeft(QWaylandInputDevice *inputDevic
     Q_UNUSED(local)
     Q_UNUSED(mods)
 #if QT_CONFIG(cursor)
-    waylandWindow()->setMouseCursor(inputDevice, Qt::SizeHorCursor);
+    waylandWindow()->applyCursor(inputDevice, Qt::SizeHorCursor);
 #endif
     startResize(inputDevice, Qt::LeftEdge, b);
 }
@@ -709,7 +723,7 @@ void QWaylandAdwaitaDecoration::processMouseRight(QWaylandInputDevice *inputDevi
     Q_UNUSED(local)
     Q_UNUSED(mods)
 #if QT_CONFIG(cursor)
-    waylandWindow()->setMouseCursor(inputDevice,  Qt::SizeHorCursor);
+    waylandWindow()->applyCursor(inputDevice,  Qt::SizeHorCursor);
 #endif
     startResize(inputDevice, Qt::RightEdge, b);
 }

@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #ifndef QWAYLANDSURFACEITEM_H
 #define QWAYLANDSURFACEITEM_H
@@ -121,9 +122,14 @@ public Q_SLOTS:
     void lower();
     void sendMouseMoveEvent(const QPointF &position, QWaylandSeat *seat = nullptr);
 
+#if QT_VERSION < QT_VERSION_CHECK(7, 0, 0)
 private Q_SLOTS:
     void surfaceMappedChanged();
+#else
+private:
+#endif
     void handleSurfaceChanged();
+    void handleBufferLockedChanged();
     void parentChanged(QWaylandSurface *newParent, QWaylandSurface *oldParent);
     void updateSize();
     void updateBuffer(bool hasBuffer);

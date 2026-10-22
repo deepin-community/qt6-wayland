@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #ifndef QWAYLANDINPUTMETHODCONTROL_P_H
 #define QWAYLANDINPUTMETHODCONTROL_P_H
@@ -16,6 +17,7 @@
 //
 
 #include <QtWaylandCompositor/qtwaylandcompositorglobal.h>
+#if QT_CONFIG(im)
 #include <QtWaylandCompositor/qwaylandinputmethodcontrol.h>
 
 #include <QtCore/private/qobject_p.h>
@@ -48,4 +50,5 @@ public:
 
 QT_END_NAMESPACE
 
+#endif
 #endif // QWAYLANDINPUTMETHODCONTROL_P_H

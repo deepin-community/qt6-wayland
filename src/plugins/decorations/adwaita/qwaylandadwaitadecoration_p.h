@@ -1,13 +1,24 @@
 // Copyright (C) 2023 Jan Grulich <jgrulich@redhat.com>
 // Copyright (C) 2023 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #ifndef QWAYLANDADWAITADECORATION_P_H
 #define QWAYLANDADWAITADECORATION_P_H
 
 #include <QtWaylandClient/private/qwaylandabstractdecoration_p.h>
 
+#include <QtGui/qcolor.h>
+#include <QtGui/qfont.h>
+#include <QtGui/qstatictext.h>
+
 #include <QtCore/QDateTime>
+#include <QtCore/qflags.h>
+#include <QtCore/qmap.h>
+#include <QtCore/qpoint.h>
+#include <QtCore/qstring.h>
+
+#include <memory>
 
 QT_BEGIN_NAMESPACE
 
@@ -56,6 +67,7 @@ public:
         ForegroundInactive,
         Border,
         BorderInactive,
+        Shadow,
         ButtonBackground,
         ButtonBackgroundInactive,
         HoveredButtonBackground,

@@ -12,7 +12,7 @@ endif()
 
 set(INSTALL_EXAMPLEDIR "${INSTALL_EXAMPLESDIR}/wayland/custom-shell/plugins")
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui WaylandClient)
+find_package(Qt6 REQUIRED COMPONENTS Core GuiPrivate WaylandClientPrivate)
 
 qt_add_plugin(exampleshellplugin)
 target_sources(exampleshellplugin PRIVATE
@@ -22,6 +22,7 @@ target_sources(exampleshellplugin PRIVATE
 )
 
 qt6_generate_wayland_protocol_client_sources(exampleshellplugin
+    PRIVATE_CODE
     FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/../protocol/example-shell.xml
 )

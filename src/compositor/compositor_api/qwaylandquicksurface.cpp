@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Jolla Ltd, author: <giulio.camuffo@jollamobile.com>
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #include <QSGTexture>
 #include <QQuickWindow>
@@ -38,8 +39,22 @@ QWaylandQuickSurface::~QWaylandQuickSurface()
 
 /*!
  * \qmlproperty bool QtWayland.Compositor::WaylandSurface::useTextureAlpha
+ * \default true
  *
- * This property specifies whether the surface should use texture alpha.
+ * This property specifies whether the surface should use texture alpha for blending.
+ *
+ * When \c true, the surface's alpha channel will be used for blending; when
+ * \c false, the surface will be treated as opaque.
+ */
+
+/*!
+ * \property QWaylandQuickSurface::useTextureAlpha
+ *
+ * This property holds whether the surface should use texture alpha for
+ * blending.
+ *
+ * When \c true, the surface's alpha channel will be used for blending; when
+ * \c false, the surface will be treated as opaque.
  */
 bool QWaylandQuickSurface::useTextureAlpha() const
 {

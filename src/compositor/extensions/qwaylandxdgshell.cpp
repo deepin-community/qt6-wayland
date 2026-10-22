@@ -1,5 +1,6 @@
 // Copyright (C) 2018 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #include "qwaylandxdgshell.h"
 #include "qwaylandxdgshell_p.h"
@@ -75,14 +76,6 @@ void QWaylandXdgShellPrivate::xdg_wm_base_get_xdg_surface(Resource *resource, ui
 {
     Q_Q(QWaylandXdgShell);
     QWaylandSurface *surface = QWaylandSurface::fromResource(surfaceResource);
-
-    if (surface->role() != nullptr) {
-        wl_resource_post_error(resource->handle, XDG_WM_BASE_ERROR_ROLE,
-                               "wl_surface@%d, already has role %s\n",
-                               wl_resource_get_id(surface->resource()),
-                               surface->role()->name().constData());
-        return;
-    }
 
     if (surface->hasContent()) {
         //TODO: According to the spec, this is a client error, but there's no appropriate error code
@@ -523,7 +516,7 @@ Qt::WindowType QWaylandXdgSurface::windowType() const
 /*!
  * \qmlproperty rect XdgSurface::windowGeometry
  *
- * This property holds the window geometry of the QWaylandXdgSurface. The window
+ * This property holds the window geometry of this XdgSurface. The window
  * geometry describes the window's visible bounds from the user's perspective.
  * The geometry includes title bars and borders if drawn by the client, but
  * excludes drop shadows. It is meant to be used for aligning and tiling
@@ -788,13 +781,15 @@ QString QWaylandXdgToplevel::title() const
 /*!
  * \qmlproperty string XdgToplevel::appId
  *
- * This property holds the app id of the XdgToplevel.
+ * This property holds the app id of the XdgToplevel. It corresponds to the
+ * \l {QGuiApplication::desktopFileName}{desktopFileName} in Qt.
  */
 
 /*!
  * \property QWaylandXdgToplevel::appId
  *
- * This property holds the app id of the QWaylandXdgToplevel.
+ * This property holds the app id of the QWaylandXdgToplevel. It corresponds to
+ * the \l {QGuiApplication::desktopFileName}{desktopFileName} in Qt.
  */
 QString QWaylandXdgToplevel::appId() const
 {
@@ -1046,7 +1041,12 @@ uint QWaylandXdgToplevel::sendConfigure(const QSize &size, const QList<QWaylandX
  *
  * Sends a configure event to the client. \a size contains the pixel size of the surface.
  * A size of zero means the client is free to decide the size.
- * Known \a states are enumerated in XdgToplevel::State.
+ *
+ * Possible values for \a states are:
+ * \value XdgToplevel.MaximizedState   The surface is maximized
+ * \value XdgToplevel.FullscreenState  The surface is fullscreen
+ * \value XdgToplevel.ResizingState    The surface is being resized
+ * \value XdgToplevel.ActivatedState   The surface is now active
  */
 uint QWaylandXdgToplevel::sendConfigure(const QSize &size, const QList<int> &states)
 {
@@ -1162,21 +1162,21 @@ uint QWaylandXdgToplevel::sendFullscreen(const QSize &size)
 }
 
 /*!
- * \qmlmethod void XdgToplevel::sendResizing(size maxSize)
+ * \qmlmethod void XdgToplevel::sendResizing(size size)
  *
  * Convenience for sending a configure event with the resizing state set, and
  * maximized and fullscreen removed. The activated state is left in its current state.
  *
- * \a maxSize is the new size of the window.
+ * \a size is the new size of the window.
  */
 
 /*!
  * Convenience for sending a configure event with the resizing state set, and
  * maximized and fullscreen removed. The activated state is left in its current state.
  *
- * \a maxSize is the new size of the window.
+ * \a size is the new size of the window.
  */
-uint QWaylandXdgToplevel::sendResizing(const QSize &maxSize)
+uint QWaylandXdgToplevel::sendResizing(const QSize &size)
 {
     Q_D(QWaylandXdgToplevel);
     QWaylandXdgToplevelPrivate::ConfigureEvent conf = d->lastSentConfigure();
@@ -1186,7 +1186,7 @@ uint QWaylandXdgToplevel::sendResizing(const QSize &maxSize)
     conf.states.removeOne(QWaylandXdgToplevel::State::MaximizedState);
     conf.states.removeOne(QWaylandXdgToplevel::State::FullscreenState);
 
-    return sendConfigure(maxSize, conf.states);
+    return sendConfigure(size, conf.states);
 }
 
 /*!
@@ -1327,7 +1327,7 @@ void QWaylandXdgToplevelPrivate::handleAckConfigure(uint serial)
 
     m_lastAckedConfigure = config;
 
-    for (uint state : changedStates) {
+    for (uint state : std::as_const(changedStates)) {
         switch (state) {
         case state_maximized:
             emit q->maximizedChanged();
@@ -1560,7 +1560,7 @@ void QWaylandXdgToplevelPrivate::xdg_toplevel_set_minimized(QtWaylandServer::xdg
  * \brief XdgPopup represents the popup specific parts of and xdg surface.
  *
  * This type is part of the \l{XdgShell} extension and provides a way to extend
- * extend the functionality of an \l{XdgSurface} with features
+ * the functionality of an \l{XdgSurface} with features
  * specific to desktop-style menus for an xdg surface.
  *
  * It corresponds to the Wayland interface \c xdg_popup.
@@ -1956,10 +1956,16 @@ uint QWaylandXdgPopupPrivate::sendConfigure(const QRect &geometry)
     return serial;
 }
 
-void QWaylandXdgPopupPrivate::xdg_popup_destroy(QtWaylandServer::xdg_popup::Resource *resource)
+void QWaylandXdgPopupPrivate::xdg_popup_destroy_resource(QtWaylandServer::xdg_popup::Resource *resource)
 {
     Q_UNUSED(resource);
-    qWarning() << Q_FUNC_INFO << "Not implemented"; //TODO
+    Q_Q(QWaylandXdgPopup);
+    delete q;
+}
+
+void QWaylandXdgPopupPrivate::xdg_popup_destroy(QtWaylandServer::xdg_popup::Resource *resource)
+{
+    wl_resource_destroy(resource->handle);
 }
 
 void QWaylandXdgPopupPrivate::xdg_popup_grab(QtWaylandServer::xdg_popup::Resource *resource, wl_resource *seat, uint32_t serial)

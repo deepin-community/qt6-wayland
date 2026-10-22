@@ -1,5 +1,6 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #include "qwaylandseat.h"
 #include "qwaylandseat_p.h"
@@ -21,12 +22,13 @@
 #endif
 #include <QtWaylandCompositor/private/qwaylandutils_p.h>
 
-#include "extensions/qwlqtkey_p.h"
 #include "extensions/qwaylandtextinput.h"
 #include "extensions/qwaylandtextinputv3.h"
 #include "extensions/qwaylandqttextinputmethod.h"
 
 QT_BEGIN_NAMESPACE
+
+int QWaylandSeatPrivate::max_name = 0;
 
 QWaylandSeatPrivate::QWaylandSeatPrivate(QWaylandSeat *seat) :
 #if QT_CONFIG(wayland_datadevice)
@@ -86,6 +88,8 @@ void QWaylandSeatPrivate::seat_destroy_resource(wl_seat::Resource *)
 
 void QWaylandSeatPrivate::seat_bind_resource(wl_seat::Resource *resource)
 {
+    if (resource->version() >= WL_SEAT_NAME_SINCE_VERSION)
+        wl_seat::send_name(resource->handle, QLatin1String("seat") + QString::number(name));
     // The order of capabilities matches the order defined in the wayland protocol
     wl_seat::send_capabilities(resource->handle, (uint32_t)capabilities);
 }
@@ -151,13 +155,17 @@ QWaylandSeat::QWaylandSeat(QWaylandCompositor *compositor, CapabilityFlags capab
     : QWaylandObject(*new QWaylandSeatPrivate(this))
 {
     Q_D(QWaylandSeat);
+
+    d->name = d->max_name++;
     d->compositor = compositor;
     d->capabilities = capabilityFlags;
     if (compositor->isCreated())
         initialize();
 
+#if QT_DEPRECATED_SINCE(6, 1)
     // Support deprecated signal for backward compatibility
     connect(this, &QWaylandSeat::cursorSurfaceRequested, this, &QWaylandSeat::cursorSurfaceRequest);
+#endif
 }
 
 /*!
@@ -477,10 +485,6 @@ void QWaylandSeat::sendFullKeyEvent(QKeyEvent *event)
         }
     }
 #endif
-
-    QtWayland::QtKeyExtensionGlobal *ext = QtWayland::QtKeyExtensionGlobal::findIn(d->compositor);
-    if (ext && ext->postQtKeyEvent(event, keyboardFocus()))
-        return;
 
     if (!d->keyboard.isNull() && !event->isAutoRepeat()) {
 

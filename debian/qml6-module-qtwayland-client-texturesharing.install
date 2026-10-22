@@ -1,2 +1,3 @@
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Client/TextureSharing/libwaylandtexturesharingplugin.so
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Client/TextureSharing/plugins.qmltypes
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/qml/QtWayland/Client/TextureSharing/qmldir

@@ -1,5 +1,6 @@
 // Copyright (C) 2018 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #include "qwaylandxdgdecorationv1_p.h"
 
@@ -27,7 +28,7 @@ QT_BEGIN_NAMESPACE
     To provide the functionality of the extension in a compositor, create an instance of the
     XdgDecorationManagerV1 component and add it to the list of extensions supported by the compositor:
 
-    \qml
+    \code
     import QtWayland.Compositor
 
     WaylandCompositor {
@@ -41,7 +42,7 @@ QT_BEGIN_NAMESPACE
             preferredMode: XdgToplevel.ServerSideDecoration
         }
     }
-    \endqml
+    \endcode
 
     \sa QWaylandXdgToplevel::decorationMode, {Server Side Decoration Compositor}
 */
@@ -86,9 +87,12 @@ void QWaylandXdgDecorationManagerV1::initialize()
 }
 
 /*!
-    \qmlproperty string XdgDecorationManagerV1::preferredMode
+    \qmlproperty enumeration XdgDecorationManagerV1::preferredMode
 
-    This property holds the decoration mode the compositor prefers.
+    This property holds the decoration mode the compositor prefers. Possible values are:
+
+    \value XdgToplevel.ClientSideDecoration The client should draw window decorations (default).
+    \value XdgToplevel.ServerSideDecoration The compositor should draw window decorations.
 
     This is the mode used for clients that don't indicate a preference for server-side or
     client-side decorations.

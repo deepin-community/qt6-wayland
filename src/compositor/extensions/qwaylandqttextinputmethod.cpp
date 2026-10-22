@@ -1,5 +1,6 @@
 // Copyright (C) 2020 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #include "qwaylandqttextinputmethod.h"
 #include "qwaylandqttextinputmethod_p.h"
@@ -9,6 +10,8 @@
 #include <QtGui/qinputmethod.h>
 #include <QtGui/qcolor.h>
 #include <QtGui/qtextformat.h>
+
+#include <QtCore/qelapsedtimer.h>
 
 #include <QtWaylandCompositor/qwaylandcompositor.h>
 #include <QtWaylandCompositor/qwaylandsurface.h>
@@ -300,6 +303,10 @@ void QWaylandQtTextInputMethod::sendInputMethodEvent(QInputMethodEvent *event)
                                                  attribute.length,
                                                  QString());
             break;
+        case QInputMethodEvent::MimeData:
+            qCWarning(qLcWaylandCompositorInputMethods())
+                << "Ignoring QInputMethodEvent::MimeData";
+            continue;
         }
     }
 
@@ -311,8 +318,23 @@ void QWaylandQtTextInputMethod::sendInputMethodEvent(QInputMethodEvent *event)
                                    event->replacementStart(),
                                    event->replacementLength());
 
-    while (d->waitingForSync)
+    static const qint64 acknowledgeTimeoutMs = qEnvironmentVariable("QT_WAYLAND_QTTEXTINPUTMETHOD_TIMEOUT",
+                                                                    QLatin1String("1000")).toInt();
+    QElapsedTimer timer;
+    timer.start();
+    while (d->waitingForSync) {
+        if (acknowledgeTimeoutMs > 0 && timer.hasExpired(acknowledgeTimeoutMs)) {
+            qCWarning(qLcWaylandCompositorInputMethods)
+                    << "Timed out waiting for acknowledge_input_method()";
+            d->waitingForSync = false;
+            break;
+        }
         d->compositor->processWaylandEvents();
+        // We might get into a situation where the client is waiting for us to
+        // until we confirm the frame is rendered until that he cannot answer
+        // our input events.
+        QCoreApplication::processEvents();
+    }
 
     Qt::InputMethodQueries queries;
     if (d->surroundingText != oldSurroundText)
@@ -344,7 +366,7 @@ void QWaylandQtTextInputMethod::setFocus(QWaylandSurface *surface)
     Q_D(QWaylandQtTextInputMethod);
 
     QWaylandQtTextInputMethodPrivate::Resource *resource = surface != nullptr ? d->resourceMap().value(surface->waylandClient()) : nullptr;
-    if (d->resource == resource)
+    if (d->resource == resource && d->focusedSurface == surface) // same client, same surface
         return;
 
     if (d->resource != nullptr && d->focusedSurface != nullptr) {

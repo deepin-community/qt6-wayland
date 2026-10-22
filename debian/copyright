@@ -7,7 +7,7 @@ Copyright: 2016-2021 The Qt Company Ltd.
 License: LGPL-3 or GPL-2
 
 Files: debian/*
-Copyright: 2021 Patrick Franz <deltaone@debian.org>,
+Copyright: 2021-2025 Patrick Franz <deltaone@debian.org>,
            2021 Lu YaNing <dluyaning@gmail.com>
 License: LGPL-3 or GPL-2
 
@@ -17,10 +17,6 @@ Files: config.tests/*
        tests/manual/*
 Copyright: 2015-2021 The Qt Company Ltd.
 License: BSD-3-clause
-
-Files: conanfile.py
-Copyright: 2021 The Qt Company Ltd.
-License: GPL-3 with Qt-1.0 exception
 
 Files: tests/auto/*
 Copyright: 2016-2020 The Qt Company Ltd.
@@ -42,7 +38,6 @@ Files: examples/wayland/ivi-compositor/doc/src/ivi-compositor.qdoc
        examples/wayland/multi-output/doc/src/multi-output.qdoc
        examples/wayland/multi-screen/doc/src/multi-screen.qdoc
        examples/wayland/overview-compositor/doc/src/overview-compositor.qdoc
-       examples/wayland/pure-qml/doc/src/pure-qml.qdoc
        examples/wayland/server-side-decoration/doc/src/server-side-decoration.qdoc
        examples/wayland/spanning-screens/doc/src/spanning-screens.qdoc
        src/compositor/doc/src/qt6-changes.qdoc
@@ -58,7 +53,7 @@ Files: src/plugins/shellintegration/fullscreen-shell-v1/*
 Copyright: 2018-2019 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
 License: LGPL-3 or GPL-2
 
-Files: examples/wayland/pure-qml/qml/Keyboard.qml
+Files: examples/wayland/fancy-compositor/qml/Keyboard.qml
 Copyright: 2017 Klarälvdalens Datakonsult AB (KDAB)
 License: BSD-3-clause
 
@@ -94,57 +89,57 @@ Files: src/extensions/qt-text-input-method-unstable-v1.xml
 Copyright: 2021 The Qt Company Ltd.
 License: Expat
 
-Files: src/3rdparty/protocol/fullscreen-shell-unstable-v1.xml
+Files: src/3rdparty/protocol/fullscreen-shell/fullscreen-shell-unstable-v1.xml
 Copyright: 2016 Yong Bakos
            2015 Jason Ekstrand
            2015 Jonas Ådahl
 License: Expat
 
-Files: src/3rdparty/protocol/idle-inhibit-unstable-v1.xml
+Files: src/3rdparty/protocol/idle-inhibit/idle-inhibit-unstable-v1.xml
 Copyright: 2015 Samsung Electronics Co., Ltd
 License: Expat
 
-Files: src/3rdparty/protocol/ivi-application.xml
-       src/3rdparty/protocol/ivi-controller.xml
+Files: src/3rdparty/protocol/ivi/ivi-application.xml
+       src/3rdparty/protocol/ivi/ivi-controller.xml
 Copyright: 2013 DENSO Corporation
            2013 BMW Car IT GmbH
 License: Expat
 
-Files: src/3rdparty/protocol/linux-dmabuf-unstable-v1.xml
-       src/3rdparty/protocol/scaler.xml
-       src/3rdparty/protocol/viewporter.xml
+Files: src/3rdparty/protocol/linux-dmabuf/linux-dmabuf-unstable-v1.xml
+       src/3rdparty/protocol/scaler/scaler.xml
+       src/3rdparty/protocol/viewporter/viewporter.xml
 Copyright: 2013-2016 Collabora, Ltd.
 License: Expat
 
-Files: src/3rdparty/protocol/text-input-unstable-v2.xml
+Files: src/3rdparty/protocol/text-input/v2/text-input-unstable-v2.xml
 Copyright: 2012-2013 Intel Corporation
            2015-2016 Jan Arne Petersen
 License: HPND
 
-Files: src/3rdparty/protocol/wayland.xml
+Files: src/3rdparty/protocol/wayland/wayland.xml
 Copyright: 2008-2011 Kristian Høgsberg
            2010-2011 Intel Corporation
            2012-2013 Collabora, Ltd.
 License: Expat
 
-Files: src/3rdparty/protocol/wl-eglstream-controller.xml
+Files: src/3rdparty/protocol/wl-eglstream/wl-eglstream-controller.xml
 Copyright: 2017 NVIDIA Corporation
 License: Expat
 
-Files: src/3rdparty/protocol/xdg-decoration-unstable-v1.xml
+Files: src/3rdparty/protocol/xdg-decoration/xdg-decoration-unstable-v1.xml
 Copyright: 2018 Simon Ser
 License: Expat
 
-Files: src/3rdparty/protocol/xdg-output-unstable-v1.xml
-       src/3rdparty/protocol/wp-primary-selection-unstable-v1.xml
+Files: src/3rdparty/protocol/xdg-output/xdg-output-unstable-v1.xml
+       src/3rdparty/protocol/wp-primary-selection/wp-primary-selection-unstable-v1.xml
 Copyright: 2015-2017 Red Hat Inc.
 License: Expat
 
-Files: src/3rdparty/protocol/pointer-gestures-unstable-v1.xml
+Files: src/3rdparty/protocol/pointer-gestures/pointer-gestures-unstable-v1.xml
 Copyright: 2015-2016 Red Hat Inc.
 License: Expat
 
-Files: src/3rdparty/protocol/xdg-shell.xml
+Files: src/3rdparty/protocol/xdg-shell/xdg-shell.xml
 Copyright: 2008-2013 Kristian Høgsberg
            2013      Rafael Antognolli
            2013      Jasper St. Pierre
@@ -153,7 +148,7 @@ Copyright: 2008-2013 Kristian Høgsberg
            2015-2017 Red Hat Inc.
 License: Expat
 
-Files: src/3rdparty/protocol/tablet-unstable-v2.xml
+Files: src/3rdparty/protocol/tablet/tablet-unstable-v2.xml
 Copyright: 2014      Stephen "Lyude" Chandler Paul
            2015-2016 Red Hat, Inc.
 License: Expat

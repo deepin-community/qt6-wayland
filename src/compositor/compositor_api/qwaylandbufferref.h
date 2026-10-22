@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Jolla Ltd, author: <giulio.camuffo@jollamobile.com>
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #ifndef QWAYLANDBUFFERREF_H
 #define QWAYLANDBUFFERREF_H
@@ -18,6 +19,7 @@ struct wl_resource;
 QT_BEGIN_NAMESPACE
 
 class QOpenGLTexture;
+class QWaylandSurfaceTextureProvider;
 
 namespace QtWayland
 {
@@ -82,6 +84,7 @@ private:
     class QWaylandBufferRefPrivate *const d;
     friend class QWaylandBufferRefPrivate;
     friend class QWaylandSurfacePrivate;
+    friend class QWaylandSurfaceTextureProvider;
 
     friend Q_WAYLANDCOMPOSITOR_EXPORT
     bool operator==(const QWaylandBufferRef &lhs, const QWaylandBufferRef &rhs) noexcept;

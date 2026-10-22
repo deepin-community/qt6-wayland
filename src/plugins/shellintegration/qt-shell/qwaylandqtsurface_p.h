@@ -1,5 +1,6 @@
 // Copyright (C) 2021 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #ifndef QWAYLANDQTSURFACE_H
 #define QWAYLANDQTSURFACE_H
@@ -23,8 +24,8 @@ public:
     ~QWaylandQtSurface() override;
 
     void applyConfigure() override;
-    void setWindowGeometry(const QRect &rect) override;
     void setWindowPosition(const QPoint &position) override;
+    void setWindowSize(const QSize &size) override;
 
     void setWindowFlags(Qt::WindowFlags flags) override;
     void requestWindowStates(Qt::WindowStates states) override;
