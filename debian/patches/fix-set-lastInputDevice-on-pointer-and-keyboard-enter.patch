@@ -64,7 +64,7 @@ Index: qt6-wayland/src/plugins/shellintegration/xdg-shell/qwaylandxdgshell.cpp
      if (type == Qt::ToolTip && transientParent) {
          setPopup(transientParent);
 -    } else if (type == Qt::Popup && transientParent && display->lastInputDevice()) {
-+    } else if (type == Qt::Popup) {
++    } else if (type == Qt::Popup && transientParent) {
          setGrabPopup(transientParent, display->lastInputDevice(), display->lastInputSerial());
      } else {
          setToplevel();

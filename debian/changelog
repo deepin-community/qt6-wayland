@@ -1,3 +1,10 @@
+qt6-wayland (6.8.0-0deepin17) unstable; urgency=medium
+
+  * fix: keep transientParent guard in qwaylandxdgshell.cpp patch to
+    prevent crash when popup window has no transientParent
+
+ -- zhangsheng <zhangsheng@uniontech.com>  Tue, 04 Nov 2026 16:37:00 +0800
+
 qt6-wayland (6.8.0-0deepin16) unstable; urgency=medium
 
   * Rebuild with LTO enabled (dpkg vendor feature optimize/lto).
