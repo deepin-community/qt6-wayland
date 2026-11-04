@@ -384,3 +384,16 @@ usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandCompositor/Qt6QWaylandDmabufUnstab
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandCompositor/Qt6QWaylandDmabufUnstableClientBufferIntegrationPluginTargets-none.cmake
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandCompositor/Qt6QWaylandDmabufUnstableClientBufferIntegrationPluginTargets.cmake
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandCompositor/Qt6QWaylandDmabufUnstableClientBufferIntegrationPluginTargetsPrecheck.cmake
+
+# restore client-side development files lost in 6.12 repack
+# (QtWaylandClient / QtWaylandGlobal / QtWlShellIntegration; kwayland needs Qt6::WaylandClientPrivate)
+usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandClient/
+usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWaylandGlobal/
+usr/include/${DEB_HOST_MULTIARCH}/qt6/QtWlShellIntegration/
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandClient/
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WaylandGlobalPrivate/
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6WlShellIntegrationPrivate/
+usr/lib/${DEB_HOST_MULTIARCH}/libQt6WaylandClient.so
+usr/lib/${DEB_HOST_MULTIARCH}/libQt6WaylandClient.prl
+usr/lib/${DEB_HOST_MULTIARCH}/libQt6WlShellIntegration.so
+usr/lib/${DEB_HOST_MULTIARCH}/libQt6WlShellIntegration.prl
